@@ -27,12 +27,14 @@ export default function OverviewView({
   data,
   project,
   role,
+  userName,
 }: {
   data: Overview;
   project: Project | null;
   role: ProjectRole | null;
   userName?: string;
 }) {
+
   const { t, lang } = useI18n();
   const { stats } = data;
 
