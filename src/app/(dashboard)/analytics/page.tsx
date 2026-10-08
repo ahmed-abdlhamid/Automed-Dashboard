@@ -1,10 +1,19 @@
-import { getOverview } from "@/lib/data.server";
+import { getAnalytics } from "@/lib/data.server";
 import { getCurrentProjectId } from "@/lib/project";
 import AnalyticsView from "./AnalyticsView";
 
 export default async function AnalyticsPage() {
-  const projectId = await getCurrentProjectId();
-  const data = await getOverview(projectId);
+  const projectId =
+    await getCurrentProjectId();
 
-  return <AnalyticsView data={data} />;
+  const data =
+    await getAnalytics(
+      projectId
+    );
+
+  return (
+    <AnalyticsView
+      data={data}
+    />
+  );
 }

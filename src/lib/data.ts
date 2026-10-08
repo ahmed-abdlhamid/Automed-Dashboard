@@ -86,6 +86,51 @@ export type Project = {
   created_at: string;
 };
 
+export type Overview = {
+  stats: {
+    orders: number;
+    revenue: number;
+    customers: number;
+    paidRate: number;
+  };
+
+  weekly: {
+    label: Bilingual;
+    value: number;
+  }[];
+
+  recent: Order[];
+
+  services: {
+    name: Bilingual;
+    ok: boolean;
+  }[];
+};
+
+export type Analytics = {
+  stats: {
+    orders: number;
+    revenue: number;
+    customers: number;
+    paidRate: number;
+    paidOrders: number;
+    pendingOrders: number;
+    failedOrders: number;
+    averageOrderValue: number;
+  };
+
+  weekly: {
+    label: Bilingual;
+    value: number;
+  }[];
+
+  statusBreakdown: {
+    status: OrderStatus;
+    count: number;
+    percentage: number;
+  }[];
+};
+
 function mapPaymentStatus(
   status: string
 ): OrderStatus {
@@ -229,27 +274,6 @@ export async function getOrders(
   ).map(mapSupabaseOrder);
 }
 
-export type Overview = {
-  stats: {
-    orders: number;
-    revenue: number;
-    customers: number;
-    paidRate: number;
-  };
-
-  weekly: {
-    label: Bilingual;
-    value: number;
-  }[];
-
-  recent: Order[];
-
-  services: {
-    name: Bilingual;
-    ok: boolean;
-  }[];
-};
-
 export async function getOverview(
   projectId: string =
     dashboardConfig.project.id
@@ -262,47 +286,6 @@ export async function getOverview(
       (order) =>
         order.status === "paid"
     );
-
-  const days: Bilingual[] = [
-    {
-      ar: "السبت",
-      en: "Sat",
-    },
-    {
-      ar: "الأحد",
-      en: "Sun",
-    },
-    {
-      ar: "الاثنين",
-      en: "Mon",
-    },
-    {
-      ar: "الثلاثاء",
-      en: "Tue",
-    },
-    {
-      ar: "الأربعاء",
-      en: "Wed",
-    },
-    {
-      ar: "الخميس",
-      en: "Thu",
-    },
-    {
-      ar: "الجمعة",
-      en: "Fri",
-    },
-  ];
-
-  const values = [
-    420,
-    610,
-    380,
-    740,
-    560,
-    905,
-    820,
-  ];
 
   return {
     stats: {
@@ -334,14 +317,7 @@ export async function getOverview(
           : 0,
     },
 
-    weekly:
-      days.map(
-        (label, index) => ({
-          label,
-          value:
-            values[index],
-        })
-      ),
+    weekly: [],
 
     recent:
       orders.slice(0, 5),

@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Bilingual } from "@/components/Providers";
 import type {
+  Analytics,
   Order,
   Overview,
   Project,
@@ -494,6 +495,147 @@ export async function getOverview(
           en: "Payment gateway",
         },
         ok: true,
+      },
+    ],
+  };
+}
+
+export async function getAnalytics(
+  projectId: string
+): Promise<Analytics> {
+  const orders =
+    await getOrders(
+      projectId
+    );
+
+  const paidOrders =
+    orders.filter(
+      (order) =>
+        order.status ===
+        "paid"
+    );
+
+  const pendingOrders =
+    orders.filter(
+      (order) =>
+        order.status ===
+        "pending"
+    );
+
+  const failedOrders =
+    orders.filter(
+      (order) =>
+        order.status ===
+        "failed"
+    );
+
+  const uniqueCustomers =
+    new Set(
+      orders.map(
+        (order) =>
+          order.customer
+      )
+    );
+
+  const revenue =
+    paidOrders.reduce(
+      (sum, order) =>
+        sum + order.amount,
+      0
+    );
+
+  const averageOrderValue =
+    orders.length
+      ? orders.reduce(
+          (sum, order) =>
+            sum + order.amount,
+          0
+        ) / orders.length
+      : 0;
+
+  const totalOrders =
+    orders.length;
+
+  return {
+    stats: {
+      orders:
+        totalOrders,
+
+      revenue,
+
+      customers:
+        uniqueCustomers.size,
+
+      paidRate:
+        totalOrders
+          ? Math.round(
+              (paidOrders.length /
+                totalOrders) *
+                100
+            )
+          : 0,
+
+      paidOrders:
+        paidOrders.length,
+
+      pendingOrders:
+        pendingOrders.length,
+
+      failedOrders:
+        failedOrders.length,
+
+      averageOrderValue:
+        Math.round(
+          averageOrderValue
+        ),
+    },
+
+    weekly:
+      buildWeeklyRevenue(
+        orders
+      ),
+
+    statusBreakdown: [
+      {
+        status: "paid",
+        count:
+          paidOrders.length,
+        percentage:
+          totalOrders
+            ? Math.round(
+                (paidOrders.length /
+                  totalOrders) *
+                  100
+              )
+            : 0,
+      },
+
+      {
+        status: "pending",
+        count:
+          pendingOrders.length,
+        percentage:
+          totalOrders
+            ? Math.round(
+                (pendingOrders.length /
+                  totalOrders) *
+                  100
+              )
+            : 0,
+      },
+
+      {
+        status: "failed",
+        count:
+          failedOrders.length,
+        percentage:
+          totalOrders
+            ? Math.round(
+                (failedOrders.length /
+                  totalOrders) *
+                  100
+              )
+            : 0,
       },
     ],
   };
