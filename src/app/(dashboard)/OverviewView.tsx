@@ -287,7 +287,7 @@ const greetingName = isAdmin
         />
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,.8fr)]">
+      <div className="grid gap-4">
         <Card
           title={t({
             ar: "الأداء خلال آخر 7 أيام",
@@ -306,61 +306,6 @@ const greetingName = isAdmin
               })
             )}
           />
-        </Card>
-
-        <Card
-          title={t({
-            ar: "حالة النظام",
-            en: "System health",
-          })}
-          subtitle={t({
-            ar: "حالة الخدمات المتصلة",
-            en: "Connected services",
-          })}
-        >
-          <div className="p-3">
-            {data.services.map(
-              (service) => (
-                <div
-                  key={service.name.en}
-                  className="system-item"
-                >
-                  <div className="system-name">
-                    <span
-                      className="system-dot"
-                      style={{
-                        background:
-                          service.ok
-                            ? "var(--ok)"
-                            : "var(--danger)",
-                      }}
-                    />
-                    {t(
-                      service.name
-                    )}
-                  </div>
-
-                  <Badge
-                    tone={
-                      service.ok
-                        ? "ok"
-                        : "danger"
-                    }
-                  >
-                    {service.ok
-                      ? t({
-                          ar: "يعمل",
-                          en: "Operational",
-                        })
-                      : t({
-                          ar: "متوقف",
-                          en: "Down",
-                        })}
-                  </Badge>
-                </div>
-              )
-            )}
-          </div>
         </Card>
       </div>
 

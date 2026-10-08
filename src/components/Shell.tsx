@@ -34,7 +34,6 @@ export default function Shell({
   const pathname = usePathname();
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  // close the project menu when clicking outside it
   useEffect(() => {
     if (!projectMenuOpen) return;
 
@@ -48,7 +47,12 @@ export default function Shell({
     };
 
     document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
+
+    return () =>
+      document.removeEventListener(
+        "mousedown",
+        onDown
+      );
   }, [projectMenuOpen]);
 
   const {
@@ -70,10 +74,12 @@ export default function Shell({
 
   const selectedProject =
     projects.find(
-      (project) => project.id === currentProjectId
+      (project) =>
+        project.id === currentProjectId
     ) ||
     projects.find(
-      (project) => project.id === cfg.project.id
+      (project) =>
+        project.id === cfg.project.id
     ) ||
     projects[0];
 
@@ -104,6 +110,7 @@ export default function Shell({
         "Supabase logout error:",
         error
       );
+
       setLoggingOut(false);
       return;
     }
@@ -111,8 +118,32 @@ export default function Shell({
     window.location.href = "/login";
   };
 
+  /*
+   * Navigation is role-aware:
+   *
+   * Client:
+   * - Overview
+   * - Orders
+   * - Analytics
+   * - Activity
+   * - Settings
+   *
+   * Admin:
+   * - Overview
+   * - Orders
+   * - Analytics
+   * - Automation
+   * - Activity
+   * - Users
+   * - Settings
+   */
   const navItems = [
-    ...cfg.nav,
+    ...cfg.nav.filter(
+      (item) =>
+        isAdmin ||
+        item.href !== "/automation"
+    ),
+
     ...(isAdmin
       ? [
           {
@@ -140,17 +171,33 @@ export default function Shell({
           item.href === "/analytics"
       ),
     },
+
+    ...(isAdmin
+      ? [
+          {
+            label: {
+              ar: "الأتمتة",
+              en: "Automation",
+            },
+            items: navItems.filter(
+              (item) =>
+                item.href === "/automation"
+            ),
+          },
+        ]
+      : []),
+
     {
       label: {
-        ar: "الأتمتة",
-        en: "Automation",
+        ar: "النشاط",
+        en: "Activity",
       },
       items: navItems.filter(
         (item) =>
-          item.href === "/automation" ||
           item.href === "/activity"
       ),
     },
+
     {
       label: {
         ar: "الإدارة",
@@ -162,12 +209,17 @@ export default function Shell({
           item.href === "/settings"
       ),
     },
-  ].filter((group) => group.items.length > 0);
+  ].filter(
+    (group) =>
+      group.items.length > 0
+  );
 
   return (
     <div className="dashboard-shell">
       <div
-        onClick={() => setMobileOpen(false)}
+        onClick={() =>
+          setMobileOpen(false)
+        }
         className={`mobile-backdrop ${
           mobileOpen
             ? "mobile-backdrop-open"
@@ -189,15 +241,16 @@ export default function Shell({
             }
             aria-label={cfg.brand.name}
           >
-            {/* Collapsed = icon only, expanded = full logo.
-                Light theme -> light sidebar -> dark-text logo;
-                dark theme  -> dark sidebar  -> light-text logo. */}
-            <span className="brand-mark" aria-hidden="true">
+            <span
+              className="brand-mark"
+              aria-hidden="true"
+            >
               <img
                 src="/logo-icon.png"
                 alt=""
                 className="logo-light"
               />
+
               <img
                 src="/logo-icon-on-dark.png"
                 alt=""
@@ -211,6 +264,7 @@ export default function Shell({
                 alt={cfg.brand.name}
                 className="logo-light"
               />
+
               <img
                 src={cfg.brand.logo.dark}
                 alt={cfg.brand.name}
@@ -224,68 +278,88 @@ export default function Shell({
           type="button"
           className="sidebar-toggle"
           onClick={() =>
-            setExpanded((value) => !value)
+            setExpanded(
+              (value) => !value
+            )
           }
           aria-label={
             expanded
-              ? t({ ar: "طي القائمة", en: "Collapse sidebar" })
-              : t({ ar: "توسيع القائمة", en: "Expand sidebar" })
+              ? t({
+                  ar: "طي القائمة",
+                  en: "Collapse sidebar",
+                })
+              : t({
+                  ar: "توسيع القائمة",
+                  en: "Expand sidebar",
+                })
           }
         >
-          <Icon name="chevronLeft" size={16} />
+          <Icon
+            name="chevronLeft"
+            size={16}
+          />
         </button>
 
         <nav
           className="sidebar-nav"
-          aria-label={t({ ar: "التنقل الرئيسي", en: "Main navigation" })}
+          aria-label={t({
+            ar: "التنقل الرئيسي",
+            en: "Main navigation",
+          })}
         >
-          {navGroups.map((group) => (
-            <div
-              key={group.label.en}
-              className="nav-group"
-            >
-              {expanded && (
-                <p className="nav-group-label">
-                  {t(group.label)}
-                </p>
-              )}
+          {navGroups.map(
+            (group) => (
+              <div
+                key={group.label.en}
+                className="nav-group"
+              >
+                {expanded && (
+                  <p className="nav-group-label">
+                    {t(group.label)}
+                  </p>
+                )}
 
-              {group.items.map(
-                (item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => {
-                      setMobileOpen(false);
-                      setProjectMenuOpen(false);
-                    }}
-                    className="nav-link"
-                    aria-current={
-                      isActive(item.href)
-                        ? "page"
-                        : undefined
-                    }
-                    title={
-                      expanded
-                        ? undefined
-                        : t(item.label)
-                    }
-                  >
-                    <span className="nav-icon">
-                      <Icon
-                        name={item.icon}
-                        size={19}
-                      />
-                    </span>
+                {group.items.map(
+                  (item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setProjectMenuOpen(false);
+                      }}
+                      className="nav-link"
+                      aria-current={
+                        isActive(
+                          item.href
+                        )
+                          ? "page"
+                          : undefined
+                      }
+                      title={
+                        expanded
+                          ? undefined
+                          : t(
+                              item.label
+                            )
+                      }
+                    >
+                      <span className="nav-icon">
+                        <Icon
+                          name={item.icon}
+                          size={19}
+                        />
+                      </span>
 
-                    <span className="nav-label">
-                      {t(item.label)}
-                    </span>
-                  </Link>
-                )
-              )}
-            </div>
-          ))}
+                      <span className="nav-label">
+                        {t(item.label)}
+                      </span>
+                    </Link>
+                  )
+                )}
+              </div>
+            )
+          )}
         </nav>
 
         <div className="sidebar-bottom">
@@ -350,7 +424,10 @@ export default function Shell({
               onClick={() =>
                 setMobileOpen(true)
               }
-              aria-label={t({ ar: "فتح القائمة", en: "Open menu" })}
+              aria-label={t({
+                ar: "فتح القائمة",
+                en: "Open menu",
+              })}
             >
               <Icon
                 name="menu"
@@ -365,8 +442,11 @@ export default function Shell({
 
               <strong>
                 {currentNav
-                  ? t(currentNav.label)
-                  : pathname === "/users"
+                  ? t(
+                      currentNav.label
+                    )
+                  : pathname ===
+                    "/users"
                   ? t({
                       ar: "المستخدمون",
                       en: "Users",
@@ -379,7 +459,10 @@ export default function Shell({
           <div className="topbar-actions">
             {isAdmin &&
               projects.length > 0 && (
-                <div className="project-picker" ref={pickerRef}>
+                <div
+                  className="project-picker"
+                  ref={pickerRef}
+                >
                   <button
                     type="button"
                     className="project-trigger"
@@ -464,7 +547,10 @@ export default function Shell({
               type="button"
               className="topbar-control"
               onClick={toggleTheme}
-              aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
+              aria-label={t({
+                ar: "تغيير المظهر",
+                en: "Toggle theme",
+              })}
             >
               <Icon
                 name={
@@ -480,7 +566,10 @@ export default function Shell({
               type="button"
               className="topbar-control lang-control"
               onClick={toggleLang}
-              aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
+              aria-label={t({
+                ar: "تغيير اللغة",
+                en: "Toggle language",
+              })}
             >
               {lang === "ar"
                 ? "EN"
@@ -488,27 +577,51 @@ export default function Shell({
             </button>
 
             <div className="profile-chip">
-              <span className="profile-avatar" aria-hidden="true">
+              <span
+                className="profile-avatar"
+                aria-hidden="true"
+              >
                 {isAdmin ? (
-                  Array.from(t(adminIdentity.name))[0]?.toUpperCase()
+                  Array.from(
+                    t(
+                      adminIdentity.name
+                    )
+                  )[0]?.toUpperCase()
                 ) : (
-                  <Icon name="users" size={17} />
+                  <Icon
+                    name="users"
+                    size={17}
+                  />
                 )}
               </span>
 
               <div className="profile-meta">
                 {isAdmin && (
                   <span className="profile-name">
-                    <bdi>{t(adminIdentity.name)}</bdi>
+                    <bdi>
+                      {t(
+                        adminIdentity.name
+                      )}
+                    </bdi>
                   </span>
                 )}
 
                 <span
-                  className={isAdmin ? "profile-role" : "profile-name"}
+                  className={
+                    isAdmin
+                      ? "profile-role"
+                      : "profile-name"
+                  }
                 >
                   {isAdmin
-                    ? t({ ar: "مسؤول", en: "Admin" })
-                    : t({ ar: "عميل", en: "Client" })}
+                    ? t({
+                        ar: "مسؤول",
+                        en: "Admin",
+                      })
+                    : t({
+                        ar: "عميل",
+                        en: "Client",
+                      })}
                 </span>
               </div>
             </div>
