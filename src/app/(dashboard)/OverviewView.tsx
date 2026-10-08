@@ -68,13 +68,14 @@ export default function OverviewView({
     0
   );
 
-  const greetingName = isAdmin
-    ? t(adminIdentity.name)
-    : project?.name ||
-      t({
-        ar: "عميلنا",
-        en: "there",
-      });
+const greetingName = isAdmin
+  ? t(adminIdentity.name)
+  : userName ||
+    project?.name ||
+    t({
+      ar: "عميلنا",
+      en: "there",
+    });
 
   const columns: Column<Order>[] = [
     {
