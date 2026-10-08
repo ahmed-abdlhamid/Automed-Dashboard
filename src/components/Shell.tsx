@@ -28,6 +28,7 @@ export default function Shell({
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [sidebarPinned, setSidebarPinned] = useState(false);
   const [projectMenuOpen, setProjectMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -49,10 +50,7 @@ export default function Shell({
     document.addEventListener("mousedown", onDown);
 
     return () =>
-      document.removeEventListener(
-        "mousedown",
-        onDown
-      );
+      document.removeEventListener("mousedown", onDown);
   }, [projectMenuOpen]);
 
   const {
@@ -74,18 +72,14 @@ export default function Shell({
 
   const selectedProject =
     projects.find(
-      (project) =>
-        project.id === currentProjectId
+      (project) => project.id === currentProjectId
     ) ||
     projects.find(
-      (project) =>
-        project.id === cfg.project.id
+      (project) => project.id === cfg.project.id
     ) ||
     projects[0];
 
-  const handleProjectChange = (
-    projectId: string
-  ) => {
+  const handleProjectChange = (projectId: string) => {
     setProjectMenuOpen(false);
 
     document.cookie =
@@ -102,20 +96,38 @@ export default function Shell({
 
     setLoggingOut(true);
 
-    const { error } =
-      await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error(
-        "Supabase logout error:",
-        error
-      );
-
+      console.error("Supabase logout error:", error);
       setLoggingOut(false);
       return;
     }
 
     window.location.href = "/login";
+  };
+
+  const handleSidebarMouseEnter = () => {
+    if (!sidebarPinned) {
+      setExpanded(true);
+    }
+  };
+
+  const handleSidebarMouseLeave = () => {
+    if (!sidebarPinned) {
+      setExpanded(false);
+    }
+  };
+
+  const handleSidebarToggle = () => {
+    if (sidebarPinned) {
+      setSidebarPinned(false);
+      setExpanded(false);
+      return;
+    }
+
+    setSidebarPinned(true);
+    setExpanded(true);
   };
 
   /*
@@ -217,9 +229,7 @@ export default function Shell({
   return (
     <div className="dashboard-shell">
       <div
-        onClick={() =>
-          setMobileOpen(false)
-        }
+        onClick={() => setMobileOpen(false)}
         className={`mobile-backdrop ${
           mobileOpen
             ? "mobile-backdrop-open"
@@ -229,16 +239,17 @@ export default function Shell({
 
       <aside
         data-expanded={expanded}
+        data-pinned={sidebarPinned}
         data-mobile-open={mobileOpen}
         className="sidebar"
+        onMouseEnter={handleSidebarMouseEnter}
+        onMouseLeave={handleSidebarMouseLeave}
       >
         <div className="sidebar-top">
           <Link
             href="/"
             className="brand-lockup"
-            onClick={() =>
-              setMobileOpen(false)
-            }
+            onClick={() => setMobileOpen(false)}
             aria-label={cfg.brand.name}
           >
             <span
@@ -277,20 +288,28 @@ export default function Shell({
         <button
           type="button"
           className="sidebar-toggle"
-          onClick={() =>
-            setExpanded(
-              (value) => !value
-            )
-          }
+          onClick={handleSidebarToggle}
+          aria-pressed={sidebarPinned}
           aria-label={
-            expanded
+            sidebarPinned
               ? t({
-                  ar: "طي القائمة",
-                  en: "Collapse sidebar",
+                  ar: "إلغاء تثبيت القائمة وطيها",
+                  en: "Unpin and collapse sidebar",
                 })
               : t({
-                  ar: "توسيع القائمة",
-                  en: "Expand sidebar",
+                  ar: "تثبيت القائمة مفتوحة",
+                  en: "Pin sidebar open",
+                })
+          }
+          title={
+            sidebarPinned
+              ? t({
+                  ar: "إلغاء التثبيت",
+                  en: "Unpin sidebar",
+                })
+              : t({
+                  ar: "تثبيت القائمة",
+                  en: "Pin sidebar",
                 })
           }
         >
@@ -307,59 +326,51 @@ export default function Shell({
             en: "Main navigation",
           })}
         >
-          {navGroups.map(
-            (group) => (
-              <div
-                key={group.label.en}
-                className="nav-group"
-              >
-                {expanded && (
-                  <p className="nav-group-label">
-                    {t(group.label)}
-                  </p>
-                )}
+          {navGroups.map((group) => (
+            <div
+              key={group.label.en}
+              className="nav-group"
+            >
+              {expanded && (
+                <p className="nav-group-label">
+                  {t(group.label)}
+                </p>
+              )}
 
-                {group.items.map(
-                  (item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => {
-                        setMobileOpen(false);
-                        setProjectMenuOpen(false);
-                      }}
-                      className="nav-link"
-                      aria-current={
-                        isActive(
-                          item.href
-                        )
-                          ? "page"
-                          : undefined
-                      }
-                      title={
-                        expanded
-                          ? undefined
-                          : t(
-                              item.label
-                            )
-                      }
-                    >
-                      <span className="nav-icon">
-                        <Icon
-                          name={item.icon}
-                          size={19}
-                        />
-                      </span>
+              {group.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setProjectMenuOpen(false);
+                  }}
+                  className="nav-link"
+                  aria-current={
+                    isActive(item.href)
+                      ? "page"
+                      : undefined
+                  }
+                  title={
+                    expanded
+                      ? undefined
+                      : t(item.label)
+                  }
+                >
+                  <span className="nav-icon">
+                    <Icon
+                      name={item.icon}
+                      size={19}
+                    />
+                  </span>
 
-                      <span className="nav-label">
-                        {t(item.label)}
-                      </span>
-                    </Link>
-                  )
-                )}
-              </div>
-            )
-          )}
+                  <span className="nav-label">
+                    {t(item.label)}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          ))}
         </nav>
 
         <div className="sidebar-bottom">
@@ -421,9 +432,7 @@ export default function Shell({
             <button
               type="button"
               className="mobile-menu-button"
-              onClick={() =>
-                setMobileOpen(true)
-              }
+              onClick={() => setMobileOpen(true)}
               aria-label={t({
                 ar: "فتح القائمة",
                 en: "Open menu",
@@ -442,11 +451,8 @@ export default function Shell({
 
               <strong>
                 {currentNav
-                  ? t(
-                      currentNav.label
-                    )
-                  : pathname ===
-                    "/users"
+                  ? t(currentNav.label)
+                  : pathname === "/users"
                   ? t({
                       ar: "المستخدمون",
                       en: "Users",
@@ -468,8 +474,7 @@ export default function Shell({
                     className="project-trigger"
                     onClick={() =>
                       setProjectMenuOpen(
-                        (value) =>
-                          !value
+                        (value) => !value
                       )
                     }
                     aria-expanded={
@@ -524,9 +529,7 @@ export default function Shell({
                               }
                             >
                               <span>
-                                {
-                                  project.name
-                                }
+                                {project.name}
                               </span>
 
                               {selected && (
@@ -583,9 +586,7 @@ export default function Shell({
               >
                 {isAdmin ? (
                   Array.from(
-                    t(
-                      adminIdentity.name
-                    )
+                    t(adminIdentity.name)
                   )[0]?.toUpperCase()
                 ) : (
                   <Icon

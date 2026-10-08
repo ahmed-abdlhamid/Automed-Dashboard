@@ -4848,3 +4848,89 @@
     }
   }
 }
+@layer components {
+  /* =========================================================
+     SIDEBAR — HOVER EXPAND / PIN
+     ========================================================= */
+
+  .sidebar[data-pinned="true"] {
+    width: 242px;
+  }
+
+  .sidebar[data-pinned="true"]
+    .brand-mark {
+    display: none;
+  }
+
+  .sidebar[data-pinned="true"]
+    .brand-full {
+    display: flex;
+  }
+
+  .sidebar[data-pinned="true"]
+    .nav-label,
+  .sidebar[data-pinned="true"]
+    .sidebar-status-copy,
+  .sidebar[data-pinned="true"]
+    .logout-button span {
+    display: inline;
+  }
+
+  .sidebar[data-pinned="true"]
+    .nav-link {
+    justify-content: flex-start;
+    padding-inline: 12px;
+  }
+
+  .sidebar[data-pinned="true"]
+    .sidebar-status {
+    justify-content: flex-start;
+    padding-inline: 9px;
+  }
+
+  .sidebar[data-pinned="true"]
+    .nav-group-label {
+    display: block;
+  }
+
+  /* =========================================================
+     AUTOMATION — CARD TEXT SAFETY
+     ========================================================= */
+
+  .automation-module-card {
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .automation-module-card h3,
+  .automation-module-card > p {
+    min-width: 0;
+    padding-inline: 2px;
+  }
+
+  .automation-module-card h3 {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .automation-module-card > p {
+    overflow-wrap: anywhere;
+  }
+
+  .automation-module-footer {
+    min-width: 0;
+  }
+
+  .automation-module-footer > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 767.98px) {
+    .automation-module-card h3,
+    .automation-module-card > p {
+      padding-inline: 0;
+    }
+  }
+}
