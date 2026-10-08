@@ -6,98 +6,203 @@ import { createSupabaseServerClient } from "./supabase/server";
 
 export type ProjectRole = "admin" | "client";
 
-export async function getCurrentProjectId(): Promise<string> {
-  const projects = await getServerProjects();
+type ProjectMembership = {
+  project_id: string;
+  role: ProjectRole;
+};
 
-  if (projects.length === 0) {
-    return dashboardConfig.project.id;
-  }
-
-  const cookieStore = await cookies();
-
-  const savedProjectId =
-    cookieStore.get("automed_project_id")?.value;
-
-  const savedProject = projects.find(
-    (project) => project.id === savedProjectId
-  );
-
-  if (savedProject) {
-    return savedProject.id;
-  }
-
-  const configuredProject = projects.find(
-    (project) => project.id === dashboardConfig.project.id
-  );
-
-  if (configuredProject) {
-    return configuredProject.id;
-  }
-
-  return projects[0].id;
-}
-
-export async function getCurrentProject(): Promise<Project | null> {
-  const projectId = await getCurrentProjectId();
-  const projects = await getServerProjects();
-
-  return (
-    projects.find(
-      (project) => project.id === projectId
-    ) ?? null
-  );
-}
-
-export async function getCurrentProjectRole(): Promise<ProjectRole | null> {
-  const supabase = await createSupabaseServerClient();
+async function getCurrentUserMemberships(): Promise<
+  ProjectMembership[]
+> {
+  const supabase =
+    await createSupabaseServerClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return null;
+    return [];
   }
-
-  const projectId = await getCurrentProjectId();
 
   const {
     data,
     error,
   } = await supabase
     .from("project_members")
-    .select("role")
-    .eq("project_id", projectId)
-    .eq("user_id", user.id)
-    .maybeSingle();
+    .select("project_id, role")
+    .eq("user_id", user.id);
 
   if (error) {
     console.error(
-      "Supabase project role error:",
+      "Supabase project memberships error:",
       error
     );
 
-    return null;
+    return [];
   }
+
+  return (data || []).filter(
+    (membership) =>
+      membership.role === "admin" ||
+      membership.role === "client"
+  ) as ProjectMembership[];
+}
+
+export async function getAccessibleProjects(): Promise<
+  Project[]
+> {
+  const [
+    projects,
+    memberships,
+  ] = await Promise.all([
+    getServerProjects(),
+    getCurrentUserMemberships(),
+  ]);
+
+  if (memberships.length === 0) {
+    return [];
+  }
+
+  const accessibleProjectIds =
+    new Set(
+      memberships.map(
+        (membership) =>
+          membership.project_id
+      )
+    );
+
+  return projects.filter(
+    (project) =>
+      accessibleProjectIds.has(
+        project.id
+      )
+  );
+}
+
+export async function getCurrentProjectId(): Promise<string> {
+  const memberships =
+    await getCurrentUserMemberships();
+
+  const projects =
+    await getServerProjects();
 
   if (
-    data?.role === "admin" ||
-    data?.role === "client"
+    memberships.length === 0 ||
+    projects.length === 0
   ) {
-    return data.role;
+    return dashboardConfig.project.id;
   }
 
-  return null;
+  const accessibleProjectIds =
+    new Set(
+      memberships.map(
+        (membership) =>
+          membership.project_id
+      )
+    );
+
+  const accessibleProjects =
+    projects.filter(
+      (project) =>
+        accessibleProjectIds.has(
+          project.id
+        )
+    );
+
+  if (
+    accessibleProjects.length === 0
+  ) {
+    return dashboardConfig.project.id;
+  }
+
+  const cookieStore =
+    await cookies();
+
+  const savedProjectId =
+    cookieStore.get(
+      "automed_project_id"
+    )?.value;
+
+  /*
+   * The cookie is only a preference.
+   * It is never trusted as authorization.
+   *
+   * A project is selected only when the
+   * authenticated user actually belongs
+   * to that project.
+   */
+  const savedProject =
+    accessibleProjects.find(
+      (project) =>
+        project.id ===
+        savedProjectId
+    );
+
+  if (savedProject) {
+    return savedProject.id;
+  }
+
+  const configuredProject =
+    accessibleProjects.find(
+      (project) =>
+        project.id ===
+        dashboardConfig.project.id
+    );
+
+  if (configuredProject) {
+    return configuredProject.id;
+  }
+
+  return accessibleProjects[0].id;
+}
+
+export async function getCurrentProject(): Promise<Project | null> {
+  const projectId =
+    await getCurrentProjectId();
+
+  const projects =
+    await getServerProjects();
+
+  return (
+    projects.find(
+      (project) =>
+        project.id === projectId
+    ) ?? null
+  );
+}
+
+export async function getCurrentProjectRole(): Promise<ProjectRole | null> {
+  const [
+    memberships,
+    projectId,
+  ] = await Promise.all([
+    getCurrentUserMemberships(),
+    getCurrentProjectId(),
+  ]);
+
+  const membership =
+    memberships.find(
+      (item) =>
+        item.project_id ===
+        projectId
+    );
+
+  return (
+    membership?.role ?? null
+  );
 }
 
 export async function isCurrentUserAdmin(): Promise<boolean> {
-  const role = await getCurrentProjectRole();
+  const role =
+    await getCurrentProjectRole();
 
   return role === "admin";
 }
 
 export async function getCurrentUserDisplayName(): Promise<string> {
-  const supabase = await createSupabaseServerClient();
+  const supabase =
+    await createSupabaseServerClient();
 
   const {
     data: { user },
@@ -112,11 +217,16 @@ export async function getCurrentUserDisplayName(): Promise<string> {
     error,
   } = await supabase
     .from("profiles")
-    .select("full_name, email")
+    .select(
+      "full_name, email"
+    )
     .eq("id", user.id)
     .maybeSingle();
 
-  if (!error && data?.full_name?.trim()) {
+  if (
+    !error &&
+    data?.full_name?.trim()
+  ) {
     return data.full_name.trim();
   }
 
@@ -130,8 +240,13 @@ export async function getCurrentUserDisplayName(): Promise<string> {
     "User";
 
   return localPart
-    .replace(/[._-]+/g, " ")
-    .replace(/\b\w/g, (char: string) => {
-      return char.toUpperCase();
-    });
+    .replace(
+      /[._-]+/g,
+      " "
+    )
+    .replace(
+      /\b\w/g,
+      (char: string) =>
+        char.toUpperCase()
+    );
 }

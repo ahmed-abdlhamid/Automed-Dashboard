@@ -1,6 +1,6 @@
 import Shell from "@/components/Shell";
-import { getProjects } from "@/lib/data.server";
 import {
+  getAccessibleProjects,
   getCurrentProjectId,
   isCurrentUserAdmin,
 } from "@/lib/project";
@@ -15,7 +15,7 @@ export default async function DashboardLayout({
     currentProjectId,
     isAdmin,
   ] = await Promise.all([
-    getProjects(),
+    getAccessibleProjects(),
     getCurrentProjectId(),
     isCurrentUserAdmin(),
   ]);

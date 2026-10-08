@@ -1,15 +1,18 @@
 "use client";
 
 import { useI18n } from "@/components/Providers";
-import type { Overview } from "@/lib/data";
-import { Badge, Card, PageHeader } from "@/components/ui";
+import {
+  Card,
+  PageHeader,
+} from "@/components/ui";
 
 export default function AutomationView({
-  data,
+  projectName,
 }: {
-  data: Overview;
+  projectName: string;
 }) {
-  const { t } = useI18n();
+  const { t } =
+    useI18n();
 
   return (
     <>
@@ -19,69 +22,154 @@ export default function AutomationView({
           en: "Automation",
         })}
         subtitle={t({
-          ar: "تابع الخدمات وسير العمل المتصل بالمشروع الحالي",
-          en: "Monitor the services and workflows connected to this project",
+          ar: `مركز التحكم في أتمتة مشروع ${projectName}`,
+          en: `Automation control center for ${projectName}`,
         })}
       />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {data.services.map((service) => (
-          <Card key={service.name.en}>
-            <div className="p-5">
-              <div className="flex items-center justify-between gap-3">
-                <div className="metric-icon">
-                  <span className="system-dot" />
-                </div>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <Card>
+          <div className="p-6">
+            <div className="metric-icon">
+              ⚡
+            </div>
 
-                <Badge tone={service.ok ? "ok" : "danger"}>
-                  {service.ok
-                    ? t({ ar: "يعمل", en: "Operational" })
-                    : t({ ar: "متوقف", en: "Down" })}
-                </Badge>
-              </div>
+            <h2 className="mt-5 font-head text-base font-semibold">
+              {t({
+                ar: "سير العمل",
+                en: "Workflows",
+              })}
+            </h2>
 
-              <h2 className="mt-5 font-head text-sm font-semibold">
-                {t(service.name)}
-              </h2>
+            <p className="mt-2 text-sm leading-6 text-mut">
+              {t({
+                ar: "إدارة ومتابعة سير العمل المرتبط بالمشروع.",
+                en: "Manage and monitor workflows connected to this project.",
+              })}
+            </p>
 
-              <p className="mt-1 text-xs text-mut">
+            <div className="mt-5 rounded-2xl bg-surface-soft px-4 py-3">
+              <p className="text-xs text-mut">
                 {t({
-                  ar: "متصل بالمشروع الحالي.",
-                  en: "Connected to the current project.",
+                  ar: "قريبًا",
+                  en: "Coming soon",
+                })}
+              </p>
+
+              <p className="mt-1 text-sm font-medium">
+                {t({
+                  ar: "سيتم ربطها بـ n8n",
+                  en: "n8n integration will be added",
                 })}
               </p>
             </div>
-          </Card>
-        ))}
+          </div>
+        </Card>
+
+        <Card>
+          <div className="p-6">
+            <div className="metric-icon">
+              🤖
+            </div>
+
+            <h2 className="mt-5 font-head text-base font-semibold">
+              {t({
+                ar: "الوكلاء الذكيون",
+                en: "AI agents",
+              })}
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-mut">
+              {t({
+                ar: "متابعة الوكلاء والأنظمة الذكية التي تعمل ضمن المشروع.",
+                en: "Monitor the AI agents and intelligent systems running for the project.",
+              })}
+            </p>
+
+            <div className="mt-5 rounded-2xl bg-surface-soft px-4 py-3">
+              <p className="text-xs text-mut">
+                {t({
+                  ar: "قريبًا",
+                  en: "Coming soon",
+                })}
+              </p>
+
+              <p className="mt-1 text-sm font-medium">
+                {t({
+                  ar: "سيتم ربط الوكلاء والعمليات الفعلية هنا",
+                  en: "Live agents and operations will appear here",
+                })}
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="p-6">
+            <div className="metric-icon">
+              🔗
+            </div>
+
+            <h2 className="mt-5 font-head text-base font-semibold">
+              {t({
+                ar: "التكاملات",
+                en: "Integrations",
+              })}
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-mut">
+              {t({
+                ar: "إدارة الخدمات والتكاملات التي يعتمد عليها المشروع.",
+                en: "Manage the services and integrations used by this project.",
+              })}
+            </p>
+
+            <div className="mt-5 rounded-2xl bg-surface-soft px-4 py-3">
+              <p className="text-xs text-mut">
+                {t({
+                  ar: "قريبًا",
+                  en: "Coming soon",
+                })}
+              </p>
+
+              <p className="mt-1 text-sm font-medium">
+                {t({
+                  ar: "ستظهر التكاملات وحالتها الفعلية هنا",
+                  en: "Live integrations and their status will appear here",
+                })}
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
 
       <Card
         title={t({
-          ar: "مساحة الأتمتة",
-          en: "Automation workspace",
+          ar: "مركز التحكم في الأتمتة",
+          en: "Automation control center",
         })}
         subtitle={t({
-          ar: "إدارة سير العمل ستكون هنا",
-          en: "Workflow management will live here",
+          ar: "المكان المخصص لإدارة الأنظمة والأتمتة الخاصة بالمشروع",
+          en: "The workspace for managing this project's automation",
         })}
         className="mt-4"
       >
         <div className="p-8 text-center">
-          <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-teal-soft text-teal">
-            ⚡
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-teal-soft text-teal">
+            ⚙️
           </div>
 
           <h3 className="mt-4 font-head text-base font-semibold">
             {t({
-              ar: "مركز التحكم في سير العمل",
-              en: "Workflow control center",
+              ar: "جاهز للربط بـ n8n",
+              en: "Ready for n8n integration",
             })}
           </h3>
 
-          <p className="mx-auto mt-2 max-w-lg text-xs leading-6 text-mut">
+          <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-mut">
             {t({
-              ar: "المساحة دي جاهزة لإضافة سير العمل والأتمتة والوكلاء الذكيين والتكاملات اللي هنربطها بـ Automed.",
-              en: "This area is ready for the workflows, AI agents and integrations we will connect to Automed next.",
+              ar: "هنستخدم المساحة دي بعدين لمتابعة الـ workflows، الوكلاء الذكيين، التكاملات، وآخر عمليات التنفيذ الفعلية بدل الاعتماد على بيانات تجريبية.",
+              en: "This workspace will later show real workflows, AI agents, integrations, and execution history instead of placeholder status data.",
             })}
           </p>
         </div>

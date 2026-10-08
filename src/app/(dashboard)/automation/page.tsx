@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
-import { getOverview } from "@/lib/data.server";
 import {
-  getCurrentProjectId,
+  getCurrentProject,
   getCurrentProjectRole,
 } from "@/lib/project";
 import AutomationView from "./AutomationView";
@@ -14,15 +13,14 @@ export default async function AutomationPage() {
     redirect("/");
   }
 
-  const projectId =
-    await getCurrentProjectId();
-
-  const data =
-    await getOverview(projectId);
+  const project =
+    await getCurrentProject();
 
   return (
     <AutomationView
-      data={data}
+      projectName={
+        project?.name || "Current project"
+      }
     />
   );
 }
