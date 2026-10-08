@@ -24,6 +24,10 @@ const PATHS = {
   calendar:
     "M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1ZM4 10h16M8 3v4M16 3v4",
   close: "m6 6 12 12M18 6 6 18",
+
+  check:
+    "m5 12 4 4L19 6",
+
   chevron: "m7 9 5 5 5-5",
   search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14ZM21 21l-4.3-4.3",
   sun: "M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4",
@@ -83,17 +87,21 @@ export function Card({
                 {title}
               </h2>
             )}
+
             {subtitle && (
               <p className="mt-1 text-xs font-medium text-mut">
                 {subtitle}
               </p>
             )}
           </div>
+
           {action}
         </div>
       )}
 
-      <div className="relative">{children}</div>
+      <div className="relative">
+        {children}
+      </div>
     </section>
   );
 }
@@ -117,7 +125,9 @@ export function StatCard({
 }) {
   return (
     <div
-      className={`metric-card ${featured ? "metric-card-featured" : ""}`}
+      className={`metric-card ${
+        featured ? "metric-card-featured" : ""
+      }`}
     >
       <div className="metric-head">
         <span className="metric-label">
@@ -131,7 +141,10 @@ export function StatCard({
             className="metric-arrow"
             aria-label={label}
           >
-            <Icon name="arrowUpRight" size={16} />
+            <Icon
+              name="arrowUpRight"
+              size={16}
+            />
           </Link>
         )}
       </div>
@@ -141,10 +154,18 @@ export function StatCard({
           {value}
         </span>
 
-        {unit && <span className="text-xs opacity-70">{unit}</span>}
+        {unit && (
+          <span className="text-xs opacity-70">
+            {unit}
+          </span>
+        )}
       </div>
 
-      {footnote && <p className="metric-foot">{footnote}</p>}
+      {footnote && (
+        <p className="metric-foot">
+          {footnote}
+        </p>
+      )}
     </div>
   );
 }
@@ -164,10 +185,14 @@ export function PageHeader({
         <h1 className="font-head text-2xl font-bold tracking-tight sm:text-3xl">
           {title}
         </h1>
+
         {subtitle && (
-          <p className="mt-1 text-sm text-mut">{subtitle}</p>
+          <p className="mt-1 text-sm text-mut">
+            {subtitle}
+          </p>
         )}
       </div>
+
       {action}
     </div>
   );
@@ -180,7 +205,11 @@ export function Badge({
   tone: "ok" | "warn" | "danger";
   children: ReactNode;
 }) {
-  return <span className={`badge badge-${tone}`}>{children}</span>;
+  return (
+    <span className={`badge badge-${tone}`}>
+      {children}
+    </span>
+  );
 }
 
 export type Column<T> = {
@@ -206,7 +235,9 @@ export function DataTable<T>({
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column.key}>{column.header}</th>
+              <th key={column.key}>
+                {column.header}
+              </th>
             ))}
           </tr>
         </thead>
@@ -215,7 +246,9 @@ export function DataTable<T>({
           {rows.map((row) => (
             <tr key={rowKey(row)}>
               {columns.map((column) => (
-                <td key={column.key}>{column.render(row)}</td>
+                <td key={column.key}>
+                  {column.render(row)}
+                </td>
               ))}
             </tr>
           ))}
@@ -234,19 +267,28 @@ export function DataTable<T>({
 export function BarChart({
   data,
 }: {
-  data: { label: string; value: number }[];
+  data: {
+    label: string;
+    value: number;
+  }[];
 }) {
-  const max = Math.max(...data.map((item) => item.value), 1);
+  const max = Math.max(
+    ...data.map((item) => item.value),
+    1
+  );
 
-  // Time axis always runs left -> right, even in the Arabic UI
   return (
     <div className="chart-wrap" dir="ltr">
       <div className="chart-grid" />
 
       <div className="relative z-10 flex h-64 items-end gap-3 px-5 pb-5 pt-8 sm:gap-5">
         {data.map((item) => {
-          const isTop = item.value === max && item.value > 0;
-          const isEmpty = item.value === 0;
+          const isTop =
+            item.value === max &&
+            item.value > 0;
+
+          const isEmpty =
+            item.value === 0;
 
           return (
             <div
@@ -258,24 +300,39 @@ export function BarChart({
                   isEmpty ? "text-mut" : ""
                 }`}
               >
-                {item.value.toLocaleString("en-US")}
+                {item.value.toLocaleString(
+                  "en-US"
+                )}
               </span>
 
               <div className="flex min-h-0 w-full flex-1 items-end justify-center">
                 <div
-                  className={`bar ${isTop ? "bar-top" : ""} ${
-                    isEmpty ? "bar-empty" : ""
+                  className={`bar ${
+                    isTop ? "bar-top" : ""
+                  } ${
+                    isEmpty
+                      ? "bar-empty"
+                      : ""
                   }`}
                   style={{
                     height: isEmpty
                       ? "30%"
-                      : `${Math.max((item.value / max) * 100, 12)}%`,
+                      : `${Math.max(
+                          (item.value /
+                            max) *
+                            100,
+                          12
+                        )}%`,
                   }}
-                  title={String(item.value)}
+                  title={String(
+                    item.value
+                  )}
                 />
               </div>
 
-              <span className="text-xs text-mut">{item.label}</span>
+              <span className="text-xs text-mut">
+                {item.label}
+              </span>
             </div>
           );
         })}
@@ -295,17 +352,28 @@ export function Donut({
   const stroke = 16;
   const r = (size - stroke) / 2;
   const circ = 2 * Math.PI * r;
-  const pct = Math.min(Math.max(value, 0), 100);
+  const pct = Math.min(
+    Math.max(value, 0),
+    100
+  );
 
   return (
-    <div className="relative mx-auto" style={{ width: size, height: size }}>
+    <div
+      className="relative mx-auto"
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
       <svg
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         role="img"
         aria-label={`${label} ${pct}%`}
-        style={{ transform: "rotate(-90deg)" }}
+        style={{
+          transform: "rotate(-90deg)",
+        }}
       >
         <circle
           cx={size / 2}
@@ -315,6 +383,7 @@ export function Donut({
           stroke="var(--teal-soft)"
           strokeWidth={stroke}
         />
+
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -323,7 +392,9 @@ export function Donut({
           stroke="var(--teal)"
           strokeWidth={stroke}
           strokeLinecap="round"
-          strokeDasharray={`${(pct / 100) * circ} ${circ}`}
+          strokeDasharray={`${
+            (pct / 100) * circ
+          } ${circ}`}
         />
       </svg>
 
@@ -332,7 +403,10 @@ export function Donut({
           <p className="font-head text-2xl font-bold leading-none">
             {pct}%
           </p>
-          <p className="mt-1.5 text-xs text-mut">{label}</p>
+
+          <p className="mt-1.5 text-xs text-mut">
+            {label}
+          </p>
         </div>
       </div>
     </div>

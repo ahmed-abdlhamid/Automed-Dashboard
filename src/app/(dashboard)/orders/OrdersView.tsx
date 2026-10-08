@@ -1,6 +1,10 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import {
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { useI18n } from "@/components/Providers";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import {
@@ -29,7 +33,11 @@ function formatDate(date: string): string {
   return date;
 }
 
-function Ltr({ children }: { children: ReactNode }) {
+function Ltr({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <bdi dir="ltr" className="inline-block">
       {children}
@@ -44,15 +52,21 @@ export default function OrdersView({
 }) {
   const { t } = useI18n();
 
-  const [filter, setFilter] = useState<Filter>("all");
-  const [query, setQuery] = useState("");
+  const [filter, setFilter] =
+    useState<Filter>("all");
+
+  const [query, setQuery] =
+    useState("");
 
   const rows = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = query
+      .trim()
+      .toLowerCase();
 
     return orders.filter((order) => {
       const matchesFilter =
-        filter === "all" || order.status === filter;
+        filter === "all" ||
+        order.status === filter;
 
       const searchableText = [
         order.id,
@@ -69,10 +83,30 @@ export default function OrdersView({
 
       return (
         matchesFilter &&
-        (!q || searchableText.includes(q))
+        (!q ||
+          searchableText.includes(q))
       );
     });
   }, [orders, filter, query]);
+
+  const counts = useMemo(
+    () => ({
+      all: orders.length,
+      paid: orders.filter(
+        (order) =>
+          order.status === "paid"
+      ).length,
+      pending: orders.filter(
+        (order) =>
+          order.status === "pending"
+      ).length,
+      failed: orders.filter(
+        (order) =>
+          order.status === "failed"
+      ).length,
+    }),
+    [orders]
+  );
 
   const filters: {
     id: Filter;
@@ -80,49 +114,77 @@ export default function OrdersView({
   }[] = [
     {
       id: "all",
-      label: t({ ar: "الكل", en: "All" }),
+      label: t({
+        ar: "الكل",
+        en: "All",
+      }),
     },
-    ...(Object.keys(statusMeta) as OrderStatus[]).map(
-      (status) => ({
-        id: status,
-        label: t(statusMeta[status].label),
-      })
-    ),
+    ...(
+      Object.keys(
+        statusMeta
+      ) as OrderStatus[]
+    ).map((status) => ({
+      id: status,
+      label: t(
+        statusMeta[status].label
+      ),
+    })),
   ];
 
-  const getOrderTypeLabel = (type: string) => {
-    const normalized = type.trim().toLowerCase();
+  const getOrderTypeLabel = (
+    type: string
+  ) => {
+    const normalized =
+      type.trim().toLowerCase();
 
     if (
       normalized === "delivery" ||
       normalized === "deliver"
     ) {
-      return t({ ar: "توصيل", en: "Delivery" });
+      return t({
+        ar: "توصيل",
+        en: "Delivery",
+      });
     }
 
     if (
       normalized === "pickup" ||
       normalized === "pick up"
     ) {
-      return t({ ar: "استلام", en: "Pickup" });
+      return t({
+        ar: "استلام",
+        en: "Pickup",
+      });
     }
 
     return type;
   };
 
-  const getPaymentMethodLabel = (method: string) => {
-    const normalized = method.trim().toLowerCase();
+  const getPaymentMethodLabel = (
+    method: string
+  ) => {
+    const normalized =
+      method.trim().toLowerCase();
 
     if (normalized === "cash") {
-      return t({ ar: "كاش", en: "Cash" });
+      return t({
+        ar: "كاش",
+        en: "Cash",
+      });
     }
 
     if (normalized === "card") {
-      return t({ ar: "بطاقة", en: "Card" });
+      return t({
+        ar: "بطاقة",
+        en: "Card",
+      });
     }
 
     if (normalized === "online") {
-      return t({ ar: "دفع إلكتروني", en: "Online" });
+      return t({
+        ar: "دفع إلكتروني",
+        en: "Online",
+      });
     }
 
     return method;
@@ -131,161 +193,414 @@ export default function OrdersView({
   const columns: Column<Order>[] = [
     {
       key: "id",
-      header: t({ ar: "رقم الطلب", en: "Order" }),
+      header: t({
+        ar: "رقم الطلب",
+        en: "Order",
+      }),
       render: (order) => (
-        <b className="font-head text-sm">
-          <Ltr>#{order.id}</Ltr>
-        </b>
+        <div className="orders-id-cell">
+          <b className="font-head text-sm">
+            <Ltr>
+              #{order.id}
+            </Ltr>
+          </b>
+
+          <span>
+            {getOrderTypeLabel(
+              order.orderType
+            )}
+          </span>
+        </div>
       ),
     },
+
     {
       key: "customer",
-      header: t({ ar: "العميل", en: "Customer" }),
+      header: t({
+        ar: "العميل",
+        en: "Customer",
+      }),
       render: (order) => (
-        <span className="font-medium">
-          <bdi>{order.customer}</bdi>
-        </span>
+        <div className="orders-customer-cell">
+          <span className="orders-avatar">
+            {order.customer
+              ?.charAt(0)
+              .toUpperCase() || "?"}
+          </span>
+
+          <span className="font-medium">
+            <bdi>
+              {order.customer}
+            </bdi>
+          </span>
+        </div>
       ),
     },
+
     {
       key: "phone",
-      header: t({ ar: "رقم الهاتف", en: "Phone" }),
-      render: (order) => <Ltr>{order.phoneNumber || "—"}</Ltr>,
-    },
-    {
-      key: "chatId",
-      header: t({ ar: "رقم المحادثة", en: "Chat ID" }),
+      header: t({
+        ar: "رقم الهاتف",
+        en: "Phone",
+      }),
       render: (order) => (
-        <span className="text-mut">
-          <Ltr>{order.chatId || "—"}</Ltr>
-        </span>
-      ),
-    },
-    {
-      key: "orderType",
-      header: t({ ar: "نوع الطلب", en: "Order type" }),
-      render: (order) => getOrderTypeLabel(order.orderType),
-    },
-    {
-      key: "date",
-      header: t({ ar: "التاريخ والوقت", en: "Date & time" }),
-      render: (order) => (
-        <div>
-          <p className="font-medium">
-            <Ltr>{formatDate(order.date)}</Ltr>
-          </p>
-          <p className="mt-0.5 text-xs text-mut">
-            <Ltr>{order.time}</Ltr>
-          </p>
-        </div>
-      ),
-    },
-    {
-      key: "items",
-      header: t({ ar: "التفاصيل", en: "Details" }),
-      render: (order) => (
-        <div className="min-w-[200px] max-w-[300px] whitespace-normal">
-          <p title={order.items} className="line-clamp-2 leading-5">
-            {order.items}
-          </p>
-          {order.deliveryAddress && (
-            <p
-              title={order.deliveryAddress}
-              className="mt-1 line-clamp-1 text-xs text-mut"
-            >
-              {order.deliveryAddress}
-            </p>
-          )}
-        </div>
-      ),
-    },
-    {
-      key: "amount",
-      header: t({ ar: "الإجمالي", en: "Total" }),
-      render: (order) => (
-        <span className="font-semibold">
+        <span className="orders-muted-value">
           <Ltr>
-            {order.amount.toLocaleString("en-US")} {cfg.project.currency}
+            {order.phoneNumber ||
+              "—"}
           </Ltr>
         </span>
       ),
     },
+
+    {
+      key: "date",
+      header: t({
+        ar: "التاريخ",
+        en: "Date & time",
+      }),
+      render: (order) => (
+        <div className="orders-date-cell">
+          <p>
+            <Ltr>
+              {formatDate(
+                order.date
+              )}
+            </Ltr>
+          </p>
+
+          <span>
+            <Ltr>
+              {order.time}
+            </Ltr>
+          </span>
+        </div>
+      ),
+    },
+
+    {
+      key: "items",
+      header: t({
+        ar: "التفاصيل",
+        en: "Details",
+      }),
+      render: (order) => (
+        <div className="orders-details-cell">
+          <p
+            title={order.items}
+            className="line-clamp-2"
+          >
+            {order.items}
+          </p>
+
+          {order.deliveryAddress && (
+            <span
+              title={
+                order.deliveryAddress
+              }
+              className="line-clamp-1"
+            >
+              {order.deliveryAddress}
+            </span>
+          )}
+        </div>
+      ),
+    },
+
+    {
+      key: "amount",
+      header: t({
+        ar: "الإجمالي",
+        en: "Total",
+      }),
+      render: (order) => (
+        <span className="orders-amount">
+          <Ltr>
+            {order.amount.toLocaleString(
+              "en-US"
+            )}{" "}
+            {cfg.project.currency}
+          </Ltr>
+        </span>
+      ),
+    },
+
     {
       key: "paymentMethod",
-      header: t({ ar: "طريقة الدفع", en: "Payment" }),
-      render: (order) => getPaymentMethodLabel(order.paymentMethod),
+      header: t({
+        ar: "طريقة الدفع",
+        en: "Payment",
+      }),
+      render: (order) => (
+        <span className="orders-payment">
+          {getPaymentMethodLabel(
+            order.paymentMethod
+          )}
+        </span>
+      ),
     },
+
     {
       key: "status",
-      header: t({ ar: "الحالة", en: "Status" }),
+      header: t({
+        ar: "الحالة",
+        en: "Status",
+      }),
       render: (order) => (
-        <Badge tone={statusMeta[order.status].tone}>
-          {t(statusMeta[order.status].label)}
+        <Badge
+          tone={
+            statusMeta[
+              order.status
+            ].tone
+          }
+        >
+          {t(
+            statusMeta[
+              order.status
+            ].label
+          )}
         </Badge>
       ),
     },
   ];
 
   return (
-    <>
+    <div className="orders-page">
       <PageHeader
-        title={t({ ar: "الطلبات", en: "Orders" })}
+        title={t({
+          ar: "الطلبات",
+          en: "Orders",
+        })}
         subtitle={t({
           ar: "كل تفاصيل الطلبات وحالة الدفع في مكان واحد",
           en: "All order details and payment status in one place",
         })}
       />
 
-      <Card>
-        <div className="flex flex-wrap items-center gap-3 p-6 pb-4">
-          <div className="relative min-w-[240px] flex-1">
-            <span className="pointer-events-none absolute inset-y-0 start-3 grid place-items-center text-mut">
-              <Icon name="search" size={17} />
+      {/* Summary */}
+      <section className="orders-summary">
+        <div className="orders-summary-main">
+          <div className="orders-summary-icon">
+            <Icon
+              name="orders"
+              size={19}
+            />
+          </div>
+
+          <div>
+            <span>
+              {t({
+                ar: "إجمالي الطلبات",
+                en: "Total orders",
+              })}
             </span>
+
+            <strong>
+              {orders.length.toLocaleString(
+                "en-US"
+              )}
+            </strong>
+          </div>
+        </div>
+
+        <div className="orders-summary-stats">
+          <button
+            type="button"
+            className={
+              filter === "paid"
+                ? "orders-mini-stat active"
+                : "orders-mini-stat"
+            }
+            onClick={() =>
+              setFilter("paid")
+            }
+          >
+            <span className="orders-stat-dot orders-stat-dot-ok" />
+
+            <span>
+              {t({
+                ar: "مدفوع",
+                en: "Paid",
+              })}
+            </span>
+
+            <strong>
+              {counts.paid}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            className={
+              filter === "pending"
+                ? "orders-mini-stat active"
+                : "orders-mini-stat"
+            }
+            onClick={() =>
+              setFilter("pending")
+            }
+          >
+            <span className="orders-stat-dot orders-stat-dot-warn" />
+
+            <span>
+              {t({
+                ar: "معلق",
+                en: "Pending",
+              })}
+            </span>
+
+            <strong>
+              {counts.pending}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            className={
+              filter === "failed"
+                ? "orders-mini-stat active"
+                : "orders-mini-stat"
+            }
+            onClick={() =>
+              setFilter("failed")
+            }
+          >
+            <span className="orders-stat-dot orders-stat-dot-danger" />
+
+            <span>
+              {t({
+                ar: "فشل",
+                en: "Failed",
+              })}
+            </span>
+
+            <strong>
+              {counts.failed}
+            </strong>
+          </button>
+        </div>
+      </section>
+
+      {/* Orders */}
+      <Card>
+        <div className="orders-toolbar">
+          <div className="orders-search">
+            <span className="orders-search-icon">
+              <Icon
+                name="search"
+                size={17}
+              />
+            </span>
+
             <input
-              className="field ps-10"
+              className="field orders-search-input"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) =>
+                setQuery(
+                  event.target.value
+                )
+              }
               placeholder={t({
                 ar: "ابحث بالطلب أو العميل أو الهاتف أو الأصناف",
                 en: "Search order, customer, phone or items",
               })}
             />
+
+            {query && (
+              <button
+                type="button"
+                className="orders-search-clear"
+                onClick={() =>
+                  setQuery("")
+                }
+                aria-label={t({
+                  ar: "مسح البحث",
+                  en: "Clear search",
+                })}
+              >
+                ×
+              </button>
+            )}
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {filters.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className="btn"
-                aria-pressed={filter === item.id}
-                onClick={() => setFilter(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
+          <div className="orders-filters">
+            {filters.map(
+              (item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={
+                    filter === item.id
+                      ? "orders-filter active"
+                      : "orders-filter"
+                  }
+                  aria-pressed={
+                    filter ===
+                    item.id
+                  }
+                  onClick={() =>
+                    setFilter(
+                      item.id
+                    )
+                  }
+                >
+                  {item.label}
+
+                  {item.id !==
+                    "all" && (
+                    <span>
+                      {
+                        counts[
+                          item.id
+                        ]
+                      }
+                    </span>
+                  )}
+                </button>
+              )
+            )}
           </div>
         </div>
 
-        <div className="border-t border-line px-6 py-3">
-          <p className="text-xs text-mut">
+        <div className="orders-results-bar">
+          <span>
             {t({
               ar: `عرض ${rows.length} من ${orders.length} طلب`,
               en: `Showing ${rows.length} of ${orders.length} orders`,
             })}
-          </p>
+          </span>
+
+          {(query ||
+            filter !== "all") && (
+            <button
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setFilter("all");
+              }}
+            >
+              {t({
+                ar: "مسح الفلاتر",
+                en: "Clear filters",
+              })}
+            </button>
+          )}
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="orders-table-wrap">
           <DataTable
             columns={columns}
             rows={rows}
-            rowKey={(order) => order.id}
-            empty={t({ ar: "لا توجد نتائج", en: "No results" })}
+            rowKey={(order) =>
+              order.id
+            }
+            empty={t({
+              ar: "لا توجد نتائج",
+              en: "No results",
+            })}
           />
         </div>
       </Card>
-    </>
+    </div>
   );
 }

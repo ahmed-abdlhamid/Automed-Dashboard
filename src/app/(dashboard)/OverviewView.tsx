@@ -34,7 +34,6 @@ export default function OverviewView({
   role: ProjectRole | null;
   userName?: string;
 }) {
-
   const { t, lang } = useI18n();
   const { stats } = data;
 
@@ -50,13 +49,24 @@ export default function OverviewView({
 
   const greeting =
     hour >= 5 && hour < 12
-      ? t({ ar: "صباح الخير", en: "Good morning" })
+      ? t({
+          ar: "صباح الخير",
+          en: "Good morning",
+        })
       : hour >= 12 && hour < 18
-      ? t({ ar: "نهارك سعيد", en: "Good afternoon" })
-      : t({ ar: "مساء الخير", en: "Good evening" });
+      ? t({
+          ar: "نهارك سعيد",
+          en: "Good afternoon",
+        })
+      : t({
+          ar: "مساء الخير",
+          en: "Good evening",
+        });
 
   const today = new Intl.DateTimeFormat(
-    lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB",
+    lang === "ar"
+      ? "ar-EG-u-nu-latn"
+      : "en-GB",
     {
       weekday: "long",
       day: "numeric",
@@ -70,14 +80,14 @@ export default function OverviewView({
     0
   );
 
-const greetingName = isAdmin
-  ? t(adminIdentity.name)
-  : userName ||
-    project?.name ||
-    t({
-      ar: "عميلنا",
-      en: "there",
-    });
+  const greetingName = isAdmin
+    ? t(adminIdentity.name)
+    : userName ||
+      project?.name ||
+      t({
+        ar: "عميلنا",
+        en: "there",
+      });
 
   const columns: Column<Order>[] = [
     {
@@ -87,10 +97,11 @@ const greetingName = isAdmin
         en: "Order",
       }),
       render: (order) => (
-        <div>
+        <div className="overview-order-cell">
           <b className="font-head text-xs">
             #{order.id}
           </b>
+
           <p className="mt-0.5 text-xs text-mut">
             {order.customer}
           </p>
@@ -114,23 +125,35 @@ const greetingName = isAdmin
           normalized === "delivery" ||
           normalized === "deliver"
         ) {
-          return t({
-            ar: "توصيل",
-            en: "Delivery",
-          });
+          return (
+            <span className="overview-table-type">
+              {t({
+                ar: "توصيل",
+                en: "Delivery",
+              })}
+            </span>
+          );
         }
 
         if (
           normalized === "pickup" ||
           normalized === "pick up"
         ) {
-          return t({
-            ar: "استلام",
-            en: "Pickup",
-          });
+          return (
+            <span className="overview-table-type">
+              {t({
+                ar: "استلام",
+                en: "Pickup",
+              })}
+            </span>
+          );
         }
 
-        return order.orderType;
+        return (
+          <span className="overview-table-type">
+            {order.orderType}
+          </span>
+        );
       },
     },
 
@@ -203,91 +226,163 @@ const greetingName = isAdmin
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
+    <div className="overview-page">
+      {/* =====================================================
+          HEADER
+          ===================================================== */}
+
+      <section className="overview-header">
+        <div className="overview-heading">
           {project && (
             <span className="kicker-chip">
               <span className="project-trigger-dot" />
+
               <bdi>{project.name}</bdi>
             </span>
           )}
 
-          <h1
-            className="mt-3 font-head text-2xl font-bold tracking-tight sm:text-3xl"
-            suppressHydrationWarning
-          >
-            {greeting}، <bdi>{greetingName}</bdi>
-          </h1>
+          <div className="overview-title-row">
+            <div>
+              <h1
+                className="overview-title"
+                suppressHydrationWarning
+              >
+                {greeting}،{" "}
+                <bdi>{greetingName}</bdi>
+              </h1>
 
-          <p className="mt-1.5 text-sm text-mut">
-            {isAdmin
-              ? t({
-                  ar: "دي نظرة سريعة على أداء المشروع والعمليات الحالية.",
-                  en: "A quick view of your project performance and current operations.",
-                })
-              : t({
-                  ar: "دي نظرة سريعة على أداء نظامك والعمليات الحالية.",
-                  en: "A quick view of your system performance and current operations.",
-                })}
-          </p>
+              <p className="overview-description">
+                {isAdmin
+                  ? t({
+                      ar: "دي نظرة سريعة على أداء المشروع والعمليات الحالية.",
+                      en: "A quick view of your project performance and current operations.",
+                    })
+                  : t({
+                      ar: "دي نظرة سريعة على أداء نظامك والعمليات الحالية.",
+                      en: "A quick view of your system performance and current operations.",
+                    })}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          <span className="date-chip" suppressHydrationWarning>
-            <Icon name="calendar" size={16} />
+        <div className="overview-actions">
+          <span
+            className="date-chip"
+            suppressHydrationWarning
+          >
+            <Icon
+              name="calendar"
+              size={15}
+            />
+
             {today}
           </span>
 
-          <Link href="/orders" className="btn btn-pri">
-            {t({ ar: "كل الطلبات", en: "All orders" })}
+          <Link
+            href="/orders"
+            className="btn btn-pri"
+          >
+            <Icon
+              name="orders"
+              size={15}
+            />
+
+            {t({
+              ar: "كل الطلبات",
+              en: "All orders",
+            })}
           </Link>
 
-          <Link href="/analytics" className="btn">
-            {t({ ar: "التحليلات", en: "Analytics" })}
+          <Link
+            href="/analytics"
+            className="btn"
+          >
+            <Icon
+              name="pulse"
+              size={15}
+            />
+
+            {t({
+              ar: "التحليلات",
+              en: "Analytics",
+            })}
           </Link>
         </div>
-      </div>
+      </section>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {/* =====================================================
+          KPI CARDS
+          ===================================================== */}
+
+      <section className="overview-kpis">
         <StatCard
           featured
           icon="wallet"
-          label={t({ ar: "إجمالي المبيعات", en: "Revenue" })}
+          label={t({
+            ar: "إجمالي المبيعات",
+            en: "Revenue",
+          })}
           value={fmt(stats.revenue)}
           unit={cfg.project.currency}
           href="/analytics"
           footnote={t({
-            ar: `آخر 7 أيام: ${fmt(weeklyTotal)} ${cfg.project.currency}`,
-            en: `Last 7 days: ${fmt(weeklyTotal)} ${cfg.project.currency}`,
+            ar: `آخر 7 أيام: ${fmt(
+              weeklyTotal
+            )} ${cfg.project.currency}`,
+            en: `Last 7 days: ${fmt(
+              weeklyTotal
+            )} ${cfg.project.currency}`,
           })}
         />
 
         <StatCard
           icon="orders"
-          label={t({ ar: "إجمالي الطلبات", en: "Total orders" })}
+          label={t({
+            ar: "إجمالي الطلبات",
+            en: "Total orders",
+          })}
           value={fmt(stats.orders)}
-          unit={t({ ar: "طلب", en: "orders" })}
+          unit={t({
+            ar: "طلب",
+            en: "orders",
+          })}
           href="/orders"
         />
 
         <StatCard
           icon="users"
-          label={t({ ar: "العملاء", en: "Customers" })}
+          label={t({
+            ar: "العملاء",
+            en: "Customers",
+          })}
           value={fmt(stats.customers)}
-          unit={t({ ar: "عميل", en: "customers" })}
+          unit={t({
+            ar: "عميل",
+            en: "customers",
+          })}
         />
 
         <StatCard
           icon="pulse"
-          label={t({ ar: "نسبة الدفع", en: "Paid rate" })}
+          label={t({
+            ar: "نسبة الدفع",
+            en: "Paid rate",
+          })}
           value={`${stats.paidRate}%`}
-          unit={t({ ar: "من الطلبات", en: "of orders" })}
+          unit={t({
+            ar: "من الطلبات",
+            en: "of orders",
+          })}
           href="/analytics"
         />
-      </div>
+      </section>
 
-      <div className="grid gap-4">
+      {/* =====================================================
+          PERFORMANCE
+          ===================================================== */}
+
+      <section className="overview-section-grid">
         <Card
           title={t({
             ar: "الأداء خلال آخر 7 أيام",
@@ -298,52 +393,84 @@ const greetingName = isAdmin
             en: "Paid revenue",
           })}
         >
-          <BarChart
-            data={data.weekly.map(
-              (item) => ({
-                label: t(item.label),
-                value: item.value,
-              })
-            )}
-          />
-        </Card>
-      </div>
+          <div className="overview-chart-header">
+            <div>
+              <span className="overview-chart-total">
+                {fmt(weeklyTotal)}
+              </span>
 
-      <Card
-        title={t({
-          ar: "أحدث العمليات",
-          en: "Recent activity",
-        })}
-        subtitle={t({
-          ar: "آخر العمليات المسجلة",
-          en: "Latest recorded operations",
-        })}
-        action={
-          <Link
-            href="/orders"
-            className="btn btn-pri"
-          >
-            {t({
-              ar: "عرض الكل",
-              en: "View all",
-            })}
-          </Link>
-        }
-      >
-        <div className="pt-3">
-          <DataTable
-            columns={columns}
-            rows={data.recent}
-            rowKey={(order) =>
-              order.id
-            }
-            empty={t({
-              ar: "لا توجد عمليات",
-              en: "No activity yet",
-            })}
-          />
-        </div>
-      </Card>
+              <span className="overview-chart-currency">
+                {cfg.project.currency}
+              </span>
+            </div>
+
+            <span className="overview-chart-period">
+              {t({
+                ar: "آخر 7 أيام",
+                en: "Last 7 days",
+              })}
+            </span>
+          </div>
+
+          <div className="overview-chart">
+            <BarChart
+              data={data.weekly.map(
+                (item) => ({
+                  label: t(item.label),
+                  value: item.value,
+                })
+              )}
+            />
+          </div>
+        </Card>
+      </section>
+
+      {/* =====================================================
+          RECENT ACTIVITY
+          ===================================================== */}
+
+      <section className="overview-section">
+        <Card
+          title={t({
+            ar: "أحدث العمليات",
+            en: "Recent activity",
+          })}
+          subtitle={t({
+            ar: "آخر العمليات المسجلة",
+            en: "Latest recorded operations",
+          })}
+          action={
+            <Link
+              href="/orders"
+              className="btn"
+            >
+              {t({
+                ar: "عرض الكل",
+                en: "View all",
+              })}
+
+              <Icon
+                name="chevronLeft"
+                size={14}
+              />
+            </Link>
+          }
+        >
+          <div className="overview-table-wrap">
+            <DataTable
+              columns={columns}
+              rows={data.recent}
+              rowKey={(order) =>
+                order.id
+              }
+              empty={t({
+                ar: "لا توجد عمليات",
+                en: "No activity yet",
+              })}
+            />
+          </div>
+        </Card>
+      </section>
     </div>
   );
 }

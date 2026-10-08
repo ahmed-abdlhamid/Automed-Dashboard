@@ -1,13 +1,13 @@
 "use client";
 
 import { useI18n } from "@/components/Providers";
-import type {
-  Analytics,
-} from "@/lib/data";
+import type { Analytics } from "@/lib/data";
 import {
   Card,
   Donut,
+  Icon,
   PageHeader,
+  StatCard,
 } from "@/components/ui";
 import { AnalyticsChart } from "./AnalyticsChart";
 
@@ -18,118 +18,170 @@ export default function AnalyticsView({
 }) {
   const { t } = useI18n();
 
-  const currency =
-    "EGP";
+  const currency = "EGP";
 
-  const formatMoney = (
-    value: number
-  ) =>
-    `${value.toLocaleString(
-      "en-US"
-    )} ${currency}`;
+  const formatMoney = (value: number) =>
+    `${value.toLocaleString("en-US")} ${currency}`;
 
-  const metrics = [
-    {
-      label: {
-        ar: "الإيرادات المدفوعة",
-        en: "Paid revenue",
-      },
-      value:
-        formatMoney(
-          data.stats.revenue
-        ),
-    },
+  const statusItems = data.statusBreakdown.map((item) => {
+    const isPaid = item.status === "paid";
+    const isPending = item.status === "pending";
 
-    {
-      label: {
-        ar: "إجمالي الطلبات",
-        en: "Total orders",
-      },
-      value:
-        data.stats.orders.toLocaleString(
-          "en-US"
-        ),
-    },
-
-    {
-      label: {
-        ar: "العملاء",
-        en: "Customers",
-      },
-      value:
-        data.stats.customers.toLocaleString(
-          "en-US"
-        ),
-    },
-
-    {
-      label: {
-        ar: "متوسط الطلب",
-        en: "Average order",
-      },
-      value:
-        formatMoney(
-          data.stats.averageOrderValue
-        ),
-    },
-  ];
+    return {
+      ...item,
+      label: isPaid
+        ? {
+            ar: "مدفوع",
+            en: "Paid",
+          }
+        : isPending
+          ? {
+              ar: "قيد الانتظار",
+              en: "Pending",
+            }
+          : {
+              ar: "فاشل",
+              en: "Failed",
+            },
+      icon: isPaid
+        ? ("check" as const)
+        : isPending
+          ? ("activity" as const)
+          : ("close" as const),
+      tone: isPaid
+        ? "paid"
+        : isPending
+          ? "pending"
+          : "failed",
+    };
+  });
 
   return (
-    <>
+    <div className="analytics-page">
       <PageHeader
         title={t({
           ar: "التحليلات",
           en: "Analytics",
         })}
         subtitle={t({
-          ar: "رؤى الأداء والإيرادات للمشروع الحالي",
-          en: "Performance and revenue insights for the current project",
+          ar: "صورة أوضح لأداء المشروع والإيرادات وحالة الطلبات",
+          en: "A clearer view of project performance, revenue and order status",
         })}
       />
 
-      {/* Main metrics */}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {metrics.map(
-          (metric) => (
-            <Card
-              key={
-                metric.label.en
-              }
-            >
-              <div className="p-5">
-                <p className="text-xs text-mut">
-                  {t(
-                    metric.label
-                  )}
-                </p>
+      {/* KPI row */}
+      <section className="analytics-kpis">
+        <StatCard
+          icon="wallet"
+          label={t({
+            ar: "الإيرادات المدفوعة",
+            en: "Paid revenue",
+          })}
+          value={data.stats.revenue.toLocaleString("en-US")}
+          unit={currency}
+          footnote={t({
+            ar: "إجمالي الإيرادات من الطلبات المدفوعة",
+            en: "Revenue from paid orders",
+          })}
+          featured
+        />
 
-                <p className="mt-2 font-head text-2xl font-bold">
-                  {metric.value}
-                </p>
-              </div>
-            </Card>
-          )
-        )}
-      </div>
+        <StatCard
+          icon="orders"
+          label={t({
+            ar: "إجمالي الطلبات",
+            en: "Total orders",
+          })}
+          value={data.stats.orders.toLocaleString("en-US")}
+          footnote={t({
+            ar: "كل الطلبات المسجلة للمشروع",
+            en: "All recorded orders for this project",
+          })}
+        />
 
-      {/* Revenue + payment rate */}
-      <div className="mt-4 grid gap-4 xl:grid-cols-[1.5fr_1fr]">
+        <StatCard
+          icon="customers"
+          label={t({
+            ar: "العملاء",
+            en: "Customers",
+          })}
+          value={data.stats.customers.toLocaleString("en-US")}
+          footnote={t({
+            ar: "عدد العملاء الفريدين",
+            en: "Unique customers",
+          })}
+        />
+
+        <StatCard
+          icon="analytics"
+          label={t({
+            ar: "متوسط قيمة الطلب",
+            en: "Average order value",
+          })}
+          value={data.stats.averageOrderValue.toLocaleString("en-US")}
+          unit={currency}
+          footnote={t({
+            ar: "متوسط قيمة جميع الطلبات",
+            en: "Average value across all orders",
+          })}
+        />
+      </section>
+
+      {/* Main analytics */}
+      <section className="analytics-main-grid">
         <Card
+          className="analytics-revenue-card"
           title={t({
-            ar: "اتجاه الإيرادات",
-            en: "Revenue trend",
+            ar: "الإيرادات خلال الأسبوع",
+            en: "Weekly revenue",
           })}
           subtitle={t({
             ar: "الإيرادات المدفوعة خلال آخر 7 أيام",
             en: "Paid revenue over the last 7 days",
           })}
+          action={
+            <span className="analytics-card-badge">
+              <span className="analytics-live-dot" />
+              {t({
+                ar: "آخر 7 أيام",
+                en: "Last 7 days",
+              })}
+            </span>
+          }
         >
-          <AnalyticsChart
-            data={data.weekly}
-          />
+          <div className="analytics-chart-summary">
+            <div>
+              <p className="analytics-summary-label">
+                {t({
+                  ar: "إجمالي الفترة",
+                  en: "Period total",
+                })}
+              </p>
+
+              <p className="analytics-summary-value">
+                {formatMoney(data.weekly.reduce(
+                  (sum, item) => sum + item.value,
+                  0
+                ))}
+              </p>
+            </div>
+
+            <div className="analytics-summary-note">
+              <Icon name="wallet" size={16} />
+              <span>
+                {t({
+                  ar: "الإيرادات المدفوعة فقط",
+                  en: "Paid revenue only",
+                })}
+              </span>
+            </div>
+          </div>
+
+          <AnalyticsChart data={data.weekly} />
         </Card>
 
         <Card
+          className="analytics-payment-card"
           title={t({
             ar: "معدل الدفع",
             en: "Payment rate",
@@ -139,22 +191,67 @@ export default function AnalyticsView({
             en: "Percentage of orders that were paid",
           })}
         >
-          <div className="flex min-h-[250px] items-center justify-center p-5">
+          <div className="analytics-donut-area">
             <Donut
-              value={
-                data.stats.paidRate
-              }
+              value={data.stats.paidRate}
               label={t({
                 ar: "نسبة الدفع",
                 en: "Paid rate",
               })}
             />
+
+            <div className="analytics-donut-copy">
+              <div className="analytics-donut-stat">
+                <span className="analytics-status-dot analytics-status-dot-paid" />
+                <div>
+                  <strong>
+                    {data.stats.paidOrders.toLocaleString("en-US")}
+                  </strong>
+                  <span>
+                    {t({
+                      ar: "طلب مدفوع",
+                      en: "paid orders",
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="analytics-donut-stat">
+                <span className="analytics-status-dot analytics-status-dot-pending" />
+                <div>
+                  <strong>
+                    {data.stats.pendingOrders.toLocaleString("en-US")}
+                  </strong>
+                  <span>
+                    {t({
+                      ar: "طلب قيد الانتظار",
+                      en: "pending orders",
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="analytics-donut-stat">
+                <span className="analytics-status-dot analytics-status-dot-failed" />
+                <div>
+                  <strong>
+                    {data.stats.failedOrders.toLocaleString("en-US")}
+                  </strong>
+                  <span>
+                    {t({
+                      ar: "طلب فاشل",
+                      en: "failed orders",
+                    })}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </Card>
-      </div>
+      </section>
 
-      {/* Payment status */}
-      <div className="mt-4">
+      {/* Order status */}
+      <section className="analytics-status-section">
         <Card
           title={t({
             ar: "حالة الطلبات",
@@ -162,157 +259,153 @@ export default function AnalyticsView({
           })}
           subtitle={t({
             ar: "توزيع الطلبات حسب حالة الدفع الحالية",
-            en: "Orders grouped by their current payment status",
+            en: "Distribution of orders by their current payment status",
           })}
         >
-          <div className="grid gap-3 p-5 md:grid-cols-3">
-            {data.statusBreakdown.map(
-              (item) => {
-                const isPaid =
-                  item.status ===
-                  "paid";
+          <div className="analytics-status-grid">
+            {statusItems.map((item) => (
+              <div
+                key={item.status}
+                className={`analytics-status-card analytics-status-${item.tone}`}
+              >
+                <div className="analytics-status-card-top">
+                  <span className="analytics-status-icon">
+                    <Icon name={item.icon} size={18} />
+                  </span>
 
-                const isPending =
-                  item.status ===
-                  "pending";
+                  <span className="analytics-status-percentage">
+                    {item.percentage}%
+                  </span>
+                </div>
 
-                const label =
-                  isPaid
-                    ? {
-                        ar: "مدفوع",
-                        en: "Paid",
-                      }
-                    : isPending
-                      ? {
-                          ar: "قيد الانتظار",
-                          en: "Pending",
-                        }
-                      : {
-                          ar: "فشل",
-                          en: "Failed",
-                        };
+                <div className="analytics-status-card-body">
+                  <p>
+                    {t(item.label)}
+                  </p>
 
-                const icon =
-                  isPaid
-                    ? "check"
-                    : isPending
-                      ? "clock"
-                      : "x";
+                  <strong>
+                    {item.count.toLocaleString("en-US")}
+                  </strong>
+                </div>
 
-                const background =
-                  isPaid
-                    ? "bg-teal-soft"
-                    : isPending
-                      ? "bg-orange-soft"
-                      : "bg-red-soft";
-
-                return (
-                  <div
-                    key={
-                      item.status
-                    }
-                    className={`rounded-2xl ${background} p-4`}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-sm font-semibold">
-                          {t(label)}
-                        </p>
-
-                        <p className="mt-1 text-xs text-mut">
-                          {item.percentage}%
-                        </p>
-                      </div>
-
-                      <span className="font-head text-2xl font-bold">
-                        {item.count.toLocaleString(
-                          "en-US"
-                        )}
-                      </span>
-                    </div>
-
-                    <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--surface)]">
-                      <div
-                        className={`h-full rounded-full ${
-                          isPaid
-                            ? "bg-teal"
-                            : isPending
-                              ? "bg-orange"
-                              : "bg-red-500"
-                        }`}
-                        style={{
-                          width: `${item.percentage}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              }
-            )}
+                <div className="analytics-progress">
+                  <span
+                    style={{
+                      width: `${item.percentage}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </Card>
-      </div>
+      </section>
 
-      {/* Additional insights */}
-      <div className="mt-4">
-        <Card
-          title={t({
-            ar: "ملخص الأداء",
-            en: "Performance summary",
-          })}
-          subtitle={t({
-            ar: "أهم مؤشرات الطلبات الحالية",
-            en: "Key indicators from current orders",
-          })}
-        >
-          <div className="grid gap-3 p-5 sm:grid-cols-3">
-            <div className="rounded-2xl bg-surface-soft p-4">
-              <p className="text-xs text-mut">
+      {/* Performance snapshot */}
+      <section className="analytics-summary-section">
+        <div className="analytics-section-heading">
+          <div>
+            <h2>
+              {t({
+                ar: "ملخص الأداء",
+                en: "Performance snapshot",
+              })}
+            </h2>
+
+            <p>
+              {t({
+                ar: "الأرقام الأساسية التي تستحق المتابعة",
+                en: "The key numbers worth keeping an eye on",
+              })}
+            </p>
+          </div>
+        </div>
+
+        <div className="analytics-insight-grid">
+          <div className="analytics-insight-card">
+            <div className="analytics-insight-icon">
+              <Icon name="check" size={18} />
+            </div>
+
+            <div>
+              <span>
                 {t({
                   ar: "طلبات مدفوعة",
                   en: "Paid orders",
                 })}
-              </p>
+              </span>
 
-              <p className="mt-1 font-head text-2xl font-bold">
-                {data.stats.paidOrders.toLocaleString(
-                  "en-US"
-                )}
-              </p>
+              <strong>
+                {data.stats.paidOrders.toLocaleString("en-US")}
+              </strong>
             </div>
 
-            <div className="rounded-2xl bg-surface-soft p-4">
-              <p className="text-xs text-mut">
+            <small>
+              {data.stats.paidRate}%
+            </small>
+          </div>
+
+          <div className="analytics-insight-card">
+            <div className="analytics-insight-icon analytics-insight-icon-warning">
+              <Icon name="activity" size={18} />
+            </div>
+
+            <div>
+              <span>
                 {t({
                   ar: "طلبات قيد الانتظار",
                   en: "Pending orders",
                 })}
-              </p>
+              </span>
 
-              <p className="mt-1 font-head text-2xl font-bold">
-                {data.stats.pendingOrders.toLocaleString(
-                  "en-US"
-                )}
-              </p>
+              <strong>
+                {data.stats.pendingOrders.toLocaleString("en-US")}
+              </strong>
             </div>
 
-            <div className="rounded-2xl bg-surface-soft p-4">
-              <p className="text-xs text-mut">
+            <small>
+              {data.stats.orders
+                ? Math.round(
+                    (data.stats.pendingOrders /
+                      data.stats.orders) *
+                      100
+                  )
+                : 0}
+              %
+            </small>
+          </div>
+
+          <div className="analytics-insight-card">
+            <div className="analytics-insight-icon analytics-insight-icon-danger">
+              <Icon name="close" size={18} />
+            </div>
+
+            <div>
+              <span>
                 {t({
                   ar: "طلبات فاشلة",
                   en: "Failed orders",
                 })}
-              </p>
+              </span>
 
-              <p className="mt-1 font-head text-2xl font-bold">
-                {data.stats.failedOrders.toLocaleString(
-                  "en-US"
-                )}
-              </p>
+              <strong>
+                {data.stats.failedOrders.toLocaleString("en-US")}
+              </strong>
             </div>
+
+            <small>
+              {data.stats.orders
+                ? Math.round(
+                    (data.stats.failedOrders /
+                      data.stats.orders) *
+                      100
+                  )
+                : 0}
+              %
+            </small>
           </div>
-        </Card>
-      </div>
-    </>
+        </div>
+      </section>
+    </div>
   );
 }

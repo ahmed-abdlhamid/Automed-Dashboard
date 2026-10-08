@@ -3,7 +3,12 @@
 import { useI18n } from "@/components/Providers";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import { statusMeta, type Order } from "@/lib/data";
-import { Badge, Card, Icon, PageHeader } from "@/components/ui";
+import {
+  Badge,
+  Card,
+  Icon,
+  PageHeader,
+} from "@/components/ui";
 
 function formatDate(date: string): string {
   const parts = date.split("-");
@@ -11,6 +16,65 @@ function formatDate(date: string): string {
   return parts.length === 3
     ? `${parts[2]}/${parts[1]}/${parts[0]}`
     : date;
+}
+
+function getOrderTypeLabel(
+  type: string,
+  t: ReturnType<typeof useI18n>["t"]
+) {
+  const normalized = type.trim().toLowerCase();
+
+  if (
+    normalized === "delivery" ||
+    normalized === "deliver"
+  ) {
+    return t({
+      ar: "توصيل",
+      en: "Delivery",
+    });
+  }
+
+  if (
+    normalized === "pickup" ||
+    normalized === "pick up"
+  ) {
+    return t({
+      ar: "استلام",
+      en: "Pickup",
+    });
+  }
+
+  return type;
+}
+
+function getPaymentMethodLabel(
+  method: string,
+  t: ReturnType<typeof useI18n>["t"]
+) {
+  const normalized = method.trim().toLowerCase();
+
+  if (normalized === "cash") {
+    return t({
+      ar: "كاش",
+      en: "Cash",
+    });
+  }
+
+  if (normalized === "card") {
+    return t({
+      ar: "بطاقة",
+      en: "Card",
+    });
+  }
+
+  if (normalized === "online") {
+    return t({
+      ar: "دفع إلكتروني",
+      en: "Online",
+    });
+  }
+
+  return method;
 }
 
 export default function ActivityView({
@@ -21,203 +85,316 @@ export default function ActivityView({
   const { t } = useI18n();
 
   return (
-    <>
+    <div className="activity-page">
       <PageHeader
         title={t({
           ar: "النشاط",
           en: "Activity",
         })}
         subtitle={t({
-          ar: "آخر الأحداث في المشروع الحالي",
-          en: "Recent events from the current project",
+          ar: "آخر الأحداث والطلبات في المشروع الحالي",
+          en: "Recent events and orders from the current project",
         })}
       />
 
-      <Card>
-        <div className="p-5 sm:p-6">
+      <div className="activity-layout">
+        <Card
+          className="activity-feed-card"
+          title={t({
+            ar: "آخر النشاط",
+            en: "Recent activity",
+          })}
+          subtitle={t({
+            ar: "آخر 10 أحداث مسجلة",
+            en: "Latest 10 recorded events",
+          })}
+          action={
+            <span className="activity-live-badge">
+              <span className="activity-live-dot" />
+              {t({
+                ar: "مباشر",
+                en: "Live",
+              })}
+            </span>
+          }
+        >
           {orders.length > 0 ? (
-            <div className="relative">
-              {/* Timeline line */}
-              <div
-                className="
-                  absolute
-                  bottom-6
-                  right-[17px]
-                  top-6
-                  w-px
-                  bg-[var(--border)]
-                  sm:right-[19px]
-                "
-              />
+            <div className="activity-feed">
+              <div className="activity-timeline-line" />
 
-              <div className="space-y-0">
-                {orders.map((order, index) => {
-                  const status =
-                    statusMeta[order.status];
+              {orders.map((order) => {
+                const status =
+                  statusMeta[order.status];
 
-                  return (
-                    <div
-                      key={order.id}
-                      className="relative flex gap-4 pb-7 last:pb-0"
-                    >
-                      {/* Timeline node */}
-                      <div className="relative z-10 shrink-0">
-                        <span
-                          className="
-                            flex
-                            h-9
-                            w-9
-                            items-center
-                            justify-center
-                            rounded-full
-                            border
-                            border-[var(--border)]
-                            bg-[var(--card)]
-                            shadow-sm
-                          "
-                        >
-                          <Icon
-                            name="orders"
-                            size={17}
-                          />
+                return (
+                  <article
+                    key={order.id}
+                    className="activity-event"
+                  >
+                    <div className="activity-event-marker">
+                      <span>
+                        <Icon
+                          name="orders"
+                          size={17}
+                        />
+                      </span>
+                    </div>
+
+                    <div className="activity-event-content">
+                      <div className="activity-event-top">
+                        <div className="activity-event-heading">
+                          <p className="activity-event-title">
+                            {t({
+                              ar: "تم إنشاء طلب جديد",
+                              en: "New order created",
+                            })}
+                          </p>
+
+                          <span className="activity-order-id">
+                            <bdi dir="ltr">
+                              #{order.id}
+                            </bdi>
+                          </span>
+                        </div>
+
+                        <Badge tone={status.tone}>
+                          {t(status.label)}
+                        </Badge>
+                      </div>
+
+                      <div className="activity-event-meta">
+                        <span>
+                          <bdi>
+                            {order.customer}
+                          </bdi>
+                        </span>
+
+                        <span className="activity-meta-separator">
+                          •
+                        </span>
+
+                        <span dir="ltr">
+                          {formatDate(order.date)}
+                        </span>
+
+                        <span dir="ltr">
+                          {order.time}
                         </span>
                       </div>
 
-                      {/* Event content */}
-                      <div className="min-w-0 flex-1 pt-0.5">
-                        <div
-                          className="
-                            flex
-                            flex-col
-                            gap-2
-                            sm:flex-row
-                            sm:items-start
-                            sm:justify-between
-                          "
-                        >
-                          <div className="min-w-0">
-                            <p className="text-sm font-semibold">
-                              {t({
-                                ar: "تم إنشاء الطلب",
-                                en: "Order created",
-                              })}{" "}
-                              <span dir="ltr">
-                                #{order.id}
-                              </span>
-                            </p>
+                      <div className="activity-event-details">
+                        <div className="activity-detail">
+                          <span className="activity-detail-label">
+                            {t({
+                              ar: "القيمة",
+                              en: "Amount",
+                            })}
+                          </span>
 
-                            <p className="mt-1 text-xs text-mut">
-                              <bdi>
-                                {order.customer}
-                              </bdi>
-
-                              {" · "}
-
-                              <span dir="ltr">
-                                {formatDate(
-                                  order.date
-                                )}{" "}
-                                {order.time}
-                              </span>
-                            </p>
-                          </div>
-
-                          <Badge tone={status.tone}>
-                            {t(status.label)}
-                          </Badge>
-                        </div>
-
-                        <div
-                          className="
-                            mt-3
-                            flex
-                            flex-wrap
-                            items-center
-                            gap-x-4
-                            gap-y-2
-                            text-xs
-                            text-mut
-                          "
-                        >
-                          <span
-                            dir="ltr"
-                            className="font-semibold text-[var(--text)]"
-                          >
+                          <strong dir="ltr">
                             {order.amount.toLocaleString(
                               "en-US"
                             )}{" "}
                             {cfg.project.currency}
-                          </span>
-
-                          <span>
-                            {t({
-                              ar: "طريقة الدفع:",
-                              en: "Payment:",
-                            })}{" "}
-                            <bdi>
-                              {order.paymentMethod}
-                            </bdi>
-                          </span>
-
-                          {order.orderType && (
-                            <span>
-                              {t({
-                                ar: "نوع الطلب:",
-                                en: "Type:",
-                              })}{" "}
-                              <bdi>
-                                {order.orderType}
-                              </bdi>
-                            </span>
-                          )}
+                          </strong>
                         </div>
+
+                        <div className="activity-detail">
+                          <span className="activity-detail-label">
+                            {t({
+                              ar: "الدفع",
+                              en: "Payment",
+                            })}
+                          </span>
+
+                          <strong>
+                            {getPaymentMethodLabel(
+                              order.paymentMethod,
+                              t
+                            )}
+                          </strong>
+                        </div>
+
+                        {order.orderType && (
+                          <div className="activity-detail">
+                            <span className="activity-detail-label">
+                              {t({
+                                ar: "النوع",
+                                en: "Type",
+                              })}
+                            </span>
+
+                            <strong>
+                              {getOrderTypeLabel(
+                                order.orderType,
+                                t
+                              )}
+                            </strong>
+                          </div>
+                        )}
                       </div>
+
+                      {order.items && (
+                        <div className="activity-order-preview">
+                          <Icon
+                            name="orders"
+                            size={14}
+                          />
+
+                          <span
+                            title={order.items}
+                          >
+                            {order.items}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
+                  </article>
+                );
+              })}
             </div>
           ) : (
-            <div className="flex min-h-[240px] items-center justify-center p-8 text-center">
-              <div>
-                <div
-                  className="
-                    mx-auto
-                    flex
-                    h-12
-                    w-12
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-[var(--border)]
-                    bg-[var(--surface)]
-                  "
-                >
+            <div className="activity-empty">
+              <div className="activity-empty-icon">
+                <Icon
+                  name="activity"
+                  size={21}
+                />
+              </div>
+
+              <p>
+                {t({
+                  ar: "لا يوجد نشاط حتى الآن",
+                  en: "No activity yet",
+                })}
+              </p>
+
+              <span>
+                {t({
+                  ar: "ستظهر الأحداث هنا عند وصول بيانات جديدة.",
+                  en: "New events will appear here as new data arrives.",
+                })}
+              </span>
+            </div>
+          )}
+        </Card>
+
+        <aside className="activity-side">
+          <Card
+            title={t({
+              ar: "ملخص النشاط",
+              en: "Activity summary",
+            })}
+            subtitle={t({
+              ar: "نظرة سريعة على آخر الأحداث",
+              en: "Quick view of recent events",
+            })}
+          >
+            <div className="activity-summary">
+              <div className="activity-summary-item">
+                <div className="activity-summary-icon">
                   <Icon
-                    name="activity"
-                    size={20}
+                    name="orders"
+                    size={17}
                   />
                 </div>
 
-                <p className="mt-4 text-sm font-semibold">
-                  {t({
-                    ar: "لا يوجد نشاط حتى الآن.",
-                    en: "No activity yet.",
-                  })}
-                </p>
+                <div>
+                  <span>
+                    {t({
+                      ar: "آخر الطلبات",
+                      en: "Recent orders",
+                    })}
+                  </span>
 
-                <p className="mt-1 text-xs text-mut">
-                  {t({
-                    ar: "ستظهر الأحداث هنا عند وصول بيانات جديدة.",
-                    en: "New events will appear here as data arrives.",
-                  })}
-                </p>
+                  <strong>
+                    {orders.length}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="activity-summary-item">
+                <div className="activity-summary-icon activity-summary-icon-teal">
+                  <Icon
+                    name="wallet"
+                    size={17}
+                  />
+                </div>
+
+                <div>
+                  <span>
+                    {t({
+                      ar: "مدفوع",
+                      en: "Paid",
+                    })}
+                  </span>
+
+                  <strong>
+                    {
+                      orders.filter(
+                        (order) =>
+                          order.status === "paid"
+                      ).length
+                    }
+                  </strong>
+                </div>
+              </div>
+
+              <div className="activity-summary-item">
+                <div className="activity-summary-icon activity-summary-icon-orange">
+                  <Icon
+                    name="activity"
+                    size={17}
+                  />
+                </div>
+
+                <div>
+                  <span>
+                    {t({
+                      ar: "قيد الانتظار",
+                      en: "Pending",
+                    })}
+                  </span>
+
+                  <strong>
+                    {
+                      orders.filter(
+                        (order) =>
+                          order.status === "pending"
+                      ).length
+                    }
+                  </strong>
+                </div>
               </div>
             </div>
-          )}
-        </div>
-      </Card>
-    </>
+          </Card>
+
+          <div className="activity-info-card">
+            <div className="activity-info-icon">
+              <Icon
+                name="pulse"
+                size={18}
+              />
+            </div>
+
+            <div>
+              <strong>
+                {t({
+                  ar: "النشاط يتحدث تلقائيًا",
+                  en: "Activity updates automatically",
+                })}
+              </strong>
+
+              <p>
+                {t({
+                  ar: "أي طلب جديد سيظهر هنا تلقائيًا مع تفاصيله وحالة الدفع.",
+                  en: "New orders appear here automatically with their details and payment status.",
+                })}
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
   );
 }
