@@ -1,0 +1,256 @@
+/* =========================================================
+   UI/UX — TABLE COLUMN ALIGNMENT & EVEN SPACING
+   Loaded after globals.css. Orders + Overview only.
+   ========================================================= */
+
+.overview-chart-header {
+  margin-inline: 24px;
+  min-width: 0;
+}
+
+.overview-chart-header > div {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.overview-chart-total {
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-chart-currency {
+  line-height: 1.5;
+}
+
+.orders-table-wrap {
+  overflow-x: auto;
+}
+
+.orders-table-wrap .tbl {
+  width: 100% !important;
+  min-width: 1200px !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+.orders-table-wrap .tbl th,
+.orders-table-wrap .tbl td {
+  box-sizing: border-box;
+  vertical-align: middle !important;
+  padding: 12px 14px !important;
+  text-align: start;
+}
+
+.orders-table-wrap .tbl th {
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.orders-table-wrap .tbl th:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(1) { width: 11% !important; }
+
+.orders-table-wrap .tbl th:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(2) { width: 15% !important; }
+
+.orders-table-wrap .tbl th:nth-child(3),
+.orders-table-wrap .tbl td:nth-child(3) { width: 13% !important; }
+
+.orders-table-wrap .tbl th:nth-child(4),
+.orders-table-wrap .tbl td:nth-child(4) { width: 11% !important; }
+
+.orders-table-wrap .tbl th:nth-child(5),
+.orders-table-wrap .tbl td:nth-child(5) { width: 20% !important; }
+
+.orders-table-wrap .tbl th:nth-child(6),
+.orders-table-wrap .tbl td:nth-child(6) { width: 10% !important; }
+
+.orders-table-wrap .tbl th:nth-child(7),
+.orders-table-wrap .tbl td:nth-child(7) { width: 10% !important; }
+
+.orders-table-wrap .tbl th:nth-child(8),
+.orders-table-wrap .tbl td:nth-child(8) { width: 10% !important; }
+
+.orders-table-wrap .tbl td:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(3),
+.orders-table-wrap .tbl td:nth-child(6),
+.orders-table-wrap .tbl td:nth-child(7),
+.orders-table-wrap .tbl td:nth-child(8) {
+  white-space: nowrap !important;
+  overflow: hidden;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.orders-table-wrap .tbl td:nth-child(4),
+.orders-table-wrap .tbl td:nth-child(5) {
+  white-space: normal !important;
+}
+
+.orders-id-cell {
+  display: flex !important;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal !important;
+}
+
+.orders-id-cell b,
+.orders-id-cell bdi {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.orders-id-cell > span {
+  color: var(--mut);
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orders-customer-cell {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  white-space: nowrap !important;
+}
+
+.orders-customer-cell > span:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.orders-muted-value {
+  display: block;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.orders-date-cell {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.orders-date-cell p {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orders-date-cell span {
+  display: block;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.orders-details-cell {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal !important;
+}
+
+.orders-details-cell p,
+.orders-details-cell span {
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.orders-amount,
+.orders-payment {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.overview-table-wrap {
+  overflow-x: auto;
+  margin-top: 6px;
+  border-radius: 14px;
+}
+
+.overview-table-wrap .tbl {
+  width: 100% !important;
+  min-width: 900px !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+.overview-table-wrap .tbl th,
+.overview-table-wrap .tbl td {
+  box-sizing: border-box;
+  vertical-align: middle !important;
+  padding: 12px 14px !important;
+  text-align: start;
+}
+
+.overview-table-wrap .tbl th {
+  white-space: nowrap;
+}
+
+.overview-table-wrap .tbl th:nth-child(1),
+.overview-table-wrap .tbl td:nth-child(1) { width: 14% !important; }
+
+.overview-table-wrap .tbl th:nth-child(2),
+.overview-table-wrap .tbl td:nth-child(2) { width: 18% !important; }
+
+.overview-table-wrap .tbl th:nth-child(3),
+.overview-table-wrap .tbl td:nth-child(3) { width: 18% !important; }
+
+.overview-table-wrap .tbl th:nth-child(4),
+.overview-table-wrap .tbl td:nth-child(4) { width: 18% !important; }
+
+.overview-table-wrap .tbl th:nth-child(5),
+.overview-table-wrap .tbl td:nth-child(5) { width: 16% !important; }
+
+.overview-table-wrap .tbl th:nth-child(6),
+.overview-table-wrap .tbl td:nth-child(6) { width: 16% !important; }
+
+.overview-order-cell,
+.overview-customer-cell,
+.overview-phone-cell,
+.overview-date-cell,
+.overview-amount-cell {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 560px) {
+  .overview-chart-header {
+    margin-inline: 16px;
+  }
+
+  .orders-table-wrap .tbl {
+    min-width: 1200px !important;
+  }
+
+  .overview-table-wrap .tbl {
+    min-width: 900px !important;
+  }
+}
