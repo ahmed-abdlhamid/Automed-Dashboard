@@ -1145,11 +1145,55 @@
     justify-content: space-between;
 
     gap: 10px;
+    min-width: 0;
 
     color: var(--mut);
 
     font-size: 12px;
     font-weight: 600;
+  }
+
+  .metric-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .metric-value-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    min-width: 0;
+    max-width: 100%;
+    margin-top: 16px;
+  }
+
+  .metric-value {
+    min-width: 0;
+    max-width: 100%;
+
+    font-family:
+      "Readex Pro",
+      "IBM Plex Sans Arabic",
+      sans-serif;
+
+    font-size: clamp(1.35rem, 2vw, 1.875rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .metric-unit {
+    min-width: 0;
+    max-width: 100%;
+
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.78;
+    overflow-wrap: anywhere;
   }
 
   .metric-card-featured .metric-head,
