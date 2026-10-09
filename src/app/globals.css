@@ -5431,3 +5431,136 @@
     box-sizing: border-box;
   }
 }
+
+/* =========================================================
+   UI/UX REFINEMENT — CHART ALIGNMENT & ORDERS TABLE
+   Presentation only: no data or business logic changes.
+   ========================================================= */
+
+/* Align the weekly revenue total with the card title/subtitle. */
+.overview-chart-header {
+  margin-inline: 24px;
+  min-width: 0;
+}
+
+.overview-chart-header > div {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.overview-chart-total {
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-chart-currency {
+  line-height: 1.5;
+}
+
+/* Give each orders column a predictable share of the table.
+   Longer customer names and item details may wrap; IDs can wrap too. */
+.orders-table-wrap .tbl {
+  width: 100%;
+  min-width: 1165px;
+  table-layout: fixed;
+}
+
+.orders-table-wrap .tbl th,
+.orders-table-wrap .tbl td {
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.orders-table-wrap .tbl th:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(1) {
+  width: 95px;
+}
+
+.orders-table-wrap .tbl th:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(2) {
+  width: 190px;
+}
+
+.orders-table-wrap .tbl th:nth-child(3),
+.orders-table-wrap .tbl td:nth-child(3) {
+  width: 150px;
+}
+
+.orders-table-wrap .tbl th:nth-child(4),
+.orders-table-wrap .tbl td:nth-child(4) {
+  width: 125px;
+}
+
+.orders-table-wrap .tbl th:nth-child(5),
+.orders-table-wrap .tbl td:nth-child(5) {
+  width: 280px;
+}
+
+.orders-table-wrap .tbl th:nth-child(6),
+.orders-table-wrap .tbl td:nth-child(6) {
+  width: 120px;
+}
+
+.orders-table-wrap .tbl th:nth-child(7),
+.orders-table-wrap .tbl td:nth-child(7) {
+  width: 105px;
+}
+
+.orders-table-wrap .tbl th:nth-child(8),
+.orders-table-wrap .tbl td:nth-child(8) {
+  width: 100px;
+}
+
+.orders-table-wrap .tbl td:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(5) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.orders-id-cell,
+.orders-customer-cell,
+.orders-details-cell {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.orders-id-cell b,
+.orders-id-cell bdi {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orders-customer-cell {
+  width: 100%;
+  gap: 8px;
+}
+
+.orders-customer-cell > span:last-child {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.5;
+}
+
+.orders-details-cell {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.orders-details-cell p,
+.orders-details-cell span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+@media (max-width: 560px) {
+  .overview-chart-header {
+    margin-inline: 24px;
+  }
+}
