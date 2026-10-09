@@ -389,7 +389,8 @@ export default function OverviewView({
         >
           <div className="overview-table-wrap">
             <DataTable
-              columns={columns}
+              equalColumnWidths
+            columns={columns}
               rows={data.recent}
               rowKey={(order) =>
                 order.id
