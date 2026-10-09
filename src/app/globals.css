@@ -5564,3 +5564,170 @@
     margin-inline: 24px;
   }
 }
+
+
+/* =========================================================
+   ORDER TABLE LAYOUT — CONSISTENT COLUMN RHYTHM
+   ========================================================= */
+
+/* Recent activity: show only the essential columns with balanced spacing. */
+.overview-table-wrap .tbl {
+  width: 100%;
+  min-width: 940px;
+  table-layout: fixed;
+}
+
+.overview-table-wrap .tbl th,
+.overview-table-wrap .tbl td {
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.overview-table-wrap .tbl th:nth-child(1),
+.overview-table-wrap .tbl td:nth-child(1) { width: 14%; }
+
+.overview-table-wrap .tbl th:nth-child(2),
+.overview-table-wrap .tbl td:nth-child(2) { width: 19%; }
+
+.overview-table-wrap .tbl th:nth-child(3),
+.overview-table-wrap .tbl td:nth-child(3) { width: 20%; }
+
+.overview-table-wrap .tbl th:nth-child(4),
+.overview-table-wrap .tbl td:nth-child(4) { width: 19%; }
+
+.overview-table-wrap .tbl th:nth-child(5),
+.overview-table-wrap .tbl td:nth-child(5) { width: 14%; }
+
+.overview-table-wrap .tbl th:nth-child(6),
+.overview-table-wrap .tbl td:nth-child(6) { width: 14%; }
+
+.overview-table-wrap .tbl td {
+  white-space: normal;
+}
+
+.overview-order-cell,
+.overview-customer-cell,
+.overview-phone-cell,
+.overview-date-cell,
+.overview-amount-cell {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.55;
+}
+
+.overview-order-cell b,
+.overview-order-cell bdi {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.overview-phone-cell,
+.overview-date-cell,
+.overview-amount-cell {
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-phone-cell bdi,
+.overview-date-cell,
+.overview-amount-cell {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Full orders page: consistent, deliberate column widths instead of
+   letting long values create irregular gaps between neighboring columns. */
+.orders-table-wrap .tbl {
+  width: 100%;
+  min-width: 1165px;
+  table-layout: fixed;
+}
+
+.orders-table-wrap .tbl th,
+.orders-table-wrap .tbl td {
+  box-sizing: border-box;
+  vertical-align: middle;
+  padding-inline: 12px;
+}
+
+.orders-table-wrap .tbl th:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(1) { width: 9%; }
+
+.orders-table-wrap .tbl th:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(2) { width: 15%; }
+
+.orders-table-wrap .tbl th:nth-child(3),
+.orders-table-wrap .tbl td:nth-child(3) { width: 13%; }
+
+.orders-table-wrap .tbl th:nth-child(4),
+.orders-table-wrap .tbl td:nth-child(4) { width: 11%; }
+
+.orders-table-wrap .tbl th:nth-child(5),
+.orders-table-wrap .tbl td:nth-child(5) { width: 22%; }
+
+.orders-table-wrap .tbl th:nth-child(6),
+.orders-table-wrap .tbl td:nth-child(6) { width: 10%; }
+
+.orders-table-wrap .tbl th:nth-child(7),
+.orders-table-wrap .tbl td:nth-child(7) { width: 10%; }
+
+.orders-table-wrap .tbl th:nth-child(8),
+.orders-table-wrap .tbl td:nth-child(8) { width: 10%; }
+
+.orders-table-wrap .tbl td:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(5) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.orders-id-cell,
+.orders-customer-cell,
+.orders-details-cell {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.orders-id-cell b,
+.orders-id-cell bdi {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orders-customer-cell {
+  width: 100%;
+  gap: 8px;
+}
+
+.orders-customer-cell > span:last-child {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.5;
+}
+
+.orders-details-cell {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.orders-details-cell p,
+.orders-details-cell span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+@media (max-width: 560px) {
+  .overview-table-wrap .tbl {
+    min-width: 940px;
+  }
+  .orders-table-wrap .tbl {
+    min-width: 1165px;
+  }
+}
