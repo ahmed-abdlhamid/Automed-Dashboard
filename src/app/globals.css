@@ -5311,3 +5311,79 @@
     padding: 11px 16px !important;
   }
 }
+
+/* AUTOMATION — FORCE CONSISTENT INNER SPACING */
+
+.automation-module-grid .automation-module-card {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.automation-module-grid .automation-module-card h3 {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 16px 0 0 !important;
+  padding: 0 20px !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  overflow-wrap: break-word;
+}
+
+.automation-module-grid .automation-module-card p {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 7px 0 0 !important;
+  padding: 0 20px !important;
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+  min-height: 0;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.automation-module-grid .automation-module-card .automation-module-icon-wrap {
+  padding: 18px 20px 0 !important;
+  box-sizing: border-box;
+}
+
+.automation-module-grid .automation-module-card .automation-module-footer {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 20px !important;
+  margin-top: 15px;
+  gap: 8px;
+}
+
+@media (max-width: 767.98px) {
+  .automation-module-grid .automation-module-card h3 {
+    padding-inline: 16px !important;
+    margin-top: 14px !important;
+  }
+
+  .automation-module-grid .automation-module-card p {
+    padding-inline: 16px !important;
+    font-size: 12px !important;
+  }
+
+  .automation-module-grid .automation-module-card .automation-module-icon-wrap {
+    padding-inline: 16px !important;
+  }
+
+  .automation-module-grid .automation-module-card .automation-module-footer {
+    padding-inline: 16px !important;
+  }
+}
+
+/* AUTOMED MOBILE SIDEBAR WIDTH FIX */
+@media (max-width: 767.98px) {
+  .sidebar,
+  .sidebar[data-expanded="true"],
+  .sidebar[data-expanded="false"],
+  .sidebar[data-pinned="true"] {
+    width: min(220px, calc(100vw - 64px)) !important;
+    max-width: min(220px, calc(100vw - 64px)) !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+}
