@@ -93,70 +93,41 @@ export default function OverviewView({
     {
       key: "id",
       header: t({
-        ar: "الطلب",
+        ar: "رقم الطلب",
         en: "Order",
       }),
       render: (order) => (
         <div className="overview-order-cell">
           <b className="font-head text-xs">
-            #{order.id}
+            <bdi dir="ltr">#{order.id}</bdi>
           </b>
-
-          <p className="mt-0.5 text-xs text-mut">
-            {order.customer}
-          </p>
         </div>
       ),
     },
-
     {
-      key: "type",
+      key: "customer",
       header: t({
-        ar: "النوع",
-        en: "Type",
+        ar: "العميل",
+        en: "Customer",
       }),
-      render: (order) => {
-        const normalized =
-          order.orderType
-            .trim()
-            .toLowerCase();
-
-        if (
-          normalized === "delivery" ||
-          normalized === "deliver"
-        ) {
-          return (
-            <span className="overview-table-type">
-              {t({
-                ar: "توصيل",
-                en: "Delivery",
-              })}
-            </span>
-          );
-        }
-
-        if (
-          normalized === "pickup" ||
-          normalized === "pick up"
-        ) {
-          return (
-            <span className="overview-table-type">
-              {t({
-                ar: "استلام",
-                en: "Pickup",
-              })}
-            </span>
-          );
-        }
-
-        return (
-          <span className="overview-table-type">
-            {order.orderType}
-          </span>
-        );
-      },
+      render: (order) => (
+        <span className="overview-customer-cell">
+          <bdi>{order.customer}</bdi>
+        </span>
+      ),
     },
-
+    {
+      key: "phone",
+      header: t({
+        ar: "رقم الهاتف",
+        en: "Phone",
+      }),
+      render: (order) => (
+        <span className="overview-phone-cell">
+          <bdi dir="ltr">{order.phoneNumber || "—"}</bdi>
+        </span>
+      ),
+    },
     {
       key: "date",
       header: t({
@@ -164,15 +135,11 @@ export default function OverviewView({
         en: "Date",
       }),
       render: (order) => (
-        <span
-          dir="ltr"
-          className="text-xs text-mut"
-        >
+        <span dir="ltr" className="overview-date-cell">
           {order.date} · {order.time}
         </span>
       ),
     },
-
     {
       key: "amount",
       header: t({
@@ -180,16 +147,11 @@ export default function OverviewView({
         en: "Amount",
       }),
       render: (order) => (
-        <span
-          dir="ltr"
-          className="font-semibold"
-        >
-          {fmt(order.amount)}{" "}
-          {cfg.project.currency}
+        <span dir="ltr" className="overview-amount-cell">
+          {fmt(order.amount)} {cfg.project.currency}
         </span>
       ),
     },
-
     {
       key: "status",
       header: t({
@@ -207,19 +169,10 @@ export default function OverviewView({
           }
         >
           {order.status === "paid"
-            ? t({
-                ar: "مدفوع",
-                en: "Paid",
-              })
+            ? t({ ar: "مدفوع", en: "Paid" })
             : order.status === "pending"
-            ? t({
-                ar: "قيد الانتظار",
-                en: "Pending",
-              })
-            : t({
-                ar: "فشل",
-                en: "Failed",
-              })}
+            ? t({ ar: "قيد الانتظار", en: "Pending" })
+            : t({ ar: "فشل", en: "Failed" })}
         </Badge>
       ),
     },
