@@ -5433,291 +5433,87 @@
 }
 
 /* =========================================================
-   UI/UX REFINEMENT — CHART ALIGNMENT & ORDERS TABLE
-   Presentation only: no data or business logic changes.
+   AUTOMED TABLE LAYOUT — SINGLE SOURCE OF TRUTH
+   Equal-width columns are defined by DataTable's colgroup.
+   Keep only the table container widths here; do not add
+   per-column nth-child widths.
    ========================================================= */
 
-/* Align the weekly revenue total with the card title/subtitle. */
-.overview-chart-header {
-  margin-inline: 24px;
+.overview-table-wrap,
+.orders-table-wrap {
+  width: 100%;
   min-width: 0;
+  overflow-x: auto;
 }
 
-.overview-chart-header > div {
-  min-width: 0;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.overview-chart-total {
-  line-height: 1.25;
-  font-variant-numeric: tabular-nums;
-}
-
-.overview-chart-currency {
-  line-height: 1.5;
-}
-
-/* Give each orders column a predictable share of the table.
-   Longer customer names and item details may wrap; IDs can wrap too. */
+.overview-table-wrap .tbl,
 .orders-table-wrap .tbl {
-  width: 100%;
-  min-width: 1165px;
-  table-layout: fixed;
+  width: 100% !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
 }
 
-.orders-table-wrap .tbl th,
-.orders-table-wrap .tbl td {
-  box-sizing: border-box;
-  vertical-align: top;
-}
-
-.orders-table-wrap .tbl th:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(1) {
-  width: 95px;
-}
-
-.orders-table-wrap .tbl th:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(2) {
-  width: 190px;
-}
-
-.orders-table-wrap .tbl th:nth-child(3),
-.orders-table-wrap .tbl td:nth-child(3) {
-  width: 150px;
-}
-
-.orders-table-wrap .tbl th:nth-child(4),
-.orders-table-wrap .tbl td:nth-child(4) {
-  width: 125px;
-}
-
-.orders-table-wrap .tbl th:nth-child(5),
-.orders-table-wrap .tbl td:nth-child(5) {
-  width: 280px;
-}
-
-.orders-table-wrap .tbl th:nth-child(6),
-.orders-table-wrap .tbl td:nth-child(6) {
-  width: 120px;
-}
-
-.orders-table-wrap .tbl th:nth-child(7),
-.orders-table-wrap .tbl td:nth-child(7) {
-  width: 105px;
-}
-
-.orders-table-wrap .tbl th:nth-child(8),
-.orders-table-wrap .tbl td:nth-child(8) {
-  width: 100px;
-}
-
-.orders-table-wrap .tbl td:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(5) {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.orders-id-cell,
-.orders-customer-cell,
-.orders-details-cell {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.orders-id-cell b,
-.orders-id-cell bdi {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.orders-customer-cell {
-  width: 100%;
-  gap: 8px;
-}
-
-.orders-customer-cell > span:last-child {
-  min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
-  line-height: 1.5;
-}
-
-.orders-details-cell {
-  width: 100%;
-  min-width: 0;
-  max-width: none;
-}
-
-.orders-details-cell p,
-.orders-details-cell span {
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
-}
-
-@media (max-width: 560px) {
-  .overview-chart-header {
-    margin-inline: 24px;
-  }
-}
-
-
-/* =========================================================
-   ORDER TABLE LAYOUT — CONSISTENT COLUMN RHYTHM
-   ========================================================= */
-
-/* Recent activity: show only the essential columns with balanced spacing. */
 .overview-table-wrap .tbl {
-  width: 100%;
-  min-width: 940px;
-  table-layout: fixed;
+  min-width: 1000px !important;
+}
+
+.orders-table-wrap .tbl {
+  min-width: 1336px !important;
 }
 
 .overview-table-wrap .tbl th,
-.overview-table-wrap .tbl td {
+.overview-table-wrap .tbl td,
+.orders-table-wrap .tbl th,
+.orders-table-wrap .tbl td {
   box-sizing: border-box;
+  min-width: 0;
+  padding: 12px 14px;
+  text-align: start;
   vertical-align: middle;
-}
-
-.overview-table-wrap .tbl th:nth-child(1),
-.overview-table-wrap .tbl td:nth-child(1) { width: 14%; }
-
-.overview-table-wrap .tbl th:nth-child(2),
-.overview-table-wrap .tbl td:nth-child(2) { width: 19%; }
-
-.overview-table-wrap .tbl th:nth-child(3),
-.overview-table-wrap .tbl td:nth-child(3) { width: 20%; }
-
-.overview-table-wrap .tbl th:nth-child(4),
-.overview-table-wrap .tbl td:nth-child(4) { width: 19%; }
-
-.overview-table-wrap .tbl th:nth-child(5),
-.overview-table-wrap .tbl td:nth-child(5) { width: 14%; }
-
-.overview-table-wrap .tbl th:nth-child(6),
-.overview-table-wrap .tbl td:nth-child(6) { width: 14%; }
-
-.overview-table-wrap .tbl td {
   white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
+.overview-table-wrap .tbl th,
+.orders-table-wrap .tbl th {
+  line-height: 1.45;
+}
+
+.overview-table-wrap .tbl td,
+.orders-table-wrap .tbl td {
+  line-height: 1.5;
+}
+
+/* Let long values wrap inside their own equal-width track. */
+.orders-id-cell,
+.orders-customer-cell,
+.orders-details-cell,
 .overview-order-cell,
 .overview-customer-cell,
 .overview-phone-cell,
 .overview-date-cell,
 .overview-amount-cell {
   display: block;
+  width: 100%;
   min-width: 0;
   max-width: 100%;
-  overflow-wrap: anywhere;
-  line-height: 1.55;
-}
-
-.overview-order-cell b,
-.overview-order-cell bdi {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.overview-phone-cell,
-.overview-date-cell,
-.overview-amount-cell {
-  font-variant-numeric: tabular-nums;
-}
-
-.overview-phone-cell bdi,
-.overview-date-cell,
-.overview-amount-cell {
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: normal;
-}
-
-/* Full orders page: consistent, deliberate column widths instead of
-   letting long values create irregular gaps between neighboring columns. */
-.orders-table-wrap .tbl {
-  width: 100%;
-  min-width: 1165px;
-  table-layout: fixed;
-}
-
-.orders-table-wrap .tbl th,
-.orders-table-wrap .tbl td {
-  box-sizing: border-box;
-  vertical-align: middle;
-  padding-inline: 12px;
-}
-
-.orders-table-wrap .tbl th:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(1) { width: 9%; }
-
-.orders-table-wrap .tbl th:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(2) { width: 15%; }
-
-.orders-table-wrap .tbl th:nth-child(3),
-.orders-table-wrap .tbl td:nth-child(3) { width: 13%; }
-
-.orders-table-wrap .tbl th:nth-child(4),
-.orders-table-wrap .tbl td:nth-child(4) { width: 11%; }
-
-.orders-table-wrap .tbl th:nth-child(5),
-.orders-table-wrap .tbl td:nth-child(5) { width: 22%; }
-
-.orders-table-wrap .tbl th:nth-child(6),
-.orders-table-wrap .tbl td:nth-child(6) { width: 10%; }
-
-.orders-table-wrap .tbl th:nth-child(7),
-.orders-table-wrap .tbl td:nth-child(7) { width: 10%; }
-
-.orders-table-wrap .tbl th:nth-child(8),
-.orders-table-wrap .tbl td:nth-child(8) { width: 10%; }
-
-.orders-table-wrap .tbl td:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(5) {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.orders-id-cell,
-.orders-customer-cell,
-.orders-details-cell {
-  min-width: 0;
-  max-width: 100%;
 }
 
 .orders-id-cell b,
-.orders-id-cell bdi {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.orders-customer-cell {
-  width: 100%;
-  gap: 8px;
-}
-
-.orders-customer-cell > span:last-child {
-  min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
-  line-height: 1.5;
-}
-
-.orders-details-cell {
-  width: 100%;
-  min-width: 0;
-  max-width: none;
-}
-
+.orders-id-cell bdi,
+.orders-customer-cell bdi,
+.orders-customer-cell > span,
 .orders-details-cell p,
-.orders-details-cell span {
+.orders-details-cell span,
+.overview-order-cell bdi,
+.overview-customer-cell bdi,
+.overview-phone-cell bdi {
+  max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: normal;
@@ -5725,283 +5521,10 @@
 
 @media (max-width: 560px) {
   .overview-table-wrap .tbl {
-    min-width: 940px;
+    min-width: 1000px !important;
   }
+
   .orders-table-wrap .tbl {
-    min-width: 1165px;
+    min-width: 1336px !important;
   }
-}
-
-
-/* FINAL ORDERS TABLE GRID
-   Fixed column tracks prevent uneven browser auto-sizing.
-   Order ID, customer name and phone stay on one line. */
-.orders-table-wrap .tbl {
-  width: 1335px !important;
-  min-width: 1335px !important;
-  max-width: none;
-  table-layout: fixed !important;
-}
-
-.orders-table-wrap .tbl th,
-.orders-table-wrap .tbl td {
-  box-sizing: border-box;
-  padding: 13px 12px !important;
-  vertical-align: middle;
-}
-
-.orders-table-wrap .tbl th:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(1) { width: 145px !important; }
-
-.orders-table-wrap .tbl th:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(2) { width: 220px !important; }
-
-.orders-table-wrap .tbl th:nth-child(3),
-.orders-table-wrap .tbl td:nth-child(3) { width: 175px !important; }
-
-.orders-table-wrap .tbl th:nth-child(4),
-.orders-table-wrap .tbl td:nth-child(4) { width: 145px !important; }
-
-.orders-table-wrap .tbl th:nth-child(5),
-.orders-table-wrap .tbl td:nth-child(5) { width: 275px !important; }
-
-.orders-table-wrap .tbl th:nth-child(6),
-.orders-table-wrap .tbl td:nth-child(6) { width: 125px !important; }
-
-.orders-table-wrap .tbl th:nth-child(7),
-.orders-table-wrap .tbl td:nth-child(7) { width: 130px !important; }
-
-.orders-table-wrap .tbl th:nth-child(8),
-.orders-table-wrap .tbl td:nth-child(8) { width: 120px !important; }
-
-.orders-table-wrap .tbl th {
-  white-space: nowrap;
-}
-
-.orders-table-wrap .tbl td:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(3) {
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-}
-
-.orders-id-cell {
-  display: block;
-  min-width: 0;
-  white-space: nowrap;
-}
-
-.orders-id-cell b,
-.orders-id-cell bdi {
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: normal;
-}
-
-.orders-customer-cell {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  min-width: 0;
-  white-space: nowrap;
-}
-
-.orders-customer-cell > span:last-child {
-  display: block;
-  flex: 1 1 auto;
-  min-width: 0;
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-}
-
-.orders-table-wrap .tbl td:nth-child(3) .orders-muted-value,
-.orders-table-wrap .tbl td:nth-child(3) bdi {
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: normal;
-}
-
-.orders-table-wrap .tbl td:nth-child(4),
-.orders-table-wrap .tbl td:nth-child(5) {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.orders-details-cell {
-  width: 100%;
-  min-width: 0;
-  max-width: none;
-  white-space: normal;
-}
-
-.orders-details-cell p,
-.orders-details-cell span {
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
-}
-
-@media (max-width: 560px) {
-  .orders-table-wrap .tbl {
-    width: 1335px !important;
-    min-width: 1335px !important;
-  }
-}
-
-
-/* =========================================================
-   DEFINITIVE TABLE ALIGNMENT
-   Explicit tracks are shared by each header and its cells.
-   ========================================================= */
-
-/* Recent activity uses the same fixed track width for the heading
-   and every row. Long date/amount text may wrap; identity fields don't. */
-.overview-table-wrap .tbl {
-  width: 1000px !important;
-  min-width: 1000px !important;
-  max-width: none !important;
-  table-layout: fixed !important;
-  border-collapse: collapse;
-}
-
-.overview-table-wrap .tbl th,
-.overview-table-wrap .tbl td {
-  box-sizing: border-box;
-  padding: 12px 14px !important;
-  text-align: start;
-  vertical-align: middle;
-}
-
-.overview-table-wrap .tbl th:nth-child(1),
-.overview-table-wrap .tbl td:nth-child(1) { width: 140px !important; }
-.overview-table-wrap .tbl th:nth-child(2),
-.overview-table-wrap .tbl td:nth-child(2) { width: 180px !important; }
-.overview-table-wrap .tbl th:nth-child(3),
-.overview-table-wrap .tbl td:nth-child(3) { width: 190px !important; }
-.overview-table-wrap .tbl th:nth-child(4),
-.overview-table-wrap .tbl td:nth-child(4) { width: 190px !important; }
-.overview-table-wrap .tbl th:nth-child(5),
-.overview-table-wrap .tbl td:nth-child(5) { width: 140px !important; }
-.overview-table-wrap .tbl th:nth-child(6),
-.overview-table-wrap .tbl td:nth-child(6) { width: 160px !important; }
-
-.overview-table-wrap .tbl th {
-  white-space: nowrap;
-}
-
-.overview-table-wrap .tbl td:nth-child(1),
-.overview-table-wrap .tbl td:nth-child(2),
-.overview-table-wrap .tbl td:nth-child(3) {
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-}
-
-.overview-order-cell,
-.overview-customer-cell,
-.overview-phone-cell,
-.overview-date-cell,
-.overview-amount-cell {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  line-height: 1.5;
-}
-
-.overview-order-cell bdi,
-.overview-customer-cell bdi,
-.overview-phone-cell bdi {
-  white-space: nowrap;
-}
-
-/* Full orders page: fixed 1335px grid, no automatic column stretching.
-   The first three identity columns stay on one line. Other fields can wrap
-   inside their own column without shifting neighboring headers/cells. */
-.orders-table-wrap .tbl {
-  width: 1335px !important;
-  min-width: 1335px !important;
-  max-width: none !important;
-  table-layout: fixed !important;
-  border-collapse: collapse;
-}
-
-.orders-table-wrap .tbl th,
-.orders-table-wrap .tbl td {
-  box-sizing: border-box;
-  padding: 13px 12px !important;
-  text-align: start;
-  vertical-align: middle;
-}
-
-.orders-table-wrap .tbl th:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(1) { width: 145px !important; }
-.orders-table-wrap .tbl th:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(2) { width: 220px !important; }
-.orders-table-wrap .tbl th:nth-child(3),
-.orders-table-wrap .tbl td:nth-child(3) { width: 175px !important; }
-.orders-table-wrap .tbl th:nth-child(4),
-.orders-table-wrap .tbl td:nth-child(4) { width: 145px !important; }
-.orders-table-wrap .tbl th:nth-child(5),
-.orders-table-wrap .tbl td:nth-child(5) { width: 275px !important; }
-.orders-table-wrap .tbl th:nth-child(6),
-.orders-table-wrap .tbl td:nth-child(6) { width: 125px !important; }
-.orders-table-wrap .tbl th:nth-child(7),
-.orders-table-wrap .tbl td:nth-child(7) { width: 130px !important; }
-.orders-table-wrap .tbl th:nth-child(8),
-.orders-table-wrap .tbl td:nth-child(8) { width: 120px !important; }
-
-.orders-table-wrap .tbl th {
-  white-space: nowrap;
-}
-
-.orders-table-wrap .tbl td:nth-child(1),
-.orders-table-wrap .tbl td:nth-child(2),
-.orders-table-wrap .tbl td:nth-child(3) {
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-}
-
-.orders-id-cell,
-.orders-customer-cell {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  white-space: nowrap !important;
-}
-
-.orders-id-cell b,
-.orders-id-cell bdi,
-.orders-customer-cell > span,
-.orders-customer-cell bdi,
-.orders-table-wrap .tbl td:nth-child(3) bdi {
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-}
-
-.orders-customer-cell > span {
-  display: block;
-  min-width: 0;
-}
-
-.orders-details-cell {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.orders-details-cell p,
-.orders-details-cell span {
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
 }
