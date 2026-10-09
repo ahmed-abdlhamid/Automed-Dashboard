@@ -5459,7 +5459,7 @@
 }
 
 .orders-table-wrap .tbl {
-  min-width: 1336px !important;
+  min-width: 1300px !important;
 }
 
 .overview-table-wrap .tbl th,
@@ -5525,6 +5525,6 @@
   }
 
   .orders-table-wrap .tbl {
-    min-width: 1336px !important;
+    min-width: 1300px !important;
   }
 }
