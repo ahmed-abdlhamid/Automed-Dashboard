@@ -569,6 +569,7 @@ export default function OrdersView({
 
         <div className="orders-table-wrap">
           <DataTable
+            equalColumnWidths
             columns={columns}
             rows={rows}
             rowKey={(order) =>
