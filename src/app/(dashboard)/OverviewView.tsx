@@ -92,74 +92,62 @@ export default function OverviewView({
   const columns: Column<Order>[] = [
     {
       key: "id",
-      width: "140px",
       header: t({
         ar: "رقم الطلب",
         en: "Order",
       }),
       render: (order) => (
-        <div className="overview-order-cell">
-          <b className="font-head text-xs">
-            <bdi dir="ltr">#{order.id}</bdi>
-          </b>
-        </div>
+        <b className="font-head text-xs">
+          <bdi dir="ltr">#{order.id}</bdi>
+        </b>
       ),
     },
     {
       key: "customer",
-      width: "180px",
       header: t({
         ar: "العميل",
         en: "Customer",
       }),
       render: (order) => (
-        <span className="overview-customer-cell">
-          <bdi>{order.customer}</bdi>
-        </span>
+        <bdi>{order.customer}</bdi>
       ),
     },
     {
       key: "phone",
-      width: "190px",
       header: t({
         ar: "رقم الهاتف",
         en: "Phone",
       }),
       render: (order) => (
-        <span className="overview-phone-cell">
-          <bdi dir="ltr">{order.phoneNumber || "—"}</bdi>
-        </span>
+        <bdi dir="ltr">{order.phoneNumber || "—"}</bdi>
       ),
     },
     {
       key: "date",
-      width: "190px",
       header: t({
         ar: "التاريخ",
         en: "Date",
       }),
       render: (order) => (
-        <span dir="ltr" className="overview-date-cell">
+        <span dir="ltr">
           {order.date} · {order.time}
         </span>
       ),
     },
     {
       key: "amount",
-      width: "140px",
       header: t({
         ar: "المبلغ",
         en: "Amount",
       }),
       render: (order) => (
-        <span dir="ltr" className="overview-amount-cell">
+        <span dir="ltr">
           {fmt(order.amount)} {cfg.project.currency}
         </span>
       ),
     },
     {
       key: "status",
-      width: "160px",
       header: t({
         ar: "الحالة",
         en: "Status",
@@ -186,10 +174,6 @@ export default function OverviewView({
 
   return (
     <div className="overview-page">
-      {/* =====================================================
-          HEADER
-          ===================================================== */}
-
       <section className="overview-header">
         <div className="overview-heading">
           {project && (
@@ -270,10 +254,6 @@ export default function OverviewView({
         </div>
       </section>
 
-      {/* =====================================================
-          KPI CARDS
-          ===================================================== */}
-
       <section className="overview-kpis">
         <StatCard
           featured
@@ -337,10 +317,6 @@ export default function OverviewView({
         />
       </section>
 
-      {/* =====================================================
-          PERFORMANCE
-          ===================================================== */}
-
       <section className="overview-section-grid">
         <Card
           title={t({
@@ -384,10 +360,6 @@ export default function OverviewView({
         </Card>
       </section>
 
-      {/* =====================================================
-          RECENT ACTIVITY
-          ===================================================== */}
-
       <section className="overview-section">
         <Card
           title={t({
@@ -418,7 +390,6 @@ export default function OverviewView({
           <div className="overview-table-wrap">
             <DataTable
               columns={columns}
-              tableWidth="1000px"
               rows={data.recent}
               rowKey={(order) =>
                 order.id
