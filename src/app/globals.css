@@ -5850,3 +5850,158 @@
     min-width: 1335px !important;
   }
 }
+
+
+/* =========================================================
+   DEFINITIVE TABLE ALIGNMENT
+   Explicit tracks are shared by each header and its cells.
+   ========================================================= */
+
+/* Recent activity uses the same fixed track width for the heading
+   and every row. Long date/amount text may wrap; identity fields don't. */
+.overview-table-wrap .tbl {
+  width: 1000px !important;
+  min-width: 1000px !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+.overview-table-wrap .tbl th,
+.overview-table-wrap .tbl td {
+  box-sizing: border-box;
+  padding: 12px 14px !important;
+  text-align: start;
+  vertical-align: middle;
+}
+
+.overview-table-wrap .tbl th:nth-child(1),
+.overview-table-wrap .tbl td:nth-child(1) { width: 140px !important; }
+.overview-table-wrap .tbl th:nth-child(2),
+.overview-table-wrap .tbl td:nth-child(2) { width: 180px !important; }
+.overview-table-wrap .tbl th:nth-child(3),
+.overview-table-wrap .tbl td:nth-child(3) { width: 190px !important; }
+.overview-table-wrap .tbl th:nth-child(4),
+.overview-table-wrap .tbl td:nth-child(4) { width: 190px !important; }
+.overview-table-wrap .tbl th:nth-child(5),
+.overview-table-wrap .tbl td:nth-child(5) { width: 140px !important; }
+.overview-table-wrap .tbl th:nth-child(6),
+.overview-table-wrap .tbl td:nth-child(6) { width: 160px !important; }
+
+.overview-table-wrap .tbl th {
+  white-space: nowrap;
+}
+
+.overview-table-wrap .tbl td:nth-child(1),
+.overview-table-wrap .tbl td:nth-child(2),
+.overview-table-wrap .tbl td:nth-child(3) {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.overview-order-cell,
+.overview-customer-cell,
+.overview-phone-cell,
+.overview-date-cell,
+.overview-amount-cell {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.5;
+}
+
+.overview-order-cell bdi,
+.overview-customer-cell bdi,
+.overview-phone-cell bdi {
+  white-space: nowrap;
+}
+
+/* Full orders page: fixed 1335px grid, no automatic column stretching.
+   The first three identity columns stay on one line. Other fields can wrap
+   inside their own column without shifting neighboring headers/cells. */
+.orders-table-wrap .tbl {
+  width: 1335px !important;
+  min-width: 1335px !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+.orders-table-wrap .tbl th,
+.orders-table-wrap .tbl td {
+  box-sizing: border-box;
+  padding: 13px 12px !important;
+  text-align: start;
+  vertical-align: middle;
+}
+
+.orders-table-wrap .tbl th:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(1) { width: 145px !important; }
+.orders-table-wrap .tbl th:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(2) { width: 220px !important; }
+.orders-table-wrap .tbl th:nth-child(3),
+.orders-table-wrap .tbl td:nth-child(3) { width: 175px !important; }
+.orders-table-wrap .tbl th:nth-child(4),
+.orders-table-wrap .tbl td:nth-child(4) { width: 145px !important; }
+.orders-table-wrap .tbl th:nth-child(5),
+.orders-table-wrap .tbl td:nth-child(5) { width: 275px !important; }
+.orders-table-wrap .tbl th:nth-child(6),
+.orders-table-wrap .tbl td:nth-child(6) { width: 125px !important; }
+.orders-table-wrap .tbl th:nth-child(7),
+.orders-table-wrap .tbl td:nth-child(7) { width: 130px !important; }
+.orders-table-wrap .tbl th:nth-child(8),
+.orders-table-wrap .tbl td:nth-child(8) { width: 120px !important; }
+
+.orders-table-wrap .tbl th {
+  white-space: nowrap;
+}
+
+.orders-table-wrap .tbl td:nth-child(1),
+.orders-table-wrap .tbl td:nth-child(2),
+.orders-table-wrap .tbl td:nth-child(3) {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.orders-id-cell,
+.orders-customer-cell {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap !important;
+}
+
+.orders-id-cell b,
+.orders-id-cell bdi,
+.orders-customer-cell > span,
+.orders-customer-cell bdi,
+.orders-table-wrap .tbl td:nth-child(3) bdi {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.orders-customer-cell > span {
+  display: block;
+  min-width: 0;
+}
+
+.orders-details-cell {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.orders-details-cell p,
+.orders-details-cell span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
