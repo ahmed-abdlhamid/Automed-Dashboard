@@ -92,6 +92,7 @@ export default function OverviewView({
   const columns: Column<Order>[] = [
     {
       key: "id",
+      width: "140px",
       header: t({
         ar: "رقم الطلب",
         en: "Order",
@@ -106,6 +107,7 @@ export default function OverviewView({
     },
     {
       key: "customer",
+      width: "180px",
       header: t({
         ar: "العميل",
         en: "Customer",
@@ -118,6 +120,7 @@ export default function OverviewView({
     },
     {
       key: "phone",
+      width: "190px",
       header: t({
         ar: "رقم الهاتف",
         en: "Phone",
@@ -130,6 +133,7 @@ export default function OverviewView({
     },
     {
       key: "date",
+      width: "190px",
       header: t({
         ar: "التاريخ",
         en: "Date",
@@ -142,6 +146,7 @@ export default function OverviewView({
     },
     {
       key: "amount",
+      width: "140px",
       header: t({
         ar: "المبلغ",
         en: "Amount",
@@ -154,6 +159,7 @@ export default function OverviewView({
     },
     {
       key: "status",
+      width: "160px",
       header: t({
         ar: "الحالة",
         en: "Status",
@@ -412,6 +418,7 @@ export default function OverviewView({
           <div className="overview-table-wrap">
             <DataTable
               columns={columns}
+              tableWidth="1000px"
               rows={data.recent}
               rowKey={(order) =>
                 order.id
