@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Providers from "@/components/Providers";
 import "./globals.css";
-import "./table-alignment.css";
 
 export const metadata: Metadata = {
   title: "Automed Dashboard",
