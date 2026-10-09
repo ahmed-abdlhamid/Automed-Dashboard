@@ -1459,7 +1459,7 @@
      ========================================================= */
 
   .tbl th {
-    padding: 12px 18px;
+    padding: 12px 14px;
 
     color: var(--mut);
 
@@ -1471,16 +1471,20 @@
     font-weight: 700;
 
     white-space: nowrap;
+    vertical-align: top;
   }
 
   .tbl td {
-    padding: 14px 18px;
+    padding: 12px 14px;
 
     border-bottom: 1px solid var(--line);
 
     font-size: 12px;
 
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    vertical-align: top;
   }
 
   .tbl tbody tr {
@@ -2337,11 +2341,11 @@
   }
 
   .overview-table-wrap .tbl {
-    min-width: 700px;
+    min-width: 0;
   }
 
   .overview-order-cell {
-    min-width: 115px;
+    min-width: 0;
   }
 
   .overview-table-type {
@@ -2781,7 +2785,7 @@
   }
 
   .orders-table-wrap .tbl {
-    min-width: 1050px;
+    min-width: 0;
   }
 
   .orders-table-wrap th {
@@ -2800,11 +2804,9 @@
   }
 
   .orders-customer-cell {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    min-width: 145px;
+    display: block;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .orders-avatar {
@@ -2837,7 +2839,7 @@
   }
 
   .orders-date-cell {
-    min-width: 90px;
+    min-width: 0;
   }
 
   .orders-date-cell p {
@@ -2860,8 +2862,8 @@
   }
 
   .orders-details-cell {
-    min-width: 190px;
-    max-width: 280px;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .orders-details-cell p {
@@ -5434,9 +5436,7 @@
 
 /* =========================================================
    AUTOMED TABLE LAYOUT — SINGLE SOURCE OF TRUTH
-   Equal-width columns are defined by DataTable's colgroup.
-   Keep only the table container widths here; do not add
-   per-column nth-child widths.
+   Equal columns come from DataTable colgroup only.
    ========================================================= */
 
 .overview-table-wrap,
@@ -5444,22 +5444,16 @@
   width: 100%;
   min-width: 0;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .overview-table-wrap .tbl,
 .orders-table-wrap .tbl {
   width: 100% !important;
+  min-width: 0 !important;
   max-width: none !important;
   table-layout: fixed !important;
   border-collapse: collapse;
-}
-
-.overview-table-wrap .tbl {
-  min-width: 1000px !important;
-}
-
-.orders-table-wrap .tbl {
-  min-width: 1300px !important;
 }
 
 .overview-table-wrap .tbl th,
@@ -5467,17 +5461,20 @@
 .orders-table-wrap .tbl th,
 .orders-table-wrap .tbl td {
   box-sizing: border-box;
-  min-width: 0;
-  padding: 12px 14px;
-  text-align: start;
-  vertical-align: middle;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
+  min-width: 0 !important;
+  max-width: none !important;
+  width: auto !important;
+  padding: 12px 14px !important;
+  text-align: start !important;
+  vertical-align: top !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
 }
 
 .overview-table-wrap .tbl th,
 .orders-table-wrap .tbl th {
+  white-space: nowrap !important;
   line-height: 1.45;
 }
 
@@ -5486,45 +5483,64 @@
   line-height: 1.5;
 }
 
-/* Let long values wrap inside their own equal-width track. */
 .orders-id-cell,
 .orders-customer-cell,
 .orders-details-cell,
+.orders-date-cell,
+.orders-muted-value,
+.orders-amount,
+.orders-payment,
 .overview-order-cell,
 .overview-customer-cell,
 .overview-phone-cell,
 .overview-date-cell,
 .overview-amount-cell {
-  display: block;
+  display: block !important;
   width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
 }
 
-.orders-id-cell b,
-.orders-id-cell bdi,
-.orders-customer-cell bdi,
-.orders-customer-cell > span,
-.orders-details-cell p,
-.orders-details-cell span,
-.overview-order-cell bdi,
-.overview-customer-cell bdi,
-.overview-phone-cell bdi {
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
+.orders-id-cell {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 
-@media (max-width: 560px) {
-  .overview-table-wrap .tbl {
-    min-width: 1000px !important;
-  }
+.orders-id-cell > span {
+  color: var(--mut);
+  font-size: 9px;
+}
 
-  .orders-table-wrap .tbl {
-    min-width: 1300px !important;
-  }
+.orders-date-cell p {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.orders-date-cell span {
+  display: block;
+  margin-top: 2px;
+  color: var(--mut);
+  font-size: 9px;
+}
+
+.orders-details-cell p {
+  margin: 0;
+  font-size: 11px;
+}
+
+.orders-details-cell span {
+  display: block;
+  margin-top: 2px;
+  color: var(--mut);
+  font-size: 9px;
+}
+
+.orders-avatar {
+  display: none !important;
 }
