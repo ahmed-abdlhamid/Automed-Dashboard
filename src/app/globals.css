@@ -5225,3 +5225,89 @@
     }
   }
 }
+
+/* =========================================================
+   AUTOMED — MOBILE SIDEBAR WIDTH
+   Keep the current height and desktop layout unchanged.
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+  .sidebar,
+  .sidebar[data-expanded="true"],
+  .sidebar[data-expanded="false"],
+  .sidebar[data-pinned="true"] {
+    width: min(238px, calc(100vw - 64px)) !important;
+    max-width: min(238px, calc(100vw - 64px)) !important;
+    min-width: 0 !important;
+  }
+}
+
+/* =========================================================
+   AUTOMATION — CARD TEXT SPACING & SIZE
+   Intentionally outside @layer to override older rules.
+   ========================================================= */
+
+.automation-module-grid .automation-module-card {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.automation-module-grid .automation-module-card .automation-module-icon-wrap {
+  padding: 18px 20px 0 !important;
+}
+
+.automation-module-grid .automation-module-card h3 {
+  box-sizing: border-box;
+  margin: 16px 20px 0 !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.automation-module-grid .automation-module-card > p {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 50px;
+  margin: 7px 20px 0 !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.automation-module-grid .automation-module-card .automation-module-footer {
+  box-sizing: border-box;
+  min-width: 0;
+  gap: 8px;
+  margin-top: 15px;
+  padding: 11px 20px !important;
+}
+
+.automation-module-grid .automation-module-card .automation-module-footer > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767.98px) {
+  .automation-module-grid .automation-module-card .automation-module-icon-wrap {
+    padding: 16px 16px 0 !important;
+  }
+
+  .automation-module-grid .automation-module-card h3 {
+    margin: 14px 16px 0 !important;
+  }
+
+  .automation-module-grid .automation-module-card > p {
+    min-height: 0;
+    margin: 7px 16px 0 !important;
+    font-size: 12px !important;
+  }
+
+  .automation-module-grid .automation-module-card .automation-module-footer {
+    margin-top: 13px;
+    padding: 11px 16px !important;
+  }
+}
