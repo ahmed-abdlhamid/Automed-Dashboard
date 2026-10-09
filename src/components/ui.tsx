@@ -216,7 +216,6 @@ export type Column<T> = {
   key: string;
   header: string;
   render: (row: T) => ReactNode;
-  width?: string;
 };
 
 export function DataTable<T>({
@@ -224,46 +223,18 @@ export function DataTable<T>({
   rows,
   rowKey,
   empty,
-  tableWidth,
 }: {
   columns: Column<T>[];
   rows: T[];
   rowKey: (row: T) => string;
   empty: string;
-  tableWidth?: string;
 }) {
-  const hasColumnWidths = columns.some(
-    (column) => Boolean(column.width)
-  );
-
   return (
     <div className="overflow-x-auto">
       <table
         className="tbl w-full border-collapse"
-        style={
-          hasColumnWidths
-            ? {
-                tableLayout: "fixed",
-                width: tableWidth || "100%",
-                minWidth: tableWidth || undefined,
-              }
-            : undefined
-        }
+        style={{ tableLayout: "fixed", width: "100%" }}
       >
-        {hasColumnWidths && (
-          <colgroup>
-            {columns.map((column) => (
-              <col
-                key={column.key}
-                style={
-                  column.width
-                    ? { width: column.width }
-                    : undefined
-                }
-              />
-            ))}
-          </colgroup>
-        )}
         <thead>
           <tr>
             {columns.map((column) => (
