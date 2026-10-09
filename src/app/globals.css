@@ -1465,13 +1465,13 @@
 
     border-bottom: 1px solid var(--line);
 
-    text-align: start;
+    text-align: center;
 
     font-size: 11px;
     font-weight: 700;
 
     white-space: nowrap;
-    vertical-align: top;
+    vertical-align: middle;
   }
 
   .tbl td {
@@ -1484,7 +1484,8 @@
     white-space: normal;
     overflow-wrap: break-word;
     word-break: break-word;
-    vertical-align: top;
+    vertical-align: middle;
+    text-align: center;
   }
 
   .tbl tbody tr {
@@ -2282,15 +2283,13 @@
 
   .overview-chart-header {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
 
     gap: 16px;
 
-    margin:
-      4px
-      4px
-      0;
+    margin: 0;
+    padding: 0 24px;
   }
 
   .overview-chart-header > div {
@@ -2423,6 +2422,7 @@
     flex-direction: column;
 
     gap: 3px;
+    padding: 0 24px;
   }
 }
 
@@ -5465,8 +5465,8 @@
   max-width: none !important;
   width: auto !important;
   padding: 12px 14px !important;
-  text-align: start !important;
-  vertical-align: top !important;
+  text-align: center !important;
+  vertical-align: middle !important;
   white-space: normal !important;
   overflow-wrap: break-word !important;
   word-break: break-word !important;
@@ -5507,7 +5507,7 @@
 .orders-id-cell {
   display: flex !important;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 2px;
 }
 
