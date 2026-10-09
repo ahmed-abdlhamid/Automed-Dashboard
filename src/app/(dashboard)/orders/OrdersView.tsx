@@ -27,7 +27,7 @@ function formatDate(date: string): string {
   const parts = date.split("-");
 
   if (parts.length === 3) {
-    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    return `\( {parts[2]}/ \){parts[1]}/${parts[0]}`;
   }
 
   return date;
@@ -193,7 +193,6 @@ export default function OrdersView({
   const columns: Column<Order>[] = [
     {
       key: "id",
-      width: "145px",
       header: t({
         ar: "رقم الطلب",
         en: "Order",
@@ -217,23 +216,19 @@ export default function OrdersView({
 
     {
       key: "customer",
-      width: "220px",
       header: t({
         ar: "العميل",
         en: "Customer",
       }),
       render: (order) => (
-        <div className="orders-customer-cell">
-          <span className="font-medium">
-            <bdi>{order.customer}</bdi>
-          </span>
-        </div>
+        <span className="font-medium">
+          <bdi>{order.customer}</bdi>
+        </span>
       ),
     },
 
     {
       key: "phone",
-      width: "175px",
       header: t({
         ar: "رقم الهاتف",
         en: "Phone",
@@ -250,7 +245,6 @@ export default function OrdersView({
 
     {
       key: "date",
-      width: "145px",
       header: t({
         ar: "التاريخ",
         en: "Date & time",
@@ -276,27 +270,18 @@ export default function OrdersView({
 
     {
       key: "items",
-      width: "275px",
       header: t({
         ar: "التفاصيل",
         en: "Details",
       }),
       render: (order) => (
         <div className="orders-details-cell">
-          <p
-            title={order.items}
-            className="line-clamp-2"
-          >
+          <p title={order.items}>
             {order.items}
           </p>
 
           {order.deliveryAddress && (
-            <span
-              title={
-                order.deliveryAddress
-              }
-              className="line-clamp-1"
-            >
+            <span title={order.deliveryAddress}>
               {order.deliveryAddress}
             </span>
           )}
@@ -306,7 +291,6 @@ export default function OrdersView({
 
     {
       key: "amount",
-      width: "125px",
       header: t({
         ar: "الإجمالي",
         en: "Total",
@@ -325,7 +309,6 @@ export default function OrdersView({
 
     {
       key: "paymentMethod",
-      width: "130px",
       header: t({
         ar: "طريقة الدفع",
         en: "Payment",
@@ -341,7 +324,6 @@ export default function OrdersView({
 
     {
       key: "status",
-      width: "120px",
       header: t({
         ar: "الحالة",
         en: "Status",
@@ -377,7 +359,6 @@ export default function OrdersView({
         })}
       />
 
-      {/* Summary */}
       <section className="orders-summary">
         <div className="orders-summary-main">
           <div className="orders-summary-icon">
@@ -481,7 +462,6 @@ export default function OrdersView({
         </div>
       </section>
 
-      {/* Orders */}
       <Card>
         <div className="orders-toolbar">
           <div className="orders-search">
@@ -590,7 +570,6 @@ export default function OrdersView({
         <div className="orders-table-wrap">
           <DataTable
             columns={columns}
-            tableWidth="1335px"
             rows={rows}
             rowKey={(order) =>
               order.id
