@@ -149,13 +149,13 @@ export function StatCard({
         )}
       </div>
 
-      <div className="mt-4 flex items-baseline gap-2">
-        <span className="font-head text-3xl font-bold tracking-tight">
+      <div className="metric-value-row">
+        <span className="metric-value">
           {value}
         </span>
 
         {unit && (
-          <span className="text-xs opacity-70">
+          <span className="metric-unit">
             {unit}
           </span>
         )}
@@ -223,15 +223,32 @@ export function DataTable<T>({
   rows,
   rowKey,
   empty,
+  equalColumnWidths = false,
 }: {
   columns: Column<T>[];
   rows: T[];
   rowKey: (row: T) => string;
   empty: string;
+  equalColumnWidths?: boolean;
 }) {
   return (
     <div className="overflow-x-auto">
-      <table className="tbl w-full border-collapse">
+      <table
+        className="tbl w-full border-collapse"
+        style={{ tableLayout: "fixed", width: "100%" }}
+      >
+        {equalColumnWidths && (
+          <colgroup>
+            {columns.map((column) => (
+              <col
+                key={column.key}
+                style={{
+                  width: `${100 / columns.length}%`,
+                }}
+              />
+            ))}
+          </colgroup>
+        )}
         <thead>
           <tr>
             {columns.map((column) => (

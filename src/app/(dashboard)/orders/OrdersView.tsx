@@ -27,7 +27,7 @@ function formatDate(date: string): string {
   const parts = date.split("-");
 
   if (parts.length === 3) {
-    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    return parts[2] + "/" + parts[1] + "/" + parts[0];
   }
 
   return date;
@@ -221,19 +221,9 @@ export default function OrdersView({
         en: "Customer",
       }),
       render: (order) => (
-        <div className="orders-customer-cell">
-          <span className="orders-avatar">
-            {order.customer
-              ?.charAt(0)
-              .toUpperCase() || "?"}
-          </span>
-
-          <span className="font-medium">
-            <bdi>
-              {order.customer}
-            </bdi>
-          </span>
-        </div>
+        <span className="font-medium">
+          <bdi>{order.customer}</bdi>
+        </span>
       ),
     },
 
@@ -286,20 +276,12 @@ export default function OrdersView({
       }),
       render: (order) => (
         <div className="orders-details-cell">
-          <p
-            title={order.items}
-            className="line-clamp-2"
-          >
+          <p title={order.items}>
             {order.items}
           </p>
 
           {order.deliveryAddress && (
-            <span
-              title={
-                order.deliveryAddress
-              }
-              className="line-clamp-1"
-            >
+            <span title={order.deliveryAddress}>
               {order.deliveryAddress}
             </span>
           )}
@@ -377,7 +359,6 @@ export default function OrdersView({
         })}
       />
 
-      {/* Summary */}
       <section className="orders-summary">
         <div className="orders-summary-main">
           <div className="orders-summary-icon">
@@ -481,7 +462,6 @@ export default function OrdersView({
         </div>
       </section>
 
-      {/* Orders */}
       <Card>
         <div className="orders-toolbar">
           <div className="orders-search">
@@ -589,6 +569,7 @@ export default function OrdersView({
 
         <div className="orders-table-wrap">
           <DataTable
+            equalColumnWidths
             columns={columns}
             rows={rows}
             rowKey={(order) =>

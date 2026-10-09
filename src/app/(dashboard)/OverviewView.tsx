@@ -93,70 +93,35 @@ export default function OverviewView({
     {
       key: "id",
       header: t({
-        ar: "الطلب",
+        ar: "رقم الطلب",
         en: "Order",
       }),
       render: (order) => (
-        <div className="overview-order-cell">
-          <b className="font-head text-xs">
-            #{order.id}
-          </b>
-
-          <p className="mt-0.5 text-xs text-mut">
-            {order.customer}
-          </p>
-        </div>
+        <b className="font-head text-xs">
+          <bdi dir="ltr">#{order.id}</bdi>
+        </b>
       ),
     },
-
     {
-      key: "type",
+      key: "customer",
       header: t({
-        ar: "النوع",
-        en: "Type",
+        ar: "العميل",
+        en: "Customer",
       }),
-      render: (order) => {
-        const normalized =
-          order.orderType
-            .trim()
-            .toLowerCase();
-
-        if (
-          normalized === "delivery" ||
-          normalized === "deliver"
-        ) {
-          return (
-            <span className="overview-table-type">
-              {t({
-                ar: "توصيل",
-                en: "Delivery",
-              })}
-            </span>
-          );
-        }
-
-        if (
-          normalized === "pickup" ||
-          normalized === "pick up"
-        ) {
-          return (
-            <span className="overview-table-type">
-              {t({
-                ar: "استلام",
-                en: "Pickup",
-              })}
-            </span>
-          );
-        }
-
-        return (
-          <span className="overview-table-type">
-            {order.orderType}
-          </span>
-        );
-      },
+      render: (order) => (
+        <bdi>{order.customer}</bdi>
+      ),
     },
-
+    {
+      key: "phone",
+      header: t({
+        ar: "رقم الهاتف",
+        en: "Phone",
+      }),
+      render: (order) => (
+        <bdi dir="ltr">{order.phoneNumber || "—"}</bdi>
+      ),
+    },
     {
       key: "date",
       header: t({
@@ -164,15 +129,11 @@ export default function OverviewView({
         en: "Date",
       }),
       render: (order) => (
-        <span
-          dir="ltr"
-          className="text-xs text-mut"
-        >
+        <span dir="ltr">
           {order.date} · {order.time}
         </span>
       ),
     },
-
     {
       key: "amount",
       header: t({
@@ -180,16 +141,11 @@ export default function OverviewView({
         en: "Amount",
       }),
       render: (order) => (
-        <span
-          dir="ltr"
-          className="font-semibold"
-        >
-          {fmt(order.amount)}{" "}
-          {cfg.project.currency}
+        <span dir="ltr">
+          {fmt(order.amount)} {cfg.project.currency}
         </span>
       ),
     },
-
     {
       key: "status",
       header: t({
@@ -207,19 +163,10 @@ export default function OverviewView({
           }
         >
           {order.status === "paid"
-            ? t({
-                ar: "مدفوع",
-                en: "Paid",
-              })
+            ? t({ ar: "مدفوع", en: "Paid" })
             : order.status === "pending"
-            ? t({
-                ar: "قيد الانتظار",
-                en: "Pending",
-              })
-            : t({
-                ar: "فشل",
-                en: "Failed",
-              })}
+            ? t({ ar: "قيد الانتظار", en: "Pending" })
+            : t({ ar: "فشل", en: "Failed" })}
         </Badge>
       ),
     },
@@ -227,10 +174,6 @@ export default function OverviewView({
 
   return (
     <div className="overview-page">
-      {/* =====================================================
-          HEADER
-          ===================================================== */}
-
       <section className="overview-header">
         <div className="overview-heading">
           {project && (
@@ -311,10 +254,6 @@ export default function OverviewView({
         </div>
       </section>
 
-      {/* =====================================================
-          KPI CARDS
-          ===================================================== */}
-
       <section className="overview-kpis">
         <StatCard
           featured
@@ -378,10 +317,6 @@ export default function OverviewView({
         />
       </section>
 
-      {/* =====================================================
-          PERFORMANCE
-          ===================================================== */}
-
       <section className="overview-section-grid">
         <Card
           title={t({
@@ -425,10 +360,6 @@ export default function OverviewView({
         </Card>
       </section>
 
-      {/* =====================================================
-          RECENT ACTIVITY
-          ===================================================== */}
-
       <section className="overview-section">
         <Card
           title={t({
@@ -458,6 +389,7 @@ export default function OverviewView({
         >
           <div className="overview-table-wrap">
             <DataTable
+              equalColumnWidths
               columns={columns}
               rows={data.recent}
               rowKey={(order) =>
