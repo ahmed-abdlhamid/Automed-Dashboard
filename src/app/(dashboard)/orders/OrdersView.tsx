@@ -193,6 +193,7 @@ export default function OrdersView({
   const columns: Column<Order>[] = [
     {
       key: "id",
+      width: "145px",
       header: t({
         ar: "رقم الطلب",
         en: "Order",
@@ -216,22 +217,15 @@ export default function OrdersView({
 
     {
       key: "customer",
+      width: "220px",
       header: t({
         ar: "العميل",
         en: "Customer",
       }),
       render: (order) => (
         <div className="orders-customer-cell">
-          <span className="orders-avatar">
-            {order.customer
-              ?.charAt(0)
-              .toUpperCase() || "?"}
-          </span>
-
           <span className="font-medium">
-            <bdi>
-              {order.customer}
-            </bdi>
+            <bdi>{order.customer}</bdi>
           </span>
         </div>
       ),
@@ -239,6 +233,7 @@ export default function OrdersView({
 
     {
       key: "phone",
+      width: "175px",
       header: t({
         ar: "رقم الهاتف",
         en: "Phone",
@@ -255,6 +250,7 @@ export default function OrdersView({
 
     {
       key: "date",
+      width: "145px",
       header: t({
         ar: "التاريخ",
         en: "Date & time",
@@ -280,6 +276,7 @@ export default function OrdersView({
 
     {
       key: "items",
+      width: "275px",
       header: t({
         ar: "التفاصيل",
         en: "Details",
@@ -309,6 +306,7 @@ export default function OrdersView({
 
     {
       key: "amount",
+      width: "125px",
       header: t({
         ar: "الإجمالي",
         en: "Total",
@@ -327,6 +325,7 @@ export default function OrdersView({
 
     {
       key: "paymentMethod",
+      width: "130px",
       header: t({
         ar: "طريقة الدفع",
         en: "Payment",
@@ -342,6 +341,7 @@ export default function OrdersView({
 
     {
       key: "status",
+      width: "120px",
       header: t({
         ar: "الحالة",
         en: "Status",
@@ -590,6 +590,7 @@ export default function OrdersView({
         <div className="orders-table-wrap">
           <DataTable
             columns={columns}
+            tableWidth="1335px"
             rows={rows}
             rowKey={(order) =>
               order.id
