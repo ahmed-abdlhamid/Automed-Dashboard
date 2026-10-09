@@ -149,13 +149,13 @@ export function StatCard({
         )}
       </div>
 
-      <div className="mt-4 flex items-baseline gap-2">
-        <span className="font-head text-3xl font-bold tracking-tight">
+      <div className="metric-value-row">
+        <span className="metric-value">
           {value}
         </span>
 
         {unit && (
-          <span className="text-xs opacity-70">
+          <span className="metric-unit">
             {unit}
           </span>
         )}
