@@ -100,7 +100,7 @@ export default function AutomationView({ projects, initialProjectId }: {
 
   const statCards = [
     { key: "workflows", icon: "automation" as const, label: { ar: "Workflows المشروع", en: "Project workflows" }, value: stats?.workflows ?? "—", detail: stats ? (lang === "ar" ? stats.activeWorkflows + " مفعّل" : stats.activeWorkflows + " active") : "" },
-    { key: "executions", icon: "activity" as const, label: { ar: "التنفيذات المعروضة", en: "Executions loaded" }, value: stats?.executions ?? "—", detail: lang === "ar" ? "آخر 50 تنفيذًا للمشروع" : "Latest 50 project executions" },
+    { key: "executions", icon: "activity" as const, label: { ar: "التنفيذات المعروضة", en: "Executions loaded" }, value: stats?.executions ?? "—", detail: lang === "ar" ? "من آخر 50 تنفيذًا كحد أقصى" : "Of up to the latest 50 executions" },
     { key: "success", icon: "check" as const, label: { ar: "تنفيذات ناجحة", en: "Successful executions" }, value: stats?.successfulExecutions ?? "—", detail: lang === "ar" ? "ضمن سجل المشروع" : "In this project's history" },
     { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: stats ? (lang === "ar" ? stats.runningExecutions + " قيد التشغيل/الانتظار" : stats.runningExecutions + " running/waiting") : "" },
   ];
