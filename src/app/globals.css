@@ -5768,3 +5768,99 @@
     min-height: 38px;
   }
 }
+
+
+/* Automation-only layout corrections */
+.automation-page .automation-stat-number {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 1em;
+  font-weight: 700;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+  letter-spacing: normal !important;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.automation-page .automation-live-stat-card > small {
+  direction: rtl;
+  unicode-bidi: plaintext;
+}
+.automation-page .automation-assignment-row {
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.automation-page .automation-assignment-info {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.automation-page .automation-assignment-info strong,
+.automation-page .automation-assignment-info small {
+  display: block;
+  max-width: 100%;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.automation-page .automation-assignment-select {
+  flex: 0 1 320px;
+  width: 320px;
+  min-width: 250px;
+  max-width: 45%;
+}
+.automation-page .automation-assignment-select select {
+  box-sizing: border-box;
+  max-width: 100%;
+  padding-inline: 12px 30px;
+  text-overflow: ellipsis;
+}
+.automation-page .automation-project-picker-copy {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.automation-page .automation-project-picker-copy > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.automation-page .automation-project-select-wrap {
+  flex: 0 1 320px;
+  width: 320px;
+  min-width: 250px;
+  max-width: 45%;
+}
+.automation-page .automation-project-select-wrap select {
+  box-sizing: border-box;
+  max-width: 100%;
+  padding-inline: 12px 30px;
+  text-overflow: ellipsis;
+}
+@media (max-width: 680px) {
+  .automation-page .automation-project-picker {
+    align-items: stretch;
+  }
+  .automation-page .automation-project-picker-copy {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  .automation-page .automation-project-select-wrap,
+  .automation-page .automation-assignment-select {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .automation-page .automation-assignment-row {
+    align-items: stretch;
+    gap: 12px;
+  }
+  .automation-page .automation-assignment-info {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
