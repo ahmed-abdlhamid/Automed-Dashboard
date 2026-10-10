@@ -91,8 +91,8 @@ export default function AutomationView({ projects, initialProjectId }: {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(typeof result.error === "string" ? result.error : "Could not save assignment.");
-      setSaveMessage(lang === "ar" ? "تم حفظ ربط الـ Workflow بالمشروع." : "Workflow assignment saved.");
       await loadData(selectedProjectId, true);
+      setSaveMessage(lang === "ar" ? "تم حفظ ربط الـ Workflow بالمشروع." : "Workflow assignment saved.");
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : (lang === "ar" ? "تعذر حفظ الربط." : "Could not save assignment."));
     } finally { setSavingWorkflowId(null); }
