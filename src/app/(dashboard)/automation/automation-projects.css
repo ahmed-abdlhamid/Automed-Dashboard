@@ -1,0 +1,22 @@
+.automation-project-picker{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 20px;margin-bottom:20px;border:1px solid var(--border,rgba(128,128,128,.2));border-radius:18px;background:var(--card,rgba(255,255,255,.045));backdrop-filter:blur(18px)}
+.automation-project-picker-copy{display:flex;align-items:center;gap:13px;min-width:0}
+.automation-project-picker-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 auto;border-radius:13px;color:var(--accent,#d98b42);background:rgba(217,139,66,.12)}
+.automation-project-picker-copy strong{display:block;font-size:14px}
+.automation-project-picker-copy p{margin:5px 0 0;color:var(--muted,#8a8a8a);font-size:12px;line-height:1.6}
+.automation-project-select-wrap,.automation-assignment-select{display:flex;flex-direction:column;gap:7px;min-width:190px}
+.automation-project-select-wrap>span,.automation-assignment-select>span{color:var(--muted,#888);font-size:11px;font-weight:600}
+.automation-project-select-wrap select,.automation-assignment-select select{width:100%;min-height:42px;padding:0 12px;border:1px solid var(--border,rgba(128,128,128,.25));border-radius:11px;outline:none;color:var(--foreground,inherit);background:var(--background,transparent);font:inherit;font-size:13px}
+.automation-project-select-wrap select:focus,.automation-assignment-select select:focus{border-color:rgba(217,139,66,.7);box-shadow:0 0 0 3px rgba(217,139,66,.1)}
+.automation-project-select-wrap option,.automation-assignment-select option{color:#202020;background:#fff}
+.automation-project-save-message{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:12px 14px;border:1px solid rgba(70,160,105,.28);border-radius:12px;background:rgba(70,160,105,.08);font-size:13px}
+.automation-project-management{margin-top:22px}
+.automation-assignment-list{display:flex;flex-direction:column}
+.automation-assignment-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;border-bottom:1px solid var(--border,rgba(128,128,128,.12))}
+.automation-assignment-row:last-child{border-bottom:0}
+.automation-assignment-info{display:flex;flex-direction:column;gap:5px;min-width:0}
+.automation-assignment-info strong{font-size:13px;overflow-wrap:anywhere}
+.automation-assignment-info small{color:var(--muted,#888);font-size:11px;overflow-wrap:anywhere}
+.automation-assignment-select{min-width:220px}
+.automation-assignment-saving{color:var(--muted,#888);font-size:11px;white-space:nowrap}
+.automation-project-management-note{margin:14px 0 0;color:var(--muted,#888);font-size:12px;line-height:1.7}
+@media(max-width:680px){.automation-project-picker{align-items:stretch;flex-direction:column;padding:15px}.automation-project-select-wrap{min-width:0;width:100%}.automation-assignment-row{align-items:stretch;flex-direction:column;gap:11px}.automation-assignment-select{min-width:0;width:100%}.automation-assignment-saving{align-self:flex-start}}
