@@ -6029,14 +6029,15 @@
 }
 .automation-page .automation-project-management .automation-assignment-row {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 34%);
+  /* Keep workflow details aligned with the card content; make the project selector compact. */
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 28%);
   align-items: center;
-  column-gap: 20px;
+  column-gap: 24px;
   width: 100%;
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
-  padding: 16px 14px;
+  padding: 16px 0;
   margin: 0;
   border-bottom: 1px solid var(--border, rgba(128,128,128,.12));
 }
@@ -6075,6 +6076,7 @@
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
+  justify-self: stretch;
 }
 .automation-page .automation-project-management .automation-assignment-select > span {
   display: block;
@@ -6094,7 +6096,7 @@
   grid-column: 1 / -1;
 }
 .automation-page .automation-project-management .automation-project-management-note {
-  margin-inline: 14px;
+  margin-inline: 0;
 }
 @media (max-width: 760px) {
   .automation-page .automation-stat-value-block > strong .automation-stat-number {
