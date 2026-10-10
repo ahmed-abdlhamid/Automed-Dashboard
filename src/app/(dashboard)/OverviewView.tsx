@@ -276,7 +276,7 @@ export default function OverviewView({
           </div>
         </article>
         <div className="overview-kpi-stack">
-          <StatCard icon="orders" label={t({ ar: "إجمالي الطلبات", en: "Total orders" })} value={fmt(stats.orders)} unit={t({ ar: "طلب", en: "orders" })} href="/orders" />
+          <StatCard featured icon="orders" label={t({ ar: "إجمالي الطلبات", en: "Total orders" })} value={fmt(stats.orders)} unit={t({ ar: "طلب", en: "orders" })} href="/orders" footnote={t({ ar: "كل الطلبات المسجلة", en: "All recorded orders" })} />
           <StatCard icon="users" label={t({ ar: "العملاء", en: "Customers" })} value={fmt(stats.customers)} unit={t({ ar: "عميل", en: "customers" })} />
           <StatCard icon="pulse" label={t({ ar: "نسبة الدفع", en: "Paid rate" })} value={stats.paidRate + "%"} unit={t({ ar: "من الطلبات", en: "of orders" })} href="/analytics" />
         </div>
