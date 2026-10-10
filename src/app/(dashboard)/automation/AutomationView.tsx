@@ -99,10 +99,10 @@ export default function AutomationView({ projects, initialProjectId }: {
   };
 
   const statCards = [
-    { key: "workflows", icon: "automation" as const, label: { ar: "Workflows المشروع", en: "Project workflows" }, value: stats?.workflows ?? "—", detail: stats ? (lang === "ar" ? stats.activeWorkflows + " مفعّل" : stats.activeWorkflows + " active") : "" },
+    { key: "workflows", icon: "automation" as const, label: { ar: "Workflows المشروع", en: "Project workflows" }, value: stats?.workflows ?? "—", detail: stats ? (lang === "ar" ? "active-ar" : stats.activeWorkflows + " active") : "" },
     { key: "executions", icon: "activity" as const, label: { ar: "التنفيذات المعروضة", en: "Executions loaded" }, value: stats?.executions ?? "—", detail: lang === "ar" ? "من آخر 50 تنفيذًا كحد أقصى" : "Of up to the latest 50 executions" },
     { key: "success", icon: "check" as const, label: { ar: "تنفيذات ناجحة", en: "Successful executions" }, value: stats?.successfulExecutions ?? "—", detail: lang === "ar" ? "ضمن سجل المشروع" : "In this project's history" },
-    { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: stats ? (lang === "ar" ? stats.runningExecutions + " قيد التشغيل/الانتظار" : stats.runningExecutions + " running/waiting") : "" },
+    { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: stats ? (lang === "ar" ? "running-ar" : stats.runningExecutions + " running/waiting") : "" },
   ];
 
   return <div className="automation-page">
@@ -145,7 +145,7 @@ export default function AutomationView({ projects, initialProjectId }: {
 
     <section className="automation-live-stats">{statCards.map((item) => <Card key={item.key} className="automation-live-stat-card">
       <div className="automation-live-stat-top"><span className="automation-live-stat-icon"><Icon name={item.icon} size={18} /></span><span>{t(item.label)}</span></div>
-      <strong>{loading ? "…" : item.value}</strong><small>{item.detail}</small>
+      <strong><bdi dir="ltr" className="automation-stat-number">{loading ? "…" : item.value}</bdi></strong><small>{item.key === "workflows" && stats ? (lang === "ar" ? <><bdi dir="ltr">{stats.activeWorkflows}</bdi>{" مفعّل"}</> : item.detail) : item.key === "failed" && stats ? (lang === "ar" ? <><bdi dir="ltr">{stats.runningExecutions}</bdi>{" قيد التشغيل/الانتظار"}</> : item.detail) : item.detail}</small>
     </Card>)}</section>
 
     <section className="automation-live-grid">
