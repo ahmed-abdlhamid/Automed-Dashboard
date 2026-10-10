@@ -145,7 +145,7 @@ export default function AutomationView({ projects, initialProjectId }: {
 
     <section className="automation-live-stats">{statCards.map((item) => <Card key={item.key} className="automation-live-stat-card">
       <div className="automation-live-stat-top"><span className="automation-live-stat-icon"><Icon name={item.icon} size={18} /></span><span>{t(item.label)}</span></div>
-      <strong><bdi dir="ltr" className="automation-stat-number">{loading ? "…" : item.value}</bdi></strong><small>{item.detail}</small>
+      <div className="automation-stat-value-block"><strong><bdi dir="ltr" className="automation-stat-number">{loading ? "…" : item.value}</bdi></strong><small>{item.detail}</small></div>
     </Card>)}</section>
 
     <section className="automation-live-grid">
