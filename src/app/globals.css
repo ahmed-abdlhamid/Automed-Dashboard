@@ -6098,7 +6098,7 @@
   grid-column: 1 / -1;
 }
 .automation-page .automation-project-management .automation-project-management-note {
-  margin-inline: 0;
+  margin-inline: 24px;
 }
 @media (max-width: 760px) {
   .automation-page .automation-stat-value-block > strong .automation-stat-number {
