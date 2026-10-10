@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/components/Providers";
 import { Card, Icon, PageHeader } from "@/components/ui";
-import "./automation-projects.css";
 
 type ProjectOption = { id: string; name: string };
 type Workflow = {
