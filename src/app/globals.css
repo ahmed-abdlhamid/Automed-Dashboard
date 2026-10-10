@@ -6299,3 +6299,493 @@
   }
 }
 
+/* =========================================================
+   AUTOMED DESIGN PASS — SHARED COMPONENTS + ALL DASHBOARD PAGES
+   Visual-only overrides. Data, routes, permissions and actions stay intact.
+   ========================================================= */
+
+@layer components {
+  .dashboard-content {
+    padding: 30px;
+  }
+
+  .xcard,
+  .metric-card,
+  .orders-summary,
+  .users-summary-card,
+  .users-table-card,
+  .analytics-revenue-card,
+  .analytics-payment-card,
+  .activity-feed-card,
+  .activity-info-card,
+  .settings-preference-card,
+  .settings-project-card {
+    border-color: color-mix(in srgb, var(--line) 88%, var(--teal-mid) 12%);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.22s ease,
+      transform 0.22s ease,
+      background-color 0.22s ease;
+  }
+
+  .xcard {
+    border-radius: 22px;
+    background:
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--surface-solid) 96%, var(--teal-soft)),
+        var(--surface));
+  }
+
+  .xcard-hover:hover,
+  .metric-card:hover,
+  .users-summary-card:hover,
+  .analytics-insight-card:hover {
+    border-color: color-mix(in srgb, var(--teal) 25%, var(--line));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .metric-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 100% 0%,
+        color-mix(in srgb, var(--teal) 7%, transparent),
+        transparent 48%),
+      var(--surface-solid);
+  }
+
+  .metric-card::after {
+    content: "";
+    position: absolute;
+    inset-block: 18px;
+    inset-inline-start: 0;
+    width: 3px;
+    border-radius: 0 4px 4px 0;
+    background: color-mix(in srgb, var(--teal) 60%, transparent);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .metric-icon,
+  .metric-arrow {
+    border-radius: 13px;
+  }
+
+  .btn {
+    min-height: 42px;
+    padding-inline: 17px;
+    border-radius: 13px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .btn-pri {
+    background: linear-gradient(135deg, var(--teal), var(--teal-2));
+    box-shadow: 0 7px 18px color-mix(in srgb, var(--teal) 15%, transparent);
+  }
+
+  .btn-pri:hover {
+    background: linear-gradient(135deg, var(--teal-mid), var(--teal));
+    transform: translateY(-1px);
+  }
+
+  .field,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    border-radius: 12px;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      background-color 0.18s ease;
+  }
+
+  .field:focus,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--teal) 62%, var(--line));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 11%, transparent);
+  }
+
+  .tbl thead th {
+    color: var(--mut);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.015em;
+  }
+
+  .tbl tbody tr {
+    transition: background-color 0.16s ease;
+  }
+
+  .tbl tbody tr:hover {
+    background: color-mix(in srgb, var(--teal) 4%, transparent);
+  }
+
+  .overview-page,
+  .orders-page,
+  .automation-page,
+  .analytics-page,
+  .activity-page,
+  .settings-page,
+  .users-page {
+    min-width: 0;
+  }
+
+  .overview-header,
+  .analytics-page > header,
+  .activity-page > header,
+  .settings-page > header,
+  .users-page > header {
+    margin-bottom: 2px;
+  }
+
+  .overview-title {
+    letter-spacing: -0.035em;
+  }
+
+  .overview-description {
+    max-width: 620px;
+    line-height: 1.9;
+  }
+
+  .overview-kpis {
+    gap: 16px;
+  }
+
+  .overview-chart-header {
+    padding-top: 2px;
+  }
+
+  .overview-table-wrap {
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface-solid) 45%, transparent);
+  }
+
+  .orders-summary {
+    border-radius: 20px;
+    padding: 20px 22px;
+    background:
+      radial-gradient(circle at 0% 0%,
+        color-mix(in srgb, var(--teal) 8%, transparent),
+        transparent 42%),
+      var(--surface);
+  }
+
+  .orders-summary-icon,
+  .analytics-status-icon,
+  .analytics-insight-icon,
+  .activity-summary-icon,
+  .settings-preference-icon {
+    border-radius: 14px;
+  }
+
+  .orders-toolbar {
+    gap: 12px;
+  }
+
+  .orders-search-input {
+    min-height: 44px;
+  }
+
+  .orders-filters {
+    gap: 6px;
+  }
+
+  .orders-table-wrap,
+  .users-table-wrap {
+    border-radius: 17px;
+    border: 1px solid var(--line);
+    background: var(--surface-solid);
+  }
+
+  .orders-table-wrap table,
+  .users-table-wrap table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .orders-table-wrap thead,
+  .users-table-wrap thead {
+    background: color-mix(in srgb, var(--teal) 4%, var(--surface-solid));
+  }
+
+  .orders-table-wrap th,
+  .users-table-wrap th {
+    padding-block: 14px;
+  }
+
+  .orders-table-wrap td,
+  .users-table-wrap td {
+    padding-block: 13px;
+  }
+
+  .analytics-kpis {
+    gap: 14px;
+  }
+
+  .analytics-revenue-card,
+  .analytics-payment-card {
+    border-radius: 22px;
+    background:
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--surface-solid) 96%, var(--teal-soft)),
+        var(--surface));
+  }
+
+  .analytics-status-card,
+  .analytics-insight-card {
+    border-radius: 18px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .analytics-insight-card {
+    border-color: var(--line);
+    background: var(--surface);
+  }
+
+  .analytics-progress {
+    overflow: hidden;
+    border-radius: 999px;
+  }
+
+  .activity-layout {
+    gap: 18px;
+  }
+
+  .activity-feed-card,
+  .activity-info-card {
+    border-radius: 22px;
+    background:
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--surface-solid) 96%, var(--teal-soft)),
+        var(--surface));
+  }
+
+  .activity-event {
+    border-radius: 16px;
+    transition: background-color 0.18s ease;
+  }
+
+  .activity-event:hover {
+    background: color-mix(in srgb, var(--teal) 4%, transparent);
+  }
+
+  .activity-order-preview {
+    border-radius: 14px;
+  }
+
+  .settings-grid {
+    gap: 18px;
+  }
+
+  .settings-preference-card,
+  .settings-project-card {
+    border-radius: 22px;
+    background:
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--surface-solid) 96%, var(--teal-soft)),
+        var(--surface));
+  }
+
+  .settings-segmented {
+    border-radius: 13px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--teal) 5%, var(--surface-soft));
+  }
+
+  .settings-segmented button {
+    border-radius: 10px;
+    transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .settings-project-logo {
+    border-radius: 16px;
+  }
+
+  .users-summary {
+    gap: 14px;
+  }
+
+  .users-summary-card {
+    border-radius: 19px;
+    background:
+      radial-gradient(circle at 100% 0%,
+        color-mix(in srgb, var(--teal) 6%, transparent),
+        transparent 50%),
+      var(--surface);
+  }
+
+  .users-table-card {
+    border-radius: 22px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .users-toolbar {
+    gap: 12px;
+  }
+
+  .users-search input {
+    min-height: 44px;
+  }
+
+  .users-avatar {
+    border: 1px solid color-mix(in srgb, var(--teal) 16%, var(--line));
+  }
+
+  .users-project-chip,
+  .users-count-badge {
+    border-radius: 9px;
+  }
+
+  .badge,
+  .orders-payment,
+  .automation-live-status {
+    letter-spacing: 0;
+  }
+
+  [data-theme="light"] .xcard,
+  [data-theme="light"] .metric-card,
+  [data-theme="light"] .analytics-revenue-card,
+  [data-theme="light"] .analytics-payment-card,
+  [data-theme="light"] .activity-feed-card,
+  [data-theme="light"] .activity-info-card,
+  [data-theme="light"] .settings-preference-card,
+  [data-theme="light"] .settings-project-card {
+    border-color: rgba(16, 32, 30, 0.075);
+  }
+
+  [data-theme="dark"] .xcard,
+  [data-theme="dark"] .analytics-revenue-card,
+  [data-theme="dark"] .analytics-payment-card,
+  [data-theme="dark"] .activity-feed-card,
+  [data-theme="dark"] .activity-info-card,
+  [data-theme="dark"] .settings-preference-card,
+  [data-theme="dark"] .settings-project-card {
+    background:
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--surface-solid) 92%, var(--teal)),
+        var(--surface));
+  }
+
+  [data-theme="dark"] .orders-table-wrap,
+  [data-theme="dark"] .users-table-wrap {
+    background: var(--surface-solid);
+  }
+
+  [data-theme="dark"] .orders-table-wrap thead,
+  [data-theme="dark"] .users-table-wrap thead {
+    background: color-mix(in srgb, var(--teal) 8%, var(--surface-solid));
+  }
+}
+
+@media (max-width: 1100px) {
+  .dashboard-content {
+    padding: 24px;
+  }
+
+  .overview-kpis,
+  .analytics-kpis {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .dashboard-content {
+    padding: 18px 14px 24px;
+  }
+
+  .xcard {
+    border-radius: 18px;
+  }
+
+  .overview-kpis {
+    gap: 10px;
+  }
+
+  .orders-summary {
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .orders-summary-stats {
+    flex-wrap: wrap;
+  }
+
+  .orders-toolbar,
+  .users-toolbar {
+    align-items: stretch;
+  }
+
+  .orders-table-wrap,
+  .users-table-wrap,
+  .overview-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .orders-table-wrap table,
+  .users-table-wrap table {
+    min-width: 640px;
+  }
+
+  .analytics-revenue-card,
+  .analytics-payment-card,
+  .activity-feed-card,
+  .activity-info-card,
+  .settings-preference-card,
+  .settings-project-card,
+  .users-table-card {
+    border-radius: 18px;
+  }
+
+  .activity-layout {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-content {
+    padding: 15px 10px 22px;
+  }
+
+  .overview-page,
+  .orders-page,
+  .analytics-page,
+  .activity-page,
+  .settings-page,
+  .users-page {
+    gap: 16px;
+  }
+
+  .btn {
+    min-height: 40px;
+    padding-inline: 13px;
+  }
+
+  .orders-summary {
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .orders-summary-main strong {
+    font-size: 19px;
+  }
+
+  .orders-mini-stat {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .users-summary {
+    gap: 10px;
+  }
+}
+
