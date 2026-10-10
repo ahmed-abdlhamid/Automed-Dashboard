@@ -6469,7 +6469,7 @@
   .automation-live-row { padding:16px; border:1px solid var(--line); border-radius:15px; background:var(--surface-solid); }
   .automation-project-management .automation-assignment-list { padding-inline:24px; }
 
-  [data-theme="dark"] .orders-summary,.[data-theme="dark"] .activity-event-content {
+  [data-theme="dark"] .orders-summary,[data-theme="dark"] .activity-event-content {
     background:var(--surface-solid);
   }
 }
