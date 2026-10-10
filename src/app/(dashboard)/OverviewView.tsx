@@ -254,110 +254,79 @@ export default function OverviewView({
         </div>
       </section>
 
-      <section className="overview-kpis">
-        <StatCard
-          featured
-          icon="wallet"
-          label={t({
-            ar: "إجمالي المبيعات",
-            en: "Revenue",
-          })}
-          value={fmt(stats.revenue)}
-          unit={cfg.project.currency}
-          href="/analytics"
-          footnote={t({
-            ar: `آخر 7 أيام: ${fmt(
-              weeklyTotal
-            )} ${cfg.project.currency}`,
-            en: `Last 7 days: ${fmt(
-              weeklyTotal
-            )} ${cfg.project.currency}`,
-          })}
-        />
-
-        <StatCard
-          icon="orders"
-          label={t({
-            ar: "إجمالي الطلبات",
-            en: "Total orders",
-          })}
-          value={fmt(stats.orders)}
-          unit={t({
-            ar: "طلب",
-            en: "orders",
-          })}
-          href="/orders"
-        />
-
-        <StatCard
-          icon="users"
-          label={t({
-            ar: "العملاء",
-            en: "Customers",
-          })}
-          value={fmt(stats.customers)}
-          unit={t({
-            ar: "عميل",
-            en: "customers",
-          })}
-        />
-
-        <StatCard
-          icon="pulse"
-          label={t({
-            ar: "نسبة الدفع",
-            en: "Paid rate",
-          })}
-          value={`${stats.paidRate}%`}
-          unit={t({
-            ar: "من الطلبات",
-            en: "of orders",
-          })}
-          href="/analytics"
-        />
+      <section className="overview-command-center">
+        <article className="overview-revenue-feature">
+          <div className="overview-feature-top">
+            <span className="overview-feature-icon"><Icon name="wallet" size={20} /></span>
+            <span className="overview-feature-label">{t({ ar: "إجمالي المبيعات", en: "Total revenue" })}</span>
+            <span className="overview-feature-live"><span />{t({ ar: "ملخص الأداء", en: "Performance snapshot" })}</span>
+          </div>
+          <div className="overview-feature-value">
+            <strong>{fmt(stats.revenue)}</strong>
+            <span>{cfg.project.currency}</span>
+          </div>
+          <p className="overview-feature-footnote">
+            {t({ ar: "آخر 7 أيام: " + fmt(weeklyTotal) + " " + cfg.project.currency, en: "Last 7 days: " + fmt(weeklyTotal) + " " + cfg.project.currency })}
+          </p>
+          <div className="overview-feature-bottom">
+            <div className="overview-feature-mark" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /></div>
+            <Link href="/analytics" className="overview-feature-link">
+              {t({ ar: "تفاصيل الإيرادات", en: "Revenue details" })}<Icon name="arrowUpRight" size={16} />
+            </Link>
+          </div>
+        </article>
+        <div className="overview-kpi-stack">
+          <StatCard icon="orders" label={t({ ar: "إجمالي الطلبات", en: "Total orders" })} value={fmt(stats.orders)} unit={t({ ar: "طلب", en: "orders" })} href="/orders" />
+          <StatCard icon="users" label={t({ ar: "العملاء", en: "Customers" })} value={fmt(stats.customers)} unit={t({ ar: "عميل", en: "customers" })} />
+          <StatCard icon="pulse" label={t({ ar: "نسبة الدفع", en: "Paid rate" })} value={stats.paidRate + "%"} unit={t({ ar: "من الطلبات", en: "of orders" })} href="/analytics" />
+        </div>
       </section>
-
-      <section className="overview-section-grid">
-        <Card
-          title={t({
-            ar: "الأداء خلال آخر 7 أيام",
-            en: "Performance · Last 7 days",
-          })}
-          subtitle={t({
-            ar: "الإيرادات المدفوعة",
-            en: "Paid revenue",
-          })}
-        >
-          <div className="overview-chart-header">
+      <section className="overview-insight-grid">
+        <div className="overview-chart-panel">
+          <div className="overview-panel-heading">
             <div>
-              <span className="overview-chart-total">
-                {fmt(weeklyTotal)}
-              </span>
-
-              <span className="overview-chart-currency">
-                {cfg.project.currency}
-              </span>
+              <span className="overview-section-eyebrow">{t({ ar: "تحليلات", en: "ANALYTICS" })}</span>
+              <h2>{t({ ar: "الأداء خلال آخر 7 أيام", en: "Performance · Last 7 days" })}</h2>
+              <p>{t({ ar: "الإيرادات المدفوعة يومًا بيوم", en: "Paid revenue, day by day" })}</p>
             </div>
-
-            <span className="overview-chart-period">
-              {t({
-                ar: "آخر 7 أيام",
-                en: "Last 7 days",
-              })}
-            </span>
+            <Link href="/analytics" className="overview-panel-icon" aria-label={t({ ar: "فتح التحليلات", en: "Open analytics" })}><Icon name="arrowUpRight" size={17} /></Link>
           </div>
-
+          <div className="overview-chart-header">
+            <div><span className="overview-chart-total">{fmt(weeklyTotal)}</span><span className="overview-chart-currency">{cfg.project.currency}</span></div>
+            <span className="overview-chart-period">{t({ ar: "آخر 7 أيام", en: "Last 7 days" })}</span>
+          </div>
           <div className="overview-chart">
-            <BarChart
-              data={data.weekly.map(
-                (item) => ({
-                  label: t(item.label),
-                  value: item.value,
-                })
-              )}
-            />
+            <BarChart data={data.weekly.map((item) => ({ label: t(item.label), value: item.value }))} />
           </div>
-        </Card>
+        </div>
+        <aside className="overview-recent-panel">
+          <div className="overview-panel-heading">
+            <div>
+              <span className="overview-section-eyebrow">{t({ ar: "مباشر", en: "LIVE" })}</span>
+              <h2>{t({ ar: "أحدث الطلبات", en: "Latest orders" })}</h2>
+              <p>{t({ ar: "آخر العمليات المسجلة", en: "Recently recorded activity" })}</p>
+            </div>
+            <span className="overview-recent-count">{data.recent.length}</span>
+          </div>
+          <div className="overview-recent-list">
+            {data.recent.slice(0, 4).map((order) => (
+              <div className="overview-recent-item" key={order.id}>
+                <span className={"overview-recent-status status-" + order.status}>
+                  <Icon name={order.status === "paid" ? "check" : order.status === "pending" ? "clock" : "x"} size={15} />
+                </span>
+                <div className="overview-recent-copy">
+                  <strong><bdi>{order.customer}</bdi></strong>
+                  <span><bdi dir="ltr">#{order.id}</bdi> · {order.date}</span>
+                </div>
+                <div className="overview-recent-amount">
+                  <strong dir="ltr">{fmt(order.amount)}</strong><span>{cfg.project.currency}</span>
+                </div>
+              </div>
+            ))}
+            {data.recent.length === 0 && <p className="overview-recent-empty">{t({ ar: "لا توجد طلبات حديثة حتى الآن", en: "No recent orders yet" })}</p>}
+          </div>
+          <Link href="/orders" className="overview-recent-all">{t({ ar: "عرض كل الطلبات", en: "View all orders" })}<Icon name="arrowUpRight" size={15} /></Link>
+        </aside>
       </section>
 
       <section className="overview-section">
