@@ -116,7 +116,7 @@ export default function AutomationView({ projects, initialProjectId }: {
 
     <section className="automation-project-picker">
       <div className="automation-project-picker-copy">
-        <span className="automation-project-picker-icon"><Icon name="layers" size={19} /></span>
+        <span className="automation-project-picker-icon"><Icon name="automation" size={19} /></span>
         <div><strong>{t({ ar: "المشروع المحدد", en: "Selected project" })}</strong>
           <p>{t({ ar: "اختر مشروعًا لعرض الـ Workflows والتنفيذات الخاصة به فقط.", en: "Choose a project to view only its workflows and executions." })}</p>
         </div>
