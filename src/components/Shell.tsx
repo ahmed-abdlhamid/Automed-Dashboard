@@ -462,6 +462,21 @@ export default function Shell({
             </div>
           </div>
 
+          <div className="topbar-search" role="search">
+            <Icon name="search" size={16} />
+            <input
+              type="search"
+              placeholder={t({
+                ar: "ابحث عن طلب، عميل، أو عملية...",
+                en: "Search orders, customers, activity...",
+              })}
+              aria-label={t({
+                ar: "بحث",
+                en: "Search",
+              })}
+            />
+          </div>
+
           <div className="topbar-actions">
             {isAdmin &&
               projects.length > 0 && (
