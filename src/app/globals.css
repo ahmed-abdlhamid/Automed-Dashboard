@@ -5966,3 +5966,143 @@
     width: 100%;
   }
 }
+
+
+/* Automation page: final spacing and in-card alignment */
+.automation-page .automation-live-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.automation-page .automation-stat-value-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  margin-top: 14px;
+}
+.automation-page .automation-stat-value-block > strong {
+  display: block !important;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0;
+  line-height: 1.25;
+}
+.automation-page .automation-stat-value-block > strong .automation-stat-number {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 30px;
+  font-weight: 700 !important;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0 !important;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.automation-page .automation-stat-value-block > small {
+  display: block !important;
+  position: static;
+  width: 100%;
+  min-height: 1.6em;
+  margin: 0 !important;
+  padding: 0;
+  direction: rtl;
+  unicode-bidi: plaintext;
+  font-size: 11px;
+  line-height: 1.65;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.automation-page .automation-project-management {
+  min-width: 0;
+  overflow: hidden;
+}
+.automation-page .automation-project-management .automation-assignment-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.automation-page .automation-project-management .automation-assignment-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 34%);
+  align-items: center;
+  column-gap: 20px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 16px 14px;
+  margin: 0;
+  border-bottom: 1px solid var(--border, rgba(128,128,128,.12));
+}
+.automation-page .automation-project-management .automation-assignment-info {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  gap: 6px;
+  overflow: visible;
+}
+.automation-page .automation-project-management .automation-assignment-info strong,
+.automation-page .automation-project-management .automation-assignment-info small {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.automation-page .automation-project-management .automation-assignment-info strong {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.automation-page .automation-project-management .automation-assignment-info small {
+  color: var(--muted, #888);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.automation-page .automation-project-management .automation-assignment-select {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.automation-page .automation-project-management .automation-assignment-select > span {
+  display: block;
+  line-height: 1.5;
+  white-space: normal;
+}
+.automation-page .automation-project-management .automation-assignment-select select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 12px;
+  text-overflow: ellipsis;
+}
+.automation-page .automation-project-management .automation-assignment-saving {
+  grid-column: 1 / -1;
+}
+.automation-page .automation-project-management .automation-project-management-note {
+  margin-inline: 14px;
+}
+@media (max-width: 760px) {
+  .automation-page .automation-stat-value-block > strong .automation-stat-number {
+    font-size: 27px;
+  }
+  .automation-page .automation-project-management .automation-assignment-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 12px;
+    padding: 15px 12px;
+  }
+}
