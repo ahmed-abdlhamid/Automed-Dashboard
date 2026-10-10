@@ -6117,3 +6117,185 @@
     max-width: 200px;
   }
 }
+
+/* =========================================================
+   AUTOMED UI/UX REFRESH — HEADER + SIDEBAR
+   Scoped to the dashboard shell; page content and data widgets
+   remain unchanged.
+   ========================================================= */
+
+@layer components {
+  .sidebar {
+    border-radius: 24px;
+    border-color: color-mix(in srgb, var(--teal-mid) 16%, transparent);
+    box-shadow:
+      0 22px 62px rgba(5, 22, 20, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.075);
+  }
+
+  .sidebar-top {
+    min-height: 60px;
+    margin-bottom: 22px;
+  }
+
+  .brand-lockup {
+    border-radius: 15px;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .brand-lockup:hover {
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .nav-group {
+    margin-bottom: 16px;
+  }
+
+  .nav-link {
+    min-height: 46px;
+    border-radius: 13px;
+  }
+
+  .nav-link[aria-current="page"] {
+    background:
+      linear-gradient(105deg, rgba(53, 169, 158, 0.2), rgba(53, 169, 158, 0.055));
+    border-color: rgba(53, 169, 158, 0.18);
+  }
+
+  .nav-link[aria-current="page"]::before {
+    inset-block: 11px;
+    width: 3px;
+  }
+
+  .sidebar-bottom {
+    padding-top: 14px;
+  }
+
+  .sidebar-status {
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .topbar {
+    top: 12px;
+    min-height: 70px;
+    margin: 12px 24px 0;
+    padding-inline: 22px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--surface-solid) 78%, transparent);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  }
+
+  .topbar-start,
+  .topbar-actions {
+    gap: 10px;
+  }
+
+  .topbar-page strong {
+    font-size: 15px;
+    letter-spacing: -0.015em;
+  }
+
+  .topbar-control,
+  .mobile-menu-button {
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--surface-solid) 86%, transparent);
+  }
+
+  .topbar-control:hover,
+  .mobile-menu-button:hover {
+    border-color: color-mix(in srgb, var(--orange) 48%, var(--line));
+    color: var(--teal);
+    box-shadow: 0 0 0 3px var(--orange-soft);
+  }
+
+  .project-trigger {
+    border-radius: 13px;
+  }
+
+  [data-theme="light"] .sidebar {
+    border-color: rgba(13, 92, 86, 0.11);
+    box-shadow:
+      0 22px 62px rgba(12, 31, 30, 0.095),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  }
+
+  [data-theme="light"] .nav-link[aria-current="page"] {
+    background:
+      linear-gradient(105deg, rgba(13, 92, 86, 0.11), rgba(13, 92, 86, 0.035));
+    border-color: rgba(13, 92, 86, 0.12);
+  }
+
+  [data-theme="light"] .nav-link[aria-current="page"] .nav-icon {
+    color: var(--teal);
+  }
+
+  [data-theme="light"] .topbar {
+    background: color-mix(in srgb, #ffffff 82%, transparent);
+    border-color: rgba(16, 32, 30, 0.075);
+    box-shadow: 0 8px 28px rgba(12, 31, 30, 0.045);
+  }
+
+  [data-theme="dark"] .topbar {
+    background: color-mix(in srgb, #0e1d1b 82%, transparent);
+    border-color: rgba(237, 245, 243, 0.09);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16);
+  }
+}
+
+@media (max-width: 1100px) {
+  .topbar {
+    margin-inline: 18px;
+    padding-inline: 18px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .topbar {
+    top: 8px;
+    min-height: 62px;
+    margin: 8px 10px 0;
+    padding-inline: 12px;
+    gap: 8px;
+    border-radius: 17px;
+  }
+
+  .topbar-start,
+  .topbar-actions {
+    gap: 7px;
+  }
+
+  .topbar-page strong {
+    font-size: 13px;
+  }
+
+  .sidebar {
+    border-radius: 22px;
+  }
+
+  .sidebar-top {
+    min-height: 56px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    margin-inline: 8px;
+    padding-inline: 9px;
+    border-radius: 15px;
+  }
+
+  .topbar-actions {
+    gap: 4px;
+  }
+
+  .topbar-control,
+  .mobile-menu-button {
+    border-radius: 11px;
+  }
+}
+
