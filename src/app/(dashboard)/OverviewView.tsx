@@ -312,7 +312,7 @@ export default function OverviewView({
             {data.recent.slice(0, 4).map((order) => (
               <div className="overview-recent-item" key={order.id}>
                 <span className={"overview-recent-status status-" + order.status}>
-                  <Icon name={order.status === "paid" ? "check" : order.status === "pending" ? "clock" : "x"} size={15} />
+                  <Icon name={order.status === "paid" ? "check" : order.status === "pending" ? "activity" : "close"} size={15} />
                 </span>
                 <div className="overview-recent-copy">
                   <strong><bdi>{order.customer}</bdi></strong>
