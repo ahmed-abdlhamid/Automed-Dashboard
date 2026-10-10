@@ -6026,11 +6026,13 @@
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  /* Match the card heading's px-6 inset so workflow rows sit directly beneath it. */
+  padding-inline: 24px;
 }
 .automation-page .automation-project-management .automation-assignment-row {
   display: grid !important;
   /* Keep workflow details aligned with the card content; make the project selector compact. */
-  grid-template-columns: minmax(0, 1fr) minmax(170px, 28%);
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 200px);
   align-items: center;
   column-gap: 24px;
   width: 100%;
@@ -6074,9 +6076,9 @@
   flex-direction: column;
   width: 100%;
   min-width: 0;
-  max-width: 100%;
+  max-width: 200px;
   box-sizing: border-box;
-  justify-self: stretch;
+  justify-self: end;
 }
 .automation-page .automation-project-management .automation-assignment-select > span {
   display: block;
@@ -6089,7 +6091,7 @@
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
-  padding: 0 12px;
+  padding-inline: 10px 28px;
   text-overflow: ellipsis;
 }
 .automation-page .automation-project-management .automation-assignment-saving {
@@ -6102,9 +6104,16 @@
   .automation-page .automation-stat-value-block > strong .automation-stat-number {
     font-size: 27px;
   }
+  .automation-page .automation-project-management .automation-assignment-list {
+    padding-inline: 24px;
+  }
   .automation-page .automation-project-management .automation-assignment-row {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 12px;
-    padding: 15px 12px;
+    padding: 15px 0;
+  }
+  .automation-page .automation-project-management .automation-assignment-select {
+    justify-self: stretch;
+    max-width: 200px;
   }
 }
