@@ -5544,3 +5544,91 @@
 .orders-avatar {
   display: none !important;
 }
+
+
+/* Live n8n automation dashboard */
+.automation-refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--border, rgba(128, 140, 125, .28));
+  border-radius: 13px;
+  background: var(--card, rgba(255,255,255,.72));
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+}
+.automation-refresh-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(220, 126, 54, .65);
+}
+.automation-refresh-button:disabled { opacity: .58; cursor: wait; }
+.automation-live-error {
+  margin: 18px 0;
+  padding: 16px 18px;
+  border: 1px solid rgba(211, 78, 65, .32);
+  border-radius: 16px;
+  background: rgba(211, 78, 65, .07);
+  color: inherit;
+}
+.automation-live-error strong { display: block; font-size: 14px; margin-bottom: 6px; }
+.automation-live-error p { margin: 0 0 8px; font-size: 13px; overflow-wrap: anywhere; }
+.automation-live-error span { display: block; color: var(--muted, #858585); font-size: 12px; line-height: 1.7; }
+.automation-live-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.automation-live-stat-card { min-width: 0; padding: 18px; }
+.automation-live-stat-top { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted, #858585); }
+.automation-live-stat-icon, .automation-live-row-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(135, 153, 119, .13);
+  color: #82966d;
+}
+.automation-live-stat-card > strong { display: block; margin-top: 16px; font-size: 29px; line-height: 1.2; font-weight: 700; letter-spacing: -.04em; }
+.automation-live-stat-card > small { display: block; margin-top: 8px; color: var(--muted, #858585); font-size: 11px; }
+.automation-live-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.automation-live-panel { min-width: 0; overflow: hidden; }
+.automation-live-list { padding: 8px 20px 18px; }
+.automation-live-row { display: flex; align-items: center; gap: 11px; min-width: 0; padding: 13px 0; border-bottom: 1px solid var(--border, rgba(128,140,125,.16)); }
+.automation-live-row:last-child { border-bottom: 0; }
+.automation-live-row-icon { width: 34px; height: 34px; border-radius: 11px; }
+.automation-live-row-main { display: flex; flex: 1; flex-direction: column; gap: 5px; min-width: 0; }
+.automation-live-row-main strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600; }
+.automation-live-row-main small { color: var(--muted, #858585); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+.automation-live-status { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 5px 8px; border-radius: 999px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.automation-live-status-ok { color: #44835d; background: rgba(75, 157, 103, .12); }
+.automation-live-status-error { color: #c45449; background: rgba(211, 78, 65, .12); }
+.automation-live-status-running { color: #b77a2e; background: rgba(220, 145, 50, .13); }
+.automation-live-status-muted { color: var(--muted, #858585); background: rgba(128, 140, 125, .12); }
+.automation-live-empty { padding: 26px 20px 30px; color: var(--muted, #858585); font-size: 13px; line-height: 1.8; }
+.automation-live-updated { margin: 15px 2px 0; text-align: end; color: var(--muted, #858585); font-size: 11px; }
+@media (max-width: 1000px) {
+  .automation-live-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .automation-live-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .automation-refresh-button { width: 100%; }
+  .automation-live-stats { gap: 10px; }
+  .automation-live-stat-card { padding: 13px; }
+  .automation-live-stat-top { align-items: flex-start; gap: 7px; font-size: 11px; }
+  .automation-live-stat-icon { width: 30px; height: 30px; }
+  .automation-live-stat-card > strong { font-size: 24px; margin-top: 12px; }
+  .automation-live-row { gap: 8px; }
+  .automation-live-row-main strong { white-space: normal; }
+  .automation-live-status { font-size: 9px; padding: 5px 6px; }
+}
