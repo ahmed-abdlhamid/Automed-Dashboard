@@ -747,3 +747,132 @@ body {
     box-shadow: none;
   }
 }
+
+/* =========================================================
+   User review refinements — 2026-10-20
+   Scoped, final overrides; preserve page content and behavior.
+   ========================================================= */
+
+/* A narrower expanded rail, with a centered brand lockup. */
+:root {
+  --sidebar-expanded-width: 212px;
+}
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-expanded-width: 196px;
+  }
+}
+@media (min-width: 768px) {
+  .dashboard-shell .sidebar-top {
+    justify-content: center;
+  }
+
+  .dashboard-shell .sidebar .brand-lockup {
+    width: max-content;
+    max-width: 100%;
+    margin-inline: auto;
+    justify-content: center;
+  }
+
+  .dashboard-shell .sidebar .brand-full {
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .dashboard-shell .sidebar .brand-full img {
+    max-width: 150px;
+  }
+}
+
+/* Keep only total sales featured; unify the other three KPI cards. */
+.overview-kpis .metric-card:not(.metric-card-featured) {
+  border-color: var(--card-edge);
+  background: var(--card-glass);
+  color: var(--ink);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.overview-kpis .metric-card:not(.metric-card-featured) .metric-head,
+.overview-kpis .metric-card:not(.metric-card-featured) .metric-label,
+.overview-kpis .metric-card:not(.metric-card-featured) .metric-foot,
+.overview-kpis .metric-card:not(.metric-card-featured) .metric-unit,
+.overview-kpis .metric-card:not(.metric-card-featured) .metric-value {
+  color: var(--ink);
+}
+
+.overview-kpis .metric-card:not(.metric-card-featured):hover,
+.overview-kpis .metric-card.metric-card-featured:hover {
+  border-color: var(--orange);
+  box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--orange) 65%, transparent);
+  transform: translateY(-3px);
+}
+
+.overview-kpis .metric-card:not(.metric-card-featured):hover {
+  background: color-mix(in srgb, var(--orange) 7%, var(--card-glass));
+}
+
+/* Orders date-range card: add breathing room so labels and date controls
+   no longer touch or clip against the card edges. */
+.orders-page > .xcard:nth-child(2) {
+  padding: 26px;
+  overflow: visible;
+}
+
+.orders-page > .xcard:nth-child(2) form {
+  gap: 12px !important;
+  align-items: flex-end;
+}
+
+.orders-page > .xcard:nth-child(2) form label {
+  gap: 7px !important;
+  min-width: 150px;
+  line-height: 1.5;
+}
+
+.orders-page > .xcard:nth-child(2) input[type="date"] {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 9px 12px;
+  max-width: 100%;
+}
+
+.orders-page > .xcard:nth-child(2) form .ctl {
+  min-height: 44px;
+  margin: 0;
+  padding-inline: 18px;
+}
+
+/* Separate the search icon from its placeholder in both search fields. */
+.orders-search-input {
+  padding-inline-start: 52px !important;
+}
+
+.users-search input {
+  padding-inline-start: 48px !important;
+  padding-inline-end: 40px !important;
+}
+
+/* Match the bottom inset of the workflow assignment card to its top inset. */
+.automation-page .automation-project-management .automation-assignment-list {
+  padding-block-end: 24px;
+}
+
+@media (max-width: 767.98px) {
+  .orders-page > .xcard:nth-child(2) {
+    padding: 20px 16px;
+  }
+
+  .orders-page > .xcard:nth-child(2) form label {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+
+  .orders-page > .xcard:nth-child(2) form .ctl {
+    flex: 0 0 auto;
+  }
+}
+
