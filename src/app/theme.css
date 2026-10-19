@@ -1,0 +1,280 @@
+/* =========================================================
+   AUTOMED THEME V3
+   Loaded AFTER globals.css (see layout.tsx). Unlayered on purpose:
+   unlayered rules beat the @layer components rules in globals.css,
+   so nothing in globals.css needs to be edited or removed.
+
+   Section 1 — Sidebar rail (desktop only, >= 768px)
+   Mobile keeps the existing drawer behaviour untouched.
+   ========================================================= */
+
+@media (min-width: 768px) {
+  /* ---------- Rail container (collapsed) ---------- */
+  .dashboard-shell .sidebar {
+    width: 76px;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 36px;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition:
+      width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .dashboard-shell .sidebar::before {
+    display: none;
+  }
+
+  /* ---------- Expanded (hover or pinned): glass panel ---------- */
+  .dashboard-shell .sidebar[data-expanded="true"],
+  .dashboard-shell .sidebar[data-pinned="true"] {
+    width: 252px;
+    padding: 14px 12px;
+    border-color: var(--line);
+    background: color-mix(in srgb, var(--surface-solid) 84%, transparent);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  }
+
+  [data-theme="dark"] .dashboard-shell .sidebar[data-expanded="true"],
+  [data-theme="dark"] .dashboard-shell .sidebar[data-pinned="true"] {
+    border-color: rgba(255, 255, 255, 0.09);
+    background: linear-gradient(
+      145deg,
+      rgba(17, 58, 53, 0.94),
+      rgba(7, 30, 27, 0.94)
+    );
+  }
+
+  /* ---------- Content offset ----------
+     Hover-expand overlays the page (no layout shift).
+     Only a pinned sidebar pushes the content. */
+  .dashboard-shell .sidebar[data-expanded="true"][data-pinned="false"] ~ .dashboard-main {
+    margin-inline-start: 104px;
+  }
+
+  .dashboard-shell .sidebar[data-pinned="true"] ~ .dashboard-main {
+    margin-inline-start: 280px;
+  }
+
+  /* ---------- Brand ---------- */
+  .dashboard-shell .sidebar-top {
+    min-height: 56px;
+    margin-bottom: 14px;
+  }
+
+  /* ---------- Pin toggle: only visible while expanded ---------- */
+  .dashboard-shell .sidebar:not([data-expanded="true"]) .sidebar-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .dashboard-shell .sidebar-toggle {
+    transition:
+      opacity 0.2s ease,
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.2s;
+  }
+
+  .dashboard-shell .sidebar-toggle[aria-pressed="true"] {
+    border-color: transparent;
+    background: var(--teal);
+    color: #fff;
+  }
+
+  /* ---------- Nav groups ---------- */
+  .dashboard-shell .nav-group {
+    margin-bottom: 10px;
+  }
+
+  .dashboard-shell .sidebar[data-expanded="true"] .nav-group {
+    margin-bottom: 16px;
+  }
+
+  .dashboard-shell .nav-group-label {
+    margin: 0 14px 6px;
+    color: var(--mut);
+    opacity: 0.8;
+  }
+
+  /* ---------- Nav link: collapsed = round icon button ---------- */
+  .dashboard-shell .sidebar .nav-link {
+    width: 46px;
+    height: 46px;
+    min-height: 46px;
+    margin: 8px auto;
+    padding: 0;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface-solid);
+    color: var(--mut);
+    box-shadow: 0 6px 18px rgba(12, 31, 30, 0.07);
+    transform: none;
+    transition:
+      width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s,
+      transform 0.2s;
+  }
+
+  [data-theme="dark"] .dashboard-shell .sidebar .nav-link {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.055);
+    box-shadow: none;
+    color: var(--sidebar-text);
+  }
+
+  .dashboard-shell .sidebar .nav-link:hover {
+    border-color: color-mix(in srgb, var(--teal) 35%, var(--line));
+    background: var(--surface-solid);
+    color: var(--teal);
+    box-shadow: 0 10px 24px rgba(12, 31, 30, 0.1);
+    transform: translateY(-1px);
+  }
+
+  [data-theme="dark"] .dashboard-shell .sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.09);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  /* ---------- Nav link: expanded = full pill row ---------- */
+  .dashboard-shell .sidebar[data-expanded="true"] .nav-link,
+  .dashboard-shell .sidebar[data-pinned="true"] .nav-link {
+    width: 100%;
+    margin: 4px 0;
+    padding-inline: 14px;
+    justify-content: flex-start;
+    border-color: transparent;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .dashboard-shell .sidebar[data-expanded="true"] .nav-link:hover,
+  .dashboard-shell .sidebar[data-pinned="true"] .nav-link:hover {
+    border-color: transparent;
+    background: var(--teal-soft);
+    color: var(--teal);
+    box-shadow: none;
+    transform: none;
+  }
+
+  [data-theme="dark"] .dashboard-shell .sidebar[data-expanded="true"] .nav-link:hover,
+  [data-theme="dark"] .dashboard-shell .sidebar[data-pinned="true"] .nav-link:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+  }
+
+  .dashboard-shell .sidebar[data-expanded="true"] .nav-label {
+    animation: rail-label-in 0.26s 0.05s both ease-out;
+  }
+
+  /* ---------- Active item: dark teal (the "black pill" of the reference) ---------- */
+  .dashboard-shell .sidebar .nav-link[aria-current="page"],
+  .dashboard-shell .sidebar .nav-link[aria-current="page"]:hover {
+    border-color: transparent;
+    background: linear-gradient(145deg, var(--teal), var(--teal-2));
+    color: #fff;
+    box-shadow: 0 12px 26px color-mix(in srgb, var(--teal) 30%, transparent);
+    transform: none;
+  }
+
+  .dashboard-shell .sidebar .nav-link[aria-current="page"] .nav-icon {
+    color: #fff;
+  }
+
+  /* Orange marker: a small dot on the corner (collapsed) / end of pill (expanded) */
+  .dashboard-shell .sidebar .nav-link[aria-current="page"]::before {
+    inset-block: auto;
+    top: 2px;
+    inset-inline-start: auto;
+    inset-inline-end: 2px;
+    width: 9px;
+    height: 9px;
+    border: 2px solid var(--bg);
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: none;
+  }
+
+  .dashboard-shell .sidebar[data-expanded="true"] .nav-link[aria-current="page"]::before,
+  .dashboard-shell .sidebar[data-pinned="true"] .nav-link[aria-current="page"]::before {
+    top: 50%;
+    inset-inline-end: 16px;
+    width: 7px;
+    height: 7px;
+    border: 0;
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px rgba(253, 146, 56, 0.6);
+  }
+
+  /* ---------- Bottom: status + logout ---------- */
+  .dashboard-shell .sidebar-bottom {
+    border-top: 0;
+    padding-top: 6px;
+  }
+
+  .dashboard-shell .sidebar:not([data-expanded="true"]) .sidebar-status,
+  .dashboard-shell .sidebar:not([data-expanded="true"]) .logout-button {
+    width: 46px;
+    height: 46px;
+    min-height: 46px;
+    margin: 8px auto 0;
+    padding: 0;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface-solid);
+    box-shadow: 0 6px 18px rgba(12, 31, 30, 0.07);
+  }
+
+  [data-theme="dark"] .dashboard-shell .sidebar:not([data-expanded="true"]) .sidebar-status,
+  [data-theme="dark"] .dashboard-shell .sidebar:not([data-expanded="true"]) .logout-button {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.055);
+    box-shadow: none;
+  }
+
+  .dashboard-shell .sidebar[data-expanded="true"] .sidebar-status {
+    border-color: var(--line);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--teal) 6%, transparent);
+  }
+
+  .dashboard-shell .sidebar[data-expanded="true"] .logout-button {
+    justify-content: flex-start;
+    padding-inline: 14px;
+    border-radius: 999px;
+  }
+
+  .dashboard-shell .sidebar .logout-button {
+    color: var(--mut);
+  }
+
+  .dashboard-shell .sidebar .logout-button:hover {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 9%, var(--surface-solid));
+  }
+}
+
+@keyframes rail-label-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
