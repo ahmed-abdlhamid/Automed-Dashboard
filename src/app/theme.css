@@ -876,3 +876,60 @@ body {
   }
 }
 
+
+
+/* Follow-up polish: align the top controls and make hover expansion reserve space. */
+:root {
+  --sidebar-expanded-width: 196px;
+}
+@media (max-width: 1100px) {
+  :root { --sidebar-expanded-width: 184px; }
+}
+@media (min-width: 768px) {
+  .dashboard-shell .sidebar[data-expanded="true"][data-pinned="false"] ~ .dashboard-main {
+    margin-inline-start: var(--sidebar-expanded-width);
+  }
+  .dashboard-shell .sidebar[data-pinned="true"] ~ .dashboard-main {
+    margin-inline-start: var(--sidebar-expanded-width);
+  }
+}
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-actions .profile-chip { order: 1; }
+.topbar-actions .project-picker { order: 2; }
+.topbar-actions .topbar-control:not(.lang-control) { order: 3; }
+.topbar-actions .lang-control { order: 4; }
+.profile-chip {
+  min-height: 40px;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+}
+.profile-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.35;
+}
+.overview-actions .btn {
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+  transform: none;
+}
+.overview-actions .btn:hover,
+.overview-actions .btn-pri:hover {
+  border-color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 12%, var(--card-glass));
+  color: var(--ink);
+  box-shadow: 0 8px 20px -12px color-mix(in srgb, var(--orange) 70%, transparent);
+  transform: none;
+}
+.overview-actions .btn:active,
+.overview-actions .btn-pri:active {
+  transform: none;
+}
+.automation-page .automation-live-panel:last-child {
+  padding-bottom: 24px;
+}
