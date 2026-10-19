@@ -405,3 +405,348 @@
     font-size: 12px;
   }
 }
+<<<<<<< HEAD
+
+
+/* =========================================================
+   AUTOMED THEME V3 — "Sage canvas" visual layer
+   Matches the Sisense-style reference while keeping the Automed
+   brand: deep teal replaces black, orange replaces lime.
+   Loaded last; it intentionally wins over the older
+   "REAL UI REDESIGN" block in globals.css (which forced every
+   surface to flat white and made the featured KPI card unreadable).
+   ========================================================= */
+
+:root {
+  --bg: #e8eeeb;
+  --surface: rgba(255, 255, 255, 0.62);
+  --surface-solid: #fbfdfc;
+  --surface-soft: rgba(255, 255, 255, 0.5);
+  --line: rgba(20, 70, 64, 0.1);
+
+  --card-glass: rgba(255, 255, 255, 0.58);
+  --card-edge: rgba(255, 255, 255, 0.85);
+  --tint-mint: #d9ebe4;
+  --tint-sand: #f8e8d6;
+  --tint-mist: #dde6ec;
+  --bar-soft: color-mix(in srgb, var(--teal) 22%, #ffffff);
+  --bar-hatch-a: color-mix(in srgb, var(--teal) 62%, #ffffff);
+  --bar-hatch-b: color-mix(in srgb, var(--teal) 24%, #ffffff);
+  --pill-shadow: 0 6px 18px rgba(18, 62, 56, 0.07);
+}
+
+[data-theme="dark"] {
+  --bg: #0b1513;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-solid: #12211e;
+  --surface-soft: rgba(255, 255, 255, 0.04);
+  --line: rgba(223, 239, 234, 0.1);
+
+  --card-glass: rgba(255, 255, 255, 0.045);
+  --card-edge: rgba(255, 255, 255, 0.08);
+  --tint-mint: #14302c;
+  --tint-sand: #33261a;
+  --tint-mist: #1a2933;
+  --bar-soft: color-mix(in srgb, var(--teal) 22%, #0b1513);
+  --bar-hatch-a: color-mix(in srgb, var(--teal) 78%, #0b1513);
+  --bar-hatch-b: color-mix(in srgb, var(--teal) 34%, #0b1513);
+  --pill-shadow: none;
+}
+
+/* ---------- Canvas ---------- */
+body {
+  background:
+    radial-gradient(900px 480px at 100% -8%, color-mix(in srgb, var(--teal) 9%, transparent), transparent 60%),
+    radial-gradient(700px 420px at -5% 105%, color-mix(in srgb, var(--orange) 6%, transparent), transparent 60%),
+    var(--bg);
+}
+
+/* ---------- Rail: stop clipping the active item's shadow ---------- */
+@media (min-width: 768px) {
+  .dashboard-shell .sidebar:not([data-expanded="true"]):not([data-pinned="true"]) .sidebar-nav {
+    overflow: visible;
+  }
+
+  .dashboard-shell .sidebar .nav-link[aria-current="page"],
+  .dashboard-shell .sidebar .nav-link[aria-current="page"]:hover {
+    box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--teal) 55%, transparent);
+  }
+
+  /* Expanded panel: near-opaque so the page never bleeds through */
+  .dashboard-shell .sidebar[data-expanded="true"],
+  .dashboard-shell .sidebar[data-pinned="true"] {
+    background: var(--surface-solid);
+  }
+
+  [data-theme="dark"] .dashboard-shell .sidebar[data-expanded="true"],
+  [data-theme="dark"] .dashboard-shell .sidebar[data-pinned="true"] {
+    background: linear-gradient(145deg, #113a35, #071e1b);
+  }
+}
+
+@media (min-width: 768px) and (max-height: 640px) {
+  .dashboard-shell .sidebar .sidebar-nav {
+    overflow-y: auto;
+  }
+}
+
+/* ---------- Topbar: floating pills instead of a full-width bar ---------- */
+.topbar {
+  border-bottom: 0;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.topbar-control,
+.mobile-menu-button,
+.project-trigger,
+.profile-chip {
+  border: 1px solid var(--card-edge);
+  border-radius: 999px;
+  background: var(--card-glass);
+  box-shadow: var(--pill-shadow);
+}
+
+.topbar-control,
+.mobile-menu-button {
+  width: 40px;
+  height: 40px;
+}
+
+.project-trigger {
+  height: 40px;
+  padding-inline: 14px;
+}
+
+.profile-chip {
+  padding: 4px 14px 4px 4px;
+  padding-inline: 4px 14px;
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.topbar-page strong {
+  font-weight: 600;
+}
+
+/* ---------- Page title: large and light ---------- */
+.overview-title {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.overview-title bdi {
+  font-weight: 600;
+}
+
+.kicker-chip,
+.date-chip {
+  border: 1px solid var(--card-edge);
+  border-radius: 999px;
+  background: var(--card-glass);
+  box-shadow: var(--pill-shadow);
+}
+
+.btn {
+  border: 1px solid var(--card-edge);
+  border-radius: 999px;
+  background: var(--card-glass);
+  box-shadow: var(--pill-shadow);
+}
+
+.btn-pri {
+  border-color: transparent;
+  background: linear-gradient(145deg, var(--teal), var(--teal-2));
+  box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--teal) 60%, transparent);
+}
+
+/* ---------- Cards: soft glass, pastel tints ---------- */
+.xcard,
+.metric-card {
+  border: 1px solid var(--card-edge);
+  border-radius: 28px;
+  background: var(--card-glass);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 12px 34px -18px rgba(18, 62, 56, 0.18);
+  /* No backdrop-filter on cards: it forces extra compositing layers that can
+     paint over the fixed sidebar panel. The card tint already reads as glass. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme="dark"] .xcard,
+[data-theme="dark"] .metric-card {
+  box-shadow: none;
+}
+
+/* KPI row: featured (brand teal) + mint + sand + mist, like the reference */
+.overview-kpis .metric-card:nth-child(2) {
+  background: var(--tint-mint);
+}
+.overview-kpis .metric-card:nth-child(3) {
+  background: var(--tint-sand);
+}
+.overview-kpis .metric-card:nth-child(4) {
+  background: var(--tint-mist);
+}
+
+/* Featured card: the redesign block forced it to white; restore the brand gradient */
+.metric-card.metric-card-featured {
+  border-color: transparent;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(110, 208, 197, 0.28), transparent 38%),
+    linear-gradient(145deg, #167068, #0c4a45);
+  color: #fff;
+  box-shadow: 0 22px 44px -22px rgba(10, 74, 69, 0.55);
+}
+
+.metric-card.metric-card-featured .metric-head,
+.metric-card.metric-card-featured .metric-label,
+.metric-card.metric-card-featured .metric-foot,
+.metric-card.metric-card-featured .metric-unit {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.metric-card.metric-card-featured .metric-value {
+  color: #fff;
+}
+
+.metric-card.metric-card-featured .metric-label svg {
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.14);
+  color: #bdf0e8;
+}
+
+/* Round icon badge + round arrow button on every KPI card */
+.metric-label svg {
+  box-sizing: content-box;
+  padding: 9px;
+  border: 1px solid var(--card-edge);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--teal);
+}
+
+[data-theme="dark"] .metric-label svg {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.metric-arrow {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--card-edge);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .metric-arrow {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.metric-card.metric-card-featured .metric-arrow {
+  border-color: transparent;
+  background: #fff;
+  color: var(--teal-2);
+}
+
+/* Big, light numerals */
+.metric-value {
+  font-size: clamp(2.1rem, 3.1vw, 2.9rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+.metric-unit {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.metric-card {
+  min-height: 176px;
+}
+
+/* ---------- Bar chart: pill columns, hatched peak, orange callout ---------- */
+.chart-grid {
+  background-image: linear-gradient(to bottom, var(--chart-grid) 1px, transparent 1px);
+  background-size: 100% 25%;
+}
+
+.chart-wrap .bar {
+  width: 100%;
+  max-width: 68px;
+  border: 1px solid color-mix(in srgb, var(--teal) 14%, transparent);
+  border-radius: 999px 999px 18px 18px;
+  background: var(--bar-soft);
+  opacity: 1;
+}
+
+.chart-wrap .bar:hover {
+  background: color-mix(in srgb, var(--teal) 28%, var(--bar-soft));
+  transform: none;
+}
+
+.chart-wrap .bar.bar-top {
+  border-color: color-mix(in srgb, var(--teal) 30%, transparent);
+  background: repeating-linear-gradient(
+    135deg,
+    var(--bar-hatch-a) 0 5px,
+    var(--bar-hatch-b) 5px 10px
+  );
+}
+
+.chart-wrap .bar.bar-empty {
+  background: repeating-linear-gradient(135deg, var(--line) 0 2px, transparent 2px 7px);
+}
+
+/* value labels: quiet by default… */
+.chart-wrap span.text-xs {
+  font-weight: 500;
+  color: var(--mut);
+}
+
+/* …and an orange pill above the peak column (the reference's lime tag) */
+.chart-wrap div:has(> div > .bar-top) > span:first-child {
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #ffb26c, var(--orange));
+  color: #2b1608;
+  font-weight: 700;
+  box-shadow: 0 6px 14px -6px rgba(253, 146, 56, 0.7);
+}
+
+/* ---------- Table ---------- */
+.xcard .tbl th {
+  background: transparent;
+  font-weight: 600;
+}
+
+.xcard .tbl tbody tr:hover {
+  background: color-mix(in srgb, var(--teal) 5%, transparent);
+}
+
+@media (max-width: 767.98px) {
+  .xcard,
+  .metric-card {
+    border-radius: 22px;
+  }
+
+  .metric-card {
+    min-height: 150px;
+  }
+}
+
+/* Expanded rail: the nav scroller clips shadows, so keep the active pill flat there */
+@media (min-width: 768px) {
+  .dashboard-shell .sidebar[data-expanded="true"] .nav-link[aria-current="page"],
+  .dashboard-shell .sidebar[data-pinned="true"] .nav-link[aria-current="page"] {
+    box-shadow: none;
+  }
+}
+=======
+>>>>>>> 976ec40c8593a154037545e2fff9b095ce4ef8b0
