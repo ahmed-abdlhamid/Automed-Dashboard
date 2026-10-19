@@ -6,6 +6,7 @@
   --sidebar-expanded-width: 252px;
   --sidebar-inset: 14px;
   --sidebar-gap: 14px;
+  --sidebar-rail-control-size: 46px;
   --sidebar-main-offset: calc(var(--sidebar-inset) + var(--sidebar-collapsed-width) + var(--sidebar-gap));
   --sidebar-pinned-offset: calc(var(--sidebar-inset) + var(--sidebar-expanded-width) + var(--sidebar-gap));
   --sidebar-mobile-width: 244px;
