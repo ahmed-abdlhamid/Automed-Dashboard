@@ -173,14 +173,6 @@ export default function OverviewView({
     <div className="overview-page">
       <section className="overview-header">
         <div className="overview-heading">
-          {project && (
-            <span className="kicker-chip">
-              <span className="project-trigger-dot" />
-
-              <bdi>{project.name}</bdi>
-            </span>
-          )}
-
           <div className="overview-title-row">
             <div>
               <h1
@@ -189,6 +181,12 @@ export default function OverviewView({
               >
                 {greeting}،{" "}
                 <bdi>{greetingName}</bdi>
+                {project && (
+                  <span className="overview-project-inline">
+                    <span className="project-trigger-dot" />
+                    <bdi>{project.name}</bdi>
+                  </span>
+                )}
               </h1>
 
               <p className="overview-description">
