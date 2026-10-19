@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { dashboardConfig } from "@/config/dashboard.config";
 import type { Project } from "./data";
@@ -11,51 +12,37 @@ type ProjectMembership = {
   role: ProjectRole;
 };
 
-async function getCurrentUserMemberships(): Promise<
-  ProjectMembership[]
-> {
-  const supabase =
-    await createSupabaseServerClient();
+const getCurrentUserMemberships = cache(
+  async (): Promise<ProjectMembership[]> => {
+    const supabase = await createSupabaseServerClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    return [];
+    if (!user) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from("project_members")
+      .select("project_id, role")
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Supabase project memberships error:", error);
+      return [];
+    }
+
+    return (data || []).filter(
+      (membership) =>
+        membership.role === "admin" || membership.role === "client"
+    ) as ProjectMembership[];
   }
+);
 
-  const {
-    data,
-    error,
-  } = await supabase
-    .from("project_members")
-    .select("project_id, role")
-    .eq("user_id", user.id);
-
-  if (error) {
-    console.error(
-      "Supabase project memberships error:",
-      error
-    );
-
-    return [];
-  }
-
-  return (data || []).filter(
-    (membership) =>
-      membership.role === "admin" ||
-      membership.role === "client"
-  ) as ProjectMembership[];
-}
-
-export async function getAccessibleProjects(): Promise<
-  Project[]
-> {
-  const [
-    projects,
-    memberships,
-  ] = await Promise.all([
+export const getAccessibleProjects = cache(async (): Promise<Project[]> => {
+  const [projects, memberships] = await Promise.all([
     getServerProjects(),
     getCurrentUserMemberships(),
   ]);
@@ -64,65 +51,35 @@ export async function getAccessibleProjects(): Promise<
     return [];
   }
 
-  const accessibleProjectIds =
-    new Set(
-      memberships.map(
-        (membership) =>
-          membership.project_id
-      )
-    );
-
-  return projects.filter(
-    (project) =>
-      accessibleProjectIds.has(
-        project.id
-      )
+  const accessibleProjectIds = new Set(
+    memberships.map((membership) => membership.project_id)
   );
-}
 
-export async function getCurrentProjectId(): Promise<string> {
-  const memberships =
-    await getCurrentUserMemberships();
+  return projects.filter((project) => accessibleProjectIds.has(project.id));
+});
 
-  const projects =
-    await getServerProjects();
+export const getCurrentProjectId = cache(async (): Promise<string> => {
+  const memberships = await getCurrentUserMemberships();
+  const projects = await getServerProjects();
 
-  if (
-    memberships.length === 0 ||
-    projects.length === 0
-  ) {
+  if (memberships.length === 0 || projects.length === 0) {
     return dashboardConfig.project.id;
   }
 
-  const accessibleProjectIds =
-    new Set(
-      memberships.map(
-        (membership) =>
-          membership.project_id
-      )
-    );
+  const accessibleProjectIds = new Set(
+    memberships.map((membership) => membership.project_id)
+  );
 
-  const accessibleProjects =
-    projects.filter(
-      (project) =>
-        accessibleProjectIds.has(
-          project.id
-        )
-    );
+  const accessibleProjects = projects.filter((project) =>
+    accessibleProjectIds.has(project.id)
+  );
 
-  if (
-    accessibleProjects.length === 0
-  ) {
+  if (accessibleProjects.length === 0) {
     return dashboardConfig.project.id;
   }
 
-  const cookieStore =
-    await cookies();
-
-  const savedProjectId =
-    cookieStore.get(
-      "automed_project_id"
-    )?.value;
+  const cookieStore = await cookies();
+  const savedProjectId = cookieStore.get("automed_project_id")?.value;
 
   /*
    * The cookie is only a preference.
@@ -132,121 +89,83 @@ export async function getCurrentProjectId(): Promise<string> {
    * authenticated user actually belongs
    * to that project.
    */
-  const savedProject =
-    accessibleProjects.find(
-      (project) =>
-        project.id ===
-        savedProjectId
-    );
+  const savedProject = accessibleProjects.find(
+    (project) => project.id === savedProjectId
+  );
 
   if (savedProject) {
     return savedProject.id;
   }
 
-  const configuredProject =
-    accessibleProjects.find(
-      (project) =>
-        project.id ===
-        dashboardConfig.project.id
-    );
+  const configuredProject = accessibleProjects.find(
+    (project) => project.id === dashboardConfig.project.id
+  );
 
   if (configuredProject) {
     return configuredProject.id;
   }
 
   return accessibleProjects[0].id;
-}
+});
 
-export async function getCurrentProject(): Promise<Project | null> {
-  const projectId =
-    await getCurrentProjectId();
+export const getCurrentProject = cache(
+  async (): Promise<Project | null> => {
+    const projectId = await getCurrentProjectId();
+    const projects = await getServerProjects();
 
-  const projects =
-    await getServerProjects();
+    return (
+      projects.find((project) => project.id === projectId) ?? null
+    );
+  }
+);
 
-  return (
-    projects.find(
-      (project) =>
-        project.id === projectId
-    ) ?? null
-  );
-}
+export const getCurrentProjectRole = cache(
+  async (): Promise<ProjectRole | null> => {
+    const [memberships, projectId] = await Promise.all([
+      getCurrentUserMemberships(),
+      getCurrentProjectId(),
+    ]);
 
-export async function getCurrentProjectRole(): Promise<ProjectRole | null> {
-  const [
-    memberships,
-    projectId,
-  ] = await Promise.all([
-    getCurrentUserMemberships(),
-    getCurrentProjectId(),
-  ]);
-
-  const membership =
-    memberships.find(
-      (item) =>
-        item.project_id ===
-        projectId
+    const membership = memberships.find(
+      (item) => item.project_id === projectId
     );
 
-  return (
-    membership?.role ?? null
-  );
-}
+    return membership?.role ?? null;
+  }
+);
 
-export async function isCurrentUserAdmin(): Promise<boolean> {
-  const role =
-    await getCurrentProjectRole();
-
+export const isCurrentUserAdmin = cache(async (): Promise<boolean> => {
+  const role = await getCurrentProjectRole();
   return role === "admin";
-}
+});
 
-export async function getCurrentUserDisplayName(): Promise<string> {
-  const supabase =
-    await createSupabaseServerClient();
+export const getCurrentUserDisplayName = cache(
+  async (): Promise<string> => {
+    const supabase = await createSupabaseServerClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    return "User";
+    if (!user) {
+      return "User";
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("full_name, email")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (!error && data?.full_name?.trim()) {
+      return data.full_name.trim();
+    }
+
+    const email = data?.email || user.email || "";
+    const localPart = email.split("@")[0] || "User";
+
+    return localPart
+      .replace(/[._-]+/g, " ")
+      .replace(/\b\w/g, (char: string) => char.toUpperCase());
   }
-
-  const {
-    data,
-    error,
-  } = await supabase
-    .from("profiles")
-    .select(
-      "full_name, email"
-    )
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (
-    !error &&
-    data?.full_name?.trim()
-  ) {
-    return data.full_name.trim();
-  }
-
-  const email =
-    data?.email ||
-    user.email ||
-    "";
-
-  const localPart =
-    email.split("@")[0] ||
-    "User";
-
-  return localPart
-    .replace(
-      /[._-]+/g,
-      " "
-    )
-    .replace(
-      /\b\w/g,
-      (char: string) =>
-        char.toUpperCase()
-    );
-}
+);

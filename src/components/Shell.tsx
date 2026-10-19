@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useEffect,
   useRef,
@@ -15,16 +16,27 @@ import { Icon } from "@/components/ui";
 import type { Project } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 
+function setProjectCookie(projectId: string) {
+  if (typeof document === "undefined") return;
+  document.cookie =
+    `automed_project_id=${projectId}; ` +
+    "path=/; " +
+    "max-age=31536000; " +
+    "samesite=lax";
+}
+
 export default function Shell({
   children,
   projects = [],
   currentProjectId,
   isAdmin = false,
+  userName,
 }: {
   children: ReactNode;
   projects?: Project[];
   currentProjectId?: string;
   isAdmin?: boolean;
+  userName?: string;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -33,6 +45,7 @@ export default function Shell({
   const [loggingOut, setLoggingOut] = useState(false);
 
   const pathname = usePathname();
+  const router = useRouter();
   const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -81,13 +94,7 @@ export default function Shell({
 
   const handleProjectChange = (projectId: string) => {
     setProjectMenuOpen(false);
-
-    document.cookie =
-      `automed_project_id=${projectId}; ` +
-      "path=/; " +
-      "max-age=31536000; " +
-      "samesite=lax";
-
+    setProjectCookie(projectId);
     window.location.reload();
   };
 
@@ -104,7 +111,8 @@ export default function Shell({
       return;
     }
 
-    window.location.href = "/login";
+    router.push("/login");
+    router.refresh();
   };
 
   const handleSidebarMouseEnter = () => {
@@ -256,29 +264,37 @@ export default function Shell({
               className="brand-mark"
               aria-hidden="true"
             >
-              <img
+              <Image
                 src="/logo-icon.png"
                 alt=""
+                width={28}
+                height={28}
                 className="logo-light"
               />
 
-              <img
+              <Image
                 src="/logo-icon-on-dark.png"
                 alt=""
+                width={28}
+                height={28}
                 className="logo-dark"
               />
             </span>
 
             <span className="brand-full">
-              <img
+              <Image
                 src={cfg.brand.logo.light}
                 alt={cfg.brand.name}
+                width={112}
+                height={32}
                 className="logo-light"
               />
 
-              <img
+              <Image
                 src={cfg.brand.logo.dark}
                 alt={cfg.brand.name}
+                width={112}
+                height={32}
                 className="logo-dark"
               />
             </span>
@@ -584,9 +600,9 @@ export default function Shell({
                 className="profile-avatar"
                 aria-hidden="true"
               >
-                {isAdmin ? (
+                {(userName || isAdmin) ? (
                   Array.from(
-                    t(adminIdentity.name)
+                    userName || t(adminIdentity.name)
                   )[0]?.toUpperCase()
                 ) : (
                   <Icon
@@ -597,19 +613,17 @@ export default function Shell({
               </span>
 
               <div className="profile-meta">
-                {isAdmin && (
+                {(userName || isAdmin) && (
                   <span className="profile-name">
                     <bdi>
-                      {t(
-                        adminIdentity.name
-                      )}
+                      {userName || t(adminIdentity.name)}
                     </bdi>
                   </span>
                 )}
 
                 <span
                   className={
-                    isAdmin
+                    (userName || isAdmin)
                       ? "profile-role"
                       : "profile-name"
                   }

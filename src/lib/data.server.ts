@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Bilingual } from "@/components/Providers";
 import type {
@@ -147,9 +148,7 @@ function mapSupabaseOrder(
   };
 }
 
-export async function getProjects(): Promise<
-  Project[]
-> {
+export const getProjects = cache(async (): Promise<Project[]> => {
   const supabase =
     await createSupabaseServerClient();
 
@@ -181,18 +180,16 @@ export async function getProjects(): Promise<
   }
 
   return data as Project[];
-}
+});
 
 export async function getOrders(
-  projectId: string
+  projectId: string,
+  options?: { limit?: number; offset?: number }
 ): Promise<Order[]> {
   const supabase =
     await createSupabaseServerClient();
 
-  const {
-    data,
-    error,
-  } = await supabase
+  let query = supabase
     .from("orders")
     .select(
       "id, project_id, order_id, chat_id, order_type, date_time, customer_name, phone_number, delivery_address, ordered_items, total_price, payment_method, payment_status"
@@ -207,6 +204,19 @@ export async function getOrders(
         ascending: false,
       }
     );
+
+  if (typeof options?.limit === "number") {
+    if (typeof options?.offset === "number") {
+      query = query.range(options.offset, options.offset + options.limit - 1);
+    } else {
+      query = query.limit(options.limit);
+    }
+  }
+
+  const {
+    data,
+    error,
+  } = await query;
 
   if (error) {
     console.error(
@@ -472,7 +482,6 @@ export async function getOverview(
         },
         ok: true,
       },
-
       {
         name: {
           ar: "اتصال البيانات",
@@ -480,21 +489,24 @@ export async function getOverview(
         },
         ok: true,
       },
-
       {
         name: {
           ar: "الأتمتة",
           en: "Automation",
         },
-        ok: true,
+        ok: Boolean(
+          process.env.N8N_BASE_URL?.trim() &&
+          process.env.N8N_API_KEY?.trim()
+        ),
       },
-
       {
         name: {
           ar: "بوابة الدفع",
           en: "Payment gateway",
         },
-        ok: true,
+        ok: orders.some(
+          (order) => order.status === "paid" || Boolean(order.paymentMethod)
+        ),
       },
     ],
   };
@@ -545,12 +557,8 @@ export async function getAnalytics(
     );
 
   const averageOrderValue =
-    orders.length
-      ? orders.reduce(
-          (sum, order) =>
-            sum + order.amount,
-          0
-        ) / orders.length
+    paidOrders.length
+      ? revenue / paidOrders.length
       : 0;
 
   const totalOrders =

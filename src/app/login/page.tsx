@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useI18n } from "@/components/Providers";
@@ -14,6 +15,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,7 +53,8 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/";
+    router.push("/");
+    router.refresh();
   }
 
   return (
@@ -58,16 +62,22 @@ export default function LoginPage() {
       <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-[1600px] items-center justify-center">
         <section className="xcard w-full max-w-md p-6 md:p-8">
           <div className="mb-8 flex items-center justify-between">
-            <div>
-              <img
+            <div className="flex items-center">
+              <Image
                 src={cfg.brand.logo.light}
                 alt={cfg.brand.name}
+                width={130}
+                height={36}
+                priority
                 className="logo-light h-9 w-auto"
               />
 
-              <img
+              <Image
                 src={cfg.brand.logo.dark}
                 alt={cfg.brand.name}
+                width={130}
+                height={36}
+                priority
                 className="logo-dark h-9 w-auto"
               />
             </div>
@@ -157,19 +167,51 @@ export default function LoginPage() {
                 })}
               </label>
 
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(event) =>
-                  setPassword(event.target.value)
-                }
-                autoComplete="current-password"
-                required
-                className="w-full rounded-[14px] border border-line bg-card px-4 py-3 text-sm outline-none transition-all focus:border-orange"
-                placeholder="••••••••"
-                dir="ltr"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(event) =>
+                    setPassword(event.target.value)
+                  }
+                  autoComplete="current-password"
+                  required
+                  className="w-full rounded-[14px] border border-line bg-card px-4 py-3 pe-11 text-sm outline-none transition-all focus:border-orange"
+                  placeholder="••••••••"
+                  dir="ltr"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 end-0 flex items-center pe-3.5 text-mut hover:text-ink transition-colors"
+                  aria-label={
+                    showPassword
+                      ? t({ ar: "إخفاء كلمة المرور", en: "Hide password" })
+                      : t({ ar: "إظهار كلمة المرور", en: "Show password" })
+                  }
+                >
+                  <Icon name={showPassword ? "eyeOff" : "eye"} size={18} />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(event) => setRememberMe(event.target.checked)}
+                  className="h-4 w-4 rounded border-line text-orange accent-orange cursor-pointer"
+                />
+                <span className="text-xs text-mut">
+                  {t({
+                    ar: "تذكرني على هذا الجهاز",
+                    en: "Remember me on this device",
+                  })}
+                </span>
+              </label>
             </div>
 
             {error && (

@@ -58,6 +58,11 @@ export default function OrdersView({
   const [query, setQuery] =
     useState("");
 
+  const [page, setPage] =
+    useState(1);
+
+  const PAGE_SIZE = 15;
+
   const rows = useMemo(() => {
     const q = query
       .trim()
@@ -88,6 +93,13 @@ export default function OrdersView({
       );
     });
   }, [orders, filter, query]);
+
+  const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paginatedRows = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return rows.slice(start, start + PAGE_SIZE);
+  }, [rows, currentPage]);
 
   const counts = useMemo(
     () => ({
@@ -475,11 +487,10 @@ export default function OrdersView({
             <input
               className="field orders-search-input"
               value={query}
-              onChange={(event) =>
-                setQuery(
-                  event.target.value
-                )
-              }
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setPage(1);
+              }}
               placeholder={t({
                 ar: "ابحث بالطلب أو العميل أو الهاتف أو الأصناف",
                 en: "Search order, customer, phone or items",
@@ -490,9 +501,10 @@ export default function OrdersView({
               <button
                 type="button"
                 className="orders-search-clear"
-                onClick={() =>
-                  setQuery("")
-                }
+                onClick={() => {
+                  setQuery("");
+                  setPage(1);
+                }}
                 aria-label={t({
                   ar: "مسح البحث",
                   en: "Clear search",
@@ -518,11 +530,10 @@ export default function OrdersView({
                     filter ===
                     item.id
                   }
-                  onClick={() =>
-                    setFilter(
-                      item.id
-                    )
-                  }
+                  onClick={() => {
+                    setFilter(item.id);
+                    setPage(1);
+                  }}
                 >
                   {item.label}
 
@@ -545,8 +556,8 @@ export default function OrdersView({
         <div className="orders-results-bar">
           <span>
             {t({
-              ar: `عرض ${rows.length} من ${orders.length} طلب`,
-              en: `Showing ${rows.length} of ${orders.length} orders`,
+              ar: `عرض ${rows.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} - ${Math.min(currentPage * PAGE_SIZE, rows.length)} من ${rows.length} طلب (${orders.length} إجمالي)`,
+              en: `Showing ${rows.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} - ${Math.min(currentPage * PAGE_SIZE, rows.length)} of ${rows.length} orders (${orders.length} total)`,
             })}
           </span>
 
@@ -557,6 +568,7 @@ export default function OrdersView({
               onClick={() => {
                 setQuery("");
                 setFilter("all");
+                setPage(1);
               }}
             >
               {t({
@@ -571,7 +583,7 @@ export default function OrdersView({
           <DataTable
             equalColumnWidths
             columns={columns}
-            rows={rows}
+            rows={paginatedRows}
             rowKey={(order) =>
               order.id
             }
@@ -581,6 +593,37 @@ export default function OrdersView({
             })}
           />
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between border-t border-line px-5 py-3 text-xs">
+            <span className="text-mut">
+              {t({
+                ar: `صفحة ${currentPage} من ${totalPages}`,
+                en: `Page ${currentPage} of ${totalPages}`,
+              })}
+            </span>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={currentPage <= 1}
+                onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                className="ctl px-3 py-1 text-xs disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {t({ ar: "السابق", en: "Previous" })}
+              </button>
+
+              <button
+                type="button"
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+                className="ctl px-3 py-1 text-xs disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {t({ ar: "التالي", en: "Next" })}
+              </button>
+            </div>
+          </div>
+        )}
       </Card>
     </div>
   );

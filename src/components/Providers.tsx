@@ -38,8 +38,12 @@ export default function Providers({ children }: { children: ReactNode }) {
   // before first paint. Here we only sync React state with it.
   useEffect(() => {
     const d = document.documentElement;
-    setThemeState(d.dataset.theme === "dark" ? "dark" : "light");
-    setLangState(d.lang === "en" ? "en" : "ar");
+    const initialTheme: Theme = d.dataset.theme === "dark" ? "dark" : "light";
+    const initialLang: Lang = d.lang === "en" ? "en" : "ar";
+    queueMicrotask(() => {
+      setThemeState(initialTheme);
+      setLangState(initialLang);
+    });
   }, []);
 
   const setLang = useCallback((l: Lang) => {
