@@ -101,10 +101,7 @@ export type Overview = {
 
   recent: Order[];
 
-  services: {
-    name: Bilingual;
-    ok: boolean;
-  }[];
+
 };
 
 export type Analytics = {
