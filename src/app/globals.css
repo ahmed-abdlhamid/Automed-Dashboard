@@ -1,6 +1,14 @@
 @import "tailwindcss";
 
 :root {
+  /* Shared layout tokens — consumed by globals.css and theme.css. */
+  --sidebar-collapsed-width: 76px;
+  --sidebar-expanded-width: 252px;
+  --sidebar-main-offset: 104px;
+  --sidebar-pinned-offset: 280px;
+  --sidebar-inset: 14px;
+  --sidebar-mobile-width: 244px;
+  --dashboard-content-max-width: 1600px;
   --bg: #f4f7f6;
   --surface: rgba(255, 255, 255, 0.78);
   --surface-solid: #ffffff;
@@ -182,11 +190,11 @@
 
   .sidebar {
     position: fixed;
-    inset-block: 14px;
-    inset-inline-start: 14px;
+    inset-block: var(--sidebar-inset);
+    inset-inline-start: var(--sidebar-inset);
     z-index: 50;
 
-    width: 76px;
+    width: var(--sidebar-collapsed-width);
 
     display: flex;
     flex-direction: column;
@@ -234,7 +242,7 @@
   }
 
   .sidebar[data-expanded="true"] {
-    width: 242px;
+    width: var(--sidebar-expanded-width);
 
     box-shadow:
       0 30px 80px rgba(5, 22, 20, 0.27),
@@ -616,14 +624,14 @@
     min-width: 0;
     flex: 1;
 
-    margin-inline-start: 104px;
+    margin-inline-start: var(--sidebar-main-offset);
 
     transition:
       margin-inline-start 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .sidebar[data-expanded="true"] ~ .dashboard-main {
-    margin-inline-start: 266px;
+    margin-inline-start: var(--sidebar-pinned-offset);
   }
 
   /* =========================================================
@@ -992,7 +1000,7 @@
 
   .dashboard-content {
     width: 100%;
-    max-width: 1500px;
+    max-width: var(--dashboard-content-max-width);
 
     margin-inline: auto;
 
@@ -1971,12 +1979,17 @@
    ========================================================= */
 
 @media (max-width: 1100px) {
+  :root {
+    --sidebar-expanded-width: 214px;
+    --sidebar-pinned-offset: 238px;
+  }
+
   .sidebar[data-expanded="true"] {
-    width: 214px;
+    width: var(--sidebar-expanded-width);
   }
 
   .sidebar[data-expanded="true"] ~ .dashboard-main {
-    margin-inline-start: 238px;
+    margin-inline-start: var(--sidebar-pinned-offset);
   }
 
   .dashboard-content {
@@ -1993,8 +2006,12 @@
 }
 
 @media (max-width: 767.98px) {
+  :root {
+    --sidebar-mobile-width: min(280px, calc(100vw - 24px));
+  }
+
   .sidebar {
-    width: 244px;
+    width: var(--sidebar-mobile-width);
 
     inset-block: 10px;
 
@@ -2025,7 +2042,7 @@
   }
 
   .sidebar[data-expanded="false"] {
-    width: 244px;
+    width: var(--sidebar-mobile-width);
   }
 
   .sidebar:not([data-expanded="true"]) .nav-label,
@@ -4900,7 +4917,7 @@
      ========================================================= */
 
   .sidebar[data-pinned="true"] {
-    width: 242px;
+    width: var(--sidebar-expanded-width);
   }
 
   .sidebar[data-pinned="true"]
@@ -6123,6 +6140,14 @@
    Automed UI refinement — spacing, readable controls, and login
    ========================================================= */
 :root {
+  /* Shared layout tokens — consumed by globals.css and theme.css. */
+  --sidebar-collapsed-width: 76px;
+  --sidebar-expanded-width: 252px;
+  --sidebar-main-offset: 104px;
+  --sidebar-pinned-offset: 280px;
+  --sidebar-inset: 14px;
+  --sidebar-mobile-width: 244px;
+  --dashboard-content-max-width: 1600px;
   --teal: #1a7872;
   --teal-2: #145f5a;
   --teal-soft: #e8f4f2;
@@ -6313,6 +6338,14 @@ textarea:focus-visible {
    analytical canvas, calm surfaces, clear hierarchy.
    ========================================================= */
 :root {
+  /* Shared layout tokens — consumed by globals.css and theme.css. */
+  --sidebar-collapsed-width: 76px;
+  --sidebar-expanded-width: 252px;
+  --sidebar-main-offset: 104px;
+  --sidebar-pinned-offset: 280px;
+  --sidebar-inset: 14px;
+  --sidebar-mobile-width: 244px;
+  --dashboard-content-max-width: 1600px;
   --bg: #f4f7f6;
   --surface: #ffffff;
   --surface-solid: #ffffff;
@@ -6664,6 +6697,10 @@ textarea:focus {
   outline-offset: 1px;
 }
 @media (max-width: 767.98px) {
+  :root {
+    --sidebar-mobile-width: min(280px, calc(100vw - 24px));
+  }
+
   .sidebar {
     box-shadow: 0 18px 50px rgba(5, 22, 20, .22);
   }
