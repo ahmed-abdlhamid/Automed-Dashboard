@@ -11,7 +11,6 @@
 @media (min-width: 768px) {
   /* ---------- Rail container (collapsed) ---------- */
   .dashboard-shell .sidebar {
-    width: 76px;
     padding: 12px 14px;
     border: 1px solid transparent;
     border-radius: 36px;
@@ -33,7 +32,6 @@
   /* ---------- Expanded (hover or pinned): glass panel ---------- */
   .dashboard-shell .sidebar[data-expanded="true"],
   .dashboard-shell .sidebar[data-pinned="true"] {
-    width: 252px;
     padding: 14px 12px;
     border-color: var(--line);
     background: color-mix(in srgb, var(--surface-solid) 84%, transparent);
@@ -56,11 +54,11 @@
      Hover-expand overlays the page (no layout shift).
      Only a pinned sidebar pushes the content. */
   .dashboard-shell .sidebar[data-expanded="true"][data-pinned="false"] ~ .dashboard-main {
-    margin-inline-start: 104px;
+    margin-inline-start: var(--sidebar-main-offset);
   }
 
   .dashboard-shell .sidebar[data-pinned="true"] ~ .dashboard-main {
-    margin-inline-start: 280px;
+    margin-inline-start: var(--sidebar-pinned-offset);
   }
 
   /* ---------- Brand ---------- */
@@ -289,7 +287,7 @@
 }
 .dashboard-content {
   width: 100%;
-  max-width: 1800px;
+  max-width: var(--dashboard-content-max-width);
   margin-inline: auto;
 }
 .overview-page {
