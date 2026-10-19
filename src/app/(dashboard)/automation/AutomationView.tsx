@@ -102,7 +102,7 @@ export default function AutomationView({ projects, initialProjectId }: {
     { key: "workflows", icon: "automation" as const, label: { ar: "Workflows المشروع", en: "Project workflows" }, value: stats?.workflows ?? "—", detail: lang === "ar" ? "حالة تفعيل الـ Workflows" : "Workflow activation status" },
     { key: "executions", icon: "activity" as const, label: { ar: "التنفيذات المعروضة", en: "Executions loaded" }, value: stats?.executions ?? "—", detail: lang === "ar" ? "من آخر 50 تنفيذًا كحد أقصى" : "Of up to the latest 50 executions" },
     { key: "success", icon: "check" as const, label: { ar: "تنفيذات ناجحة", en: "Successful executions" }, value: stats?.successfulExecutions ?? "—", detail: lang === "ar" ? "ضمن سجل المشروع" : "In this project's history" },
-    { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: lang === "ar" ? "قيد التشغيل أو الانتظار" : "Running or waiting" },
+    { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: lang === "ar" ? "عدد التنفيذات التي انتهت بالفشل" : "Executions that ended in failure" },
   ];
 
   return <div className="automation-page">

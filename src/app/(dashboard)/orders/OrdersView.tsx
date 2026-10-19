@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useMemo,
   useState,
@@ -45,11 +46,25 @@ function Ltr({
   );
 }
 
+type OrdersViewProps = {
+  orders: Order[];
+  range: string;
+  from: string;
+  to: string;
+  page: number;
+  pageSize: number;
+  hasNextPage: boolean;
+};
+
 export default function OrdersView({
   orders,
-}: {
-  orders: Order[];
-}) {
+  range,
+  from,
+  to,
+  page,
+  pageSize,
+  hasNextPage,
+}: OrdersViewProps) {
   const { t } = useI18n();
 
   const [filter, setFilter] =
@@ -88,6 +103,24 @@ export default function OrdersView({
       );
     });
   }, [orders, filter, query]);
+
+  const pageHref = (nextPage: number) => {
+    const params = new URLSearchParams();
+    params.set("range", range);
+    if (range === "custom") {
+      if (from) params.set("from", from);
+      if (to) params.set("to", to);
+    }
+    if (nextPage > 1) params.set("page", String(nextPage));
+    return `/orders?${params.toString()}`;
+  };
+
+  const rangeOptions = [
+    { id: "recent", ar: "آخر 10 طلبات", en: "Latest 10" },
+    { id: "week", ar: "آخر 7 أيام", en: "Last 7 days" },
+    { id: "month", ar: "آخر 30 يومًا", en: "Last 30 days" },
+    { id: "all", ar: "كل الطلبات", en: "All orders" },
+  ];
 
   const counts = useMemo(
     () => ({
@@ -359,6 +392,50 @@ export default function OrdersView({
         })}
       />
 
+      <Card>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+            <strong style={{ marginInlineEnd: 4 }}>
+              {t({ ar: "الفترة الزمنية", en: "Date range" })}
+            </strong>
+            {rangeOptions.map((option) => (
+              <Link
+                key={option.id}
+                href={`/orders?range=${option.id}`}
+                className={range === option.id ? "orders-filter active" : "orders-filter"}
+                aria-current={range === option.id ? "page" : undefined}
+              >
+                {t({ ar: option.ar, en: option.en })}
+              </Link>
+            ))}
+          </div>
+
+          <form
+            action="/orders"
+            method="get"
+            style={{ display: "flex", flexWrap: "wrap", alignItems: "end", gap: 10 }}
+          >
+            <input type="hidden" name="range" value="custom" />
+            <label style={{ display: "grid", gap: 5, fontSize: 13 }}>
+              {t({ ar: "من تاريخ", en: "From" })}
+              <input className="field" type="date" name="from" value={from} required />
+            </label>
+            <label style={{ display: "grid", gap: 5, fontSize: 13 }}>
+              {t({ ar: "إلى تاريخ", en: "To" })}
+              <input className="field" type="date" name="to" value={to} required min={from || undefined} />
+            </label>
+            <button className="ctl" type="submit">
+              {t({ ar: "تطبيق الفترة", en: "Apply range" })}
+            </button>
+          </form>
+          {range === "custom" && (!from || !to || from > to) && (
+            <p style={{ margin: 0, fontSize: 13 }} role="status">
+              {t({ ar: "اختار تاريخ بداية ونهاية صحيحين لعرض الطلبات.", en: "Choose a valid start and end date to view orders." })}
+            </p>
+          )}
+        </div>
+      </Card>
+
       <section className="orders-summary">
         <div className="orders-summary-main">
           <div className="orders-summary-icon">
@@ -371,8 +448,8 @@ export default function OrdersView({
           <div>
             <span>
               {t({
-                ar: "إجمالي الطلبات",
-                en: "Total orders",
+                ar: range === "recent" ? "آخر الطلبات" : "طلبات في الصفحة",
+                en: range === "recent" ? "Recent orders" : "Orders on this page",
               })}
             </span>
 
@@ -545,8 +622,8 @@ export default function OrdersView({
         <div className="orders-results-bar">
           <span>
             {t({
-              ar: `عرض ${rows.length} من ${orders.length} طلب`,
-              en: `Showing ${rows.length} of ${orders.length} orders`,
+              ar: `عرض ${rows.length} من ${orders.length} طلب في الصفحة`,
+              en: `Showing ${rows.length} of ${orders.length} orders on this page`,
             })}
           </span>
 
@@ -581,6 +658,29 @@ export default function OrdersView({
             })}
           />
         </div>
+
+        {range !== "recent" && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, paddingTop: 16 }}>
+            <span style={{ fontSize: 13, opacity: 0.75 }}>
+              {t({
+                ar: `الصفحة ${page} · ${pageSize} طلبًا كحد أقصى لكل صفحة`,
+                en: `Page ${page} · Up to ${pageSize} orders per page`,
+              })}
+            </span>
+            <div style={{ display: "flex", gap: 8 }}>
+              {page > 1 && (
+                <Link className="ctl" href={pageHref(page - 1)}>
+                  {t({ ar: "السابق", en: "Previous" })}
+                </Link>
+              )}
+              {hasNextPage && (
+                <Link className="ctl" href={pageHref(page + 1)}>
+                  {t({ ar: "التالي", en: "Next" })}
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
       </Card>
     </div>
   );

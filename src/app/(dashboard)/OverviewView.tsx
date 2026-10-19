@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useI18n } from "@/components/Providers";
-import { adminIdentity } from "@/config/identity";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import type {
   Order,
@@ -80,9 +79,7 @@ export default function OverviewView({
     0
   );
 
-  const greetingName = isAdmin
-    ? t(adminIdentity.name)
-    : userName ||
+  const greetingName = userName ||
       project?.name ||
       t({
         ar: "عميلنا",
@@ -176,14 +173,6 @@ export default function OverviewView({
     <div className="overview-page">
       <section className="overview-header">
         <div className="overview-heading">
-          {project && (
-            <span className="kicker-chip">
-              <span className="project-trigger-dot" />
-
-              <bdi>{project.name}</bdi>
-            </span>
-          )}
-
           <div className="overview-title-row">
             <div>
               <h1
@@ -192,6 +181,12 @@ export default function OverviewView({
               >
                 {greeting}،{" "}
                 <bdi>{greetingName}</bdi>
+                {project && !isAdmin && (
+                  <span className="overview-project-inline">
+                    <span className="project-trigger-dot" />
+                    <bdi>{project.name}</bdi>
+                  </span>
+                )}
               </h1>
 
               <p className="overview-description">
@@ -356,6 +351,60 @@ export default function OverviewView({
                 })
               )}
             />
+          </div>
+        </Card>
+
+        <Card
+          title={t({ ar: "حالة العمليات", en: "Operations overview" })}
+          subtitle={t({
+            ar: "ملخص سريع لأحدث العمليات المسجلة",
+            en: "A quick summary of recently recorded operations",
+          })}
+        >
+          <div className="overview-payment-layout">
+            <div
+              className="overview-payment-donut"
+              style={{
+                background: `conic-gradient(#159447 0% ${data.recent.length ? (data.recent.filter((order) => order.status === "paid").length / data.recent.length) * 100 : 0}%, #fd9238 ${data.recent.length ? (data.recent.filter((order) => order.status === "paid").length / data.recent.length) * 100 : 0}% ${data.recent.length ? (data.recent.filter((order) => order.status === "paid" || order.status === "pending").length / data.recent.length) * 100 : 0}%, #c93c3c ${data.recent.length ? (data.recent.filter((order) => order.status === "paid" || order.status === "pending").length / data.recent.length) * 100 : 0}% 100%)`,
+              }}
+              role="img"
+              aria-label={t({ ar: "حالة أحدث العمليات", en: "Status of recent operations" })}
+            >
+              <div className="overview-payment-center">
+                <strong>{data.recent.length}</strong>
+                <span>{t({ ar: "عملية", en: "records" })}</span>
+              </div>
+            </div>
+            <div className="overview-payment-legend">
+              {[
+                {
+                  label: t({ ar: "مكتملة", en: "Completed" }),
+                  count: data.recent.filter((order) => order.status === "paid").length,
+                  color: "#159447",
+                },
+                {
+                  label: t({ ar: "قيد الانتظار", en: "Pending" }),
+                  count: data.recent.filter((order) => order.status === "pending").length,
+                  color: "#fd9238",
+                },
+                {
+                  label: t({ ar: "فاشلة", en: "Failed" }),
+                  count: data.recent.filter((order) => order.status === "failed").length,
+                  color: "#c93c3c",
+                },
+              ].map((item) => (
+                <div className="overview-payment-item" key={item.label}>
+                  <span className="overview-payment-dot" style={{ background: item.color }} />
+                  <span>{item.label}</span>
+                  <strong>{item.count}</strong>
+                </div>
+              ))}
+              {!data.recent.length && (
+                <p className="text-sm text-muted">
+                  {t({ ar: "لا توجد عمليات لعرضها حتى الآن.", en: "No operations to display yet." })}
+                </p>
+              )}
+            </div>
           </div>
         </Card>
       </section>

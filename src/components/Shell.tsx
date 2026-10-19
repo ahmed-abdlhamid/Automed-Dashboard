@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useEffect,
   useRef,
@@ -33,6 +33,7 @@ export default function Shell({
   const [loggingOut, setLoggingOut] = useState(false);
 
   const pathname = usePathname();
+  const router = useRouter();
   const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -104,7 +105,8 @@ export default function Shell({
       return;
     }
 
-    window.location.href = "/login";
+    router.replace("/login");
+    router.refresh();
   };
 
   const handleSidebarMouseEnter = () => {
@@ -546,39 +548,6 @@ export default function Shell({
                 </div>
               )}
 
-            <button
-              type="button"
-              className="topbar-control"
-              onClick={toggleTheme}
-              aria-label={t({
-                ar: "تغيير المظهر",
-                en: "Toggle theme",
-              })}
-            >
-              <Icon
-                name={
-                  theme === "dark"
-                    ? "sun"
-                    : "moon"
-                }
-                size={17}
-              />
-            </button>
-
-            <button
-              type="button"
-              className="topbar-control lang-control"
-              onClick={toggleLang}
-              aria-label={t({
-                ar: "تغيير اللغة",
-                en: "Toggle language",
-              })}
-            >
-              {lang === "ar"
-                ? "EN"
-                : "AR"}
-            </button>
-
             <div className="profile-chip">
               <span
                 className="profile-avatar"
@@ -599,33 +568,34 @@ export default function Shell({
               <div className="profile-meta">
                 {isAdmin && (
                   <span className="profile-name">
-                    <bdi>
-                      {t(
-                        adminIdentity.name
-                      )}
-                    </bdi>
+                    <bdi>{t(adminIdentity.name)}</bdi>
                   </span>
                 )}
-
-                <span
-                  className={
-                    isAdmin
-                      ? "profile-role"
-                      : "profile-name"
-                  }
-                >
+                <span className={isAdmin ? "profile-role" : "profile-name"}>
                   {isAdmin
-                    ? t({
-                        ar: "مسؤول",
-                        en: "Admin",
-                      })
-                    : t({
-                        ar: "عميل",
-                        en: "Client",
-                      })}
+                    ? t({ ar: "مسؤول", en: "Admin" })
+                    : t({ ar: "عميل", en: "Client" })}
                 </span>
               </div>
             </div>
+
+            <button
+              type="button"
+              className="topbar-control"
+              onClick={toggleTheme}
+              aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
+            >
+              <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
+            </button>
+
+            <button
+              type="button"
+              className="topbar-control lang-control"
+              onClick={toggleLang}
+              aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
+            >
+              {lang === "ar" ? "EN" : "AR"}
+            </button>
           </div>
         </header>
 

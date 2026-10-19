@@ -14,6 +14,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRecoveryHint, setShowRecoveryHint] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,7 +52,8 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/";
+    router.replace("/");
+    router.refresh();
   }
 
   return (
@@ -157,19 +160,51 @@ export default function LoginPage() {
                 })}
               </label>
 
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(event) =>
-                  setPassword(event.target.value)
-                }
-                autoComplete="current-password"
-                required
-                className="w-full rounded-[14px] border border-line bg-card px-4 py-3 text-sm outline-none transition-all focus:border-orange"
-                placeholder="••••••••"
-                dir="ltr"
-              />
+              <div className="login-password-field" dir={lang === "ar" ? "rtl" : "ltr"}>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(event) =>
+                    setPassword(event.target.value)
+                  }
+                  autoComplete="current-password"
+                  required
+                  className="w-full rounded-[14px] border border-line bg-card px-4 py-3 text-sm outline-none transition-all focus:border-orange"
+                  placeholder="••••••••"
+                  dir={lang === "ar" ? "rtl" : "ltr"}
+                />
+                <button
+                  type="button"
+                  className="login-password-toggle"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={t({
+                    ar: showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور",
+                    en: showPassword ? "Hide password" : "Show password",
+                  })}
+                  aria-pressed={showPassword}
+                >
+                  <Icon name={showPassword ? "eyeOff" : "eye"} size={19} />
+                </button>
+              </div>
+              <div className="login-recovery-row">
+                <button
+                  type="button"
+                  className="login-forgot-link"
+                  onClick={() => setShowRecoveryHint((visible) => !visible)}
+                  aria-expanded={showRecoveryHint}
+                >
+                  {t({ ar: "هل نسيت كلمة المرور؟", en: "Forgot password?" })}
+                </button>
+              </div>
+              {showRecoveryHint && (
+                <p className="login-recovery-hint" role="status">
+                  {t({
+                    ar: "استعادة كلمة المرور هتكون متاحة قريبًا. حاليًا تواصل مع إدارة Automed للمساعدة.",
+                    en: "Password recovery will be available soon. Please contact Automed support for now.",
+                  })}
+                </p>
+              )}
             </div>
 
             {error && (

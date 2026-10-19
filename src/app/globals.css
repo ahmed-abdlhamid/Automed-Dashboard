@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
 :root {
+  /* Shared layout tokens — consumed by globals.css and theme.css. */
+  --sidebar-collapsed-width: 76px;
+  --sidebar-expanded-width: 252px;
+  --sidebar-inset: 14px;
+  --sidebar-gap: 14px;
+  --sidebar-rail-control-size: 46px;
+  --sidebar-main-offset: calc(var(--sidebar-inset) + var(--sidebar-collapsed-width) + var(--sidebar-gap));
+  --sidebar-pinned-offset: calc(var(--sidebar-inset) + var(--sidebar-expanded-width) + var(--sidebar-gap));
+  --sidebar-mobile-width: 244px;
+  --dashboard-content-max-width: 1600px;
   --bg: #f4f7f6;
   --surface: rgba(255, 255, 255, 0.78);
   --surface-solid: #ffffff;
@@ -182,11 +192,11 @@
 
   .sidebar {
     position: fixed;
-    inset-block: 14px;
-    inset-inline-start: 14px;
+    inset-block: var(--sidebar-inset);
+    inset-inline-start: var(--sidebar-inset);
     z-index: 50;
 
-    width: 76px;
+    width: var(--sidebar-collapsed-width);
 
     display: flex;
     flex-direction: column;
@@ -234,7 +244,7 @@
   }
 
   .sidebar[data-expanded="true"] {
-    width: 242px;
+    width: var(--sidebar-expanded-width);
 
     box-shadow:
       0 30px 80px rgba(5, 22, 20, 0.27),
@@ -616,14 +626,14 @@
     min-width: 0;
     flex: 1;
 
-    margin-inline-start: 104px;
+    margin-inline-start: var(--sidebar-main-offset);
 
     transition:
       margin-inline-start 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .sidebar[data-expanded="true"] ~ .dashboard-main {
-    margin-inline-start: 266px;
+    margin-inline-start: var(--sidebar-pinned-offset);
   }
 
   /* =========================================================
@@ -992,7 +1002,7 @@
 
   .dashboard-content {
     width: 100%;
-    max-width: 1500px;
+    max-width: var(--dashboard-content-max-width);
 
     margin-inline: auto;
 
@@ -1971,12 +1981,16 @@
    ========================================================= */
 
 @media (max-width: 1100px) {
+  :root {
+    --sidebar-expanded-width: 214px;
+  }
+
   .sidebar[data-expanded="true"] {
-    width: 214px;
+    width: var(--sidebar-expanded-width);
   }
 
   .sidebar[data-expanded="true"] ~ .dashboard-main {
-    margin-inline-start: 238px;
+    margin-inline-start: var(--sidebar-pinned-offset);
   }
 
   .dashboard-content {
@@ -1993,8 +2007,12 @@
 }
 
 @media (max-width: 767.98px) {
+  :root {
+    --sidebar-mobile-width: min(280px, calc(100vw - 24px));
+  }
+
   .sidebar {
-    width: 244px;
+    width: var(--sidebar-mobile-width);
 
     inset-block: 10px;
 
@@ -2025,7 +2043,7 @@
   }
 
   .sidebar[data-expanded="false"] {
-    width: 244px;
+    width: var(--sidebar-mobile-width);
   }
 
   .sidebar:not([data-expanded="true"]) .nav-label,
@@ -4900,7 +4918,7 @@
      ========================================================= */
 
   .sidebar[data-pinned="true"] {
-    width: 242px;
+    width: var(--sidebar-expanded-width);
   }
 
   .sidebar[data-pinned="true"]
@@ -6115,5 +6133,475 @@
   .automation-page .automation-project-management .automation-assignment-select {
     justify-self: stretch;
     max-width: 200px;
+  }
+}
+
+
+/* =========================================================
+   Automed UI refinement — spacing, readable controls, and login
+   ========================================================= */
+:root {
+  --teal: #1a7872;
+  --teal-2: #145f5a;
+  --teal-soft: #e8f4f2;
+  --teal-mid: #2a9189;
+  --line: rgba(24, 64, 60, 0.12);
+}
+[data-theme="dark"] {
+  --teal: #35a99e;
+  --teal-2: #267f78;
+  --teal-soft: #142b28;
+  --teal-mid: #45b9ae;
+  --line: rgba(237, 245, 243, 0.11);
+}
+.xcard {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+}
+.xcard-hover {
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.xcard-hover:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--teal) 25%, var(--line));
+  box-shadow: var(--shadow-md);
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  padding-block: 11px;
+  padding-inline: 14px;
+  line-height: 1.55;
+}
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--teal) !important;
+  outline: 3px solid color-mix(in srgb, var(--teal) 17%, transparent);
+  outline-offset: 1px;
+}
+.tbl th,
+.tbl td {
+  padding: 13px 16px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.login-password-field {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.login-password-field input {
+  padding-inline-end: 48px;
+}
+.login-password-toggle {
+  position: absolute;
+  inset-inline-end: 8px;
+  top: 50%;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--mut);
+  transition: color .18s ease, background .18s ease;
+}
+.login-password-toggle:hover {
+  color: var(--teal);
+  background: var(--teal-soft);
+}
+.login-recovery-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 9px;
+  padding-inline: 2px;
+}
+.login-forgot-link {
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  text-underline-offset: 4px;
+}
+.login-forgot-link:hover {
+  text-decoration: underline;
+}
+.login-recovery-hint {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--teal) 22%, transparent);
+  border-radius: 12px;
+  background: var(--teal-soft);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.75;
+}
+@media (max-width: 640px) {
+  .xcard { border-radius: 18px; }
+  .tbl th, .tbl td { padding: 11px 12px; }
+}
+
+
+/* Consistent inset and wrapping for page-level filters and toolbars */
+.orders-toolbar,
+.users-toolbar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px 18px;
+}
+.orders-search,
+.users-search {
+  min-width: min(100%, 240px);
+}
+.orders-filters {
+  gap: 7px;
+  min-width: 0;
+}
+.orders-filter {
+  min-height: 38px;
+  padding: 7px 12px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.orders-search-input,
+.users-search input {
+  min-height: 44px;
+  padding-block: 10px;
+  padding-inline-start: 42px;
+  padding-inline-end: 40px;
+  border-radius: 12px;
+}
+.orders-results-bar {
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-inline: 22px;
+}
+.xcard > .relative {
+  min-width: 0;
+}
+.xcard > .relative > :is(.orders-toolbar, .users-toolbar) {
+  max-width: 100%;
+}
+@media (max-width: 760px) {
+  .orders-toolbar,
+  .users-toolbar {
+    align-items: stretch;
+    padding: 15px 14px;
+    gap: 12px;
+  }
+  .orders-search,
+  .users-search {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  .orders-filters {
+    width: 100%;
+  }
+  .orders-filter {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+  .orders-results-bar {
+    padding-inline: 14px;
+  }
+}
+
+
+/* =========================================================
+   AUTOMED DASHBOARD — REAL UI REDESIGN
+   Inspired by modern BI workspaces: open navigation, bright
+   analytical canvas, calm surfaces, clear hierarchy.
+   ========================================================= */
+:root {
+  --bg: #f4f7f6;
+  --surface: #ffffff;
+  --surface-solid: #ffffff;
+  --surface-soft: #f8faf9;
+  --ink: #172a28;
+  --mut: #72827f;
+  --line: #e3ebe8;
+  --teal: #1a7872;
+  --teal-2: #145f5a;
+  --teal-soft: #e7f4f1;
+  --teal-mid: #2d958b;
+  --sidebar: #ffffff;
+  --sidebar-2: #f8fbfa;
+  --sidebar-text: #607571;
+  --shadow-sm: 0 2px 8px rgba(17, 54, 49, .035), 0 1px 2px rgba(17, 54, 49, .025);
+  --shadow-md: 0 10px 28px rgba(17, 54, 49, .065);
+  --shadow-lg: 0 20px 55px rgba(17, 54, 49, .1);
+}
+[data-theme="dark"] {
+  --bg: #0d1715;
+  --surface: #13211f;
+  --surface-solid: #13211f;
+  --surface-soft: #172824;
+  --ink: #edf5f3;
+  --mut: #9aada8;
+  --line: rgba(223, 239, 234, .11);
+  --teal: #50b9ae;
+  --teal-2: #2e9389;
+  --teal-soft: #18342f;
+  --teal-mid: #68c8bd;
+  --sidebar: #101d1b;
+  --sidebar-2: #142521;
+  --sidebar-text: #a7bfba;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, .12);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, .18);
+  --shadow-lg: 0 20px 55px rgba(0, 0, 0, .24);
+}
+body {
+  background: var(--bg);
+}
+.dashboard-shell {
+  background: var(--bg);
+}
+/* Sidebar appearance only. Width and interaction states are owned by the
+   shared layout tokens and the single sidebar state rules above. */
+.sidebar {
+  padding: 14px 10px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface-solid);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.sidebar::before {
+  display: none;
+}
+.sidebar-top {
+  justify-content: flex-start;
+  min-height: 58px;
+  margin: 0 4px 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.sidebar .nav-group-label,
+.sidebar[data-expanded="false"] .nav-group-label {
+  display: block;
+  margin: 0 10px 9px;
+  color: #8a9a96;
+  font-size: 10px;
+  letter-spacing: .04em;
+}
+.topbar {
+  min-height: 76px;
+  padding-inline: clamp(20px, 3vw, 42px);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+  backdrop-filter: blur(18px);
+}
+.topbar-control,
+.mobile-menu-button,
+.project-trigger {
+  border-radius: 11px;
+  background: var(--surface-solid);
+  box-shadow: none;
+}
+.dashboard-content {
+  width: 100%;
+  max-width: var(--dashboard-content-max-width);
+  margin-inline: auto;
+  padding: 30px clamp(20px, 3vw, 42px) 42px;
+}
+.overview-page {
+  gap: 28px;
+}
+.overview-header {
+  align-items: center;
+  padding: 2px 0 8px;
+}
+.overview-title {
+  font-size: clamp(1.7rem, 2.5vw, 2.25rem);
+  letter-spacing: -.035em;
+}
+.overview-description {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.kicker-chip,
+.date-chip {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-solid);
+}
+.overview-kpis {
+  gap: 18px;
+}
+.metric-card,
+.xcard {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.metric-card {
+  min-height: 152px;
+  padding: 22px;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--teal) 25%, var(--line));
+  box-shadow: var(--shadow-md);
+}
+.overview-section-grid {
+  gap: 20px;
+}
+.overview-chart-header {
+  padding: 22px 24px 8px;
+}
+.xcard h2,
+.xcard h3 {
+  letter-spacing: -.015em;
+}
+.xcard .tbl th {
+  background: var(--surface-soft);
+  color: var(--mut);
+  font-size: 11px;
+  font-weight: 700;
+}
+.xcard .tbl td {
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn {
+  border-radius: 11px;
+  min-height: 40px;
+}
+.btn-pri {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.btn-pri:hover {
+  background: var(--teal-2);
+}
+.orders-toolbar,
+.users-toolbar {
+  border-bottom: 1px solid var(--line);
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border-radius: 11px;
+  border-color: var(--line);
+  background-color: var(--surface-solid);
+}
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--teal) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 12%, transparent);
+}
+@media (max-width: 1024px) {
+  .overview-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767.98px) {
+  .sidebar {
+    width: var(--sidebar-mobile-width);
+    padding: 18px 14px;
+    background: var(--surface-solid);
+  }
+  .dashboard-main,
+  .sidebar[data-expanded="true"] ~ .dashboard-main,
+  .sidebar[data-expanded="false"] ~ .dashboard-main {
+    margin-inline-start: 0 !important;
+  }
+  .dashboard-content {
+    padding: 20px 14px 32px;
+  }
+  .topbar {
+    min-height: 66px;
+    padding-inline: 14px;
+  }
+  .overview-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .overview-actions {
+    justify-content: flex-start;
+  }
+  .overview-kpis {
+    gap: 12px;
+  }
+  .metric-card {
+    padding: 17px;
+    min-height: 138px;
+  }
+}
+@media (max-width: 420px) {
+  .overview-kpis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+/* UI refinement pass: align logical controls with the active language and
+   reduce visual noise without changing the established Automed palette. */
+.login-password-field {
+  isolation: isolate;
+}
+.login-password-field input {
+  box-sizing: border-box;
+  padding-inline-start: 14px !important;
+  padding-inline-end: 48px !important;
+  text-align: start;
+}
+.login-password-toggle {
+  inset-inline-end: 7px;
+  inset-inline-start: auto;
+  z-index: 2;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+.login-password-toggle svg {
+  display: block;
+  pointer-events: none;
+}
+.login-password-toggle:focus-visible {
+  outline-offset: 1px;
+}
+@media (max-width: 767.98px) {
+  .sidebar {
+    box-shadow: 0 18px 50px rgba(5, 22, 20, .22);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar *,
+  .dashboard-main,
+  .xcard,
+  .metric-card,
+  .nav-link,
+  .topbar-control {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }
