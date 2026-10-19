@@ -278,3 +278,132 @@
     opacity: 1;
   }
 }
+
+
+/* Final UI polish — keep Automed's current teal/orange palette and all page content. */
+.dashboard-shell {
+  isolation: isolate;
+}
+.dashboard-main {
+  min-width: 0;
+}
+.dashboard-content {
+  width: 100%;
+  max-width: 1800px;
+  margin-inline: auto;
+}
+.overview-page {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.overview-header {
+  gap: 24px;
+}
+.overview-title {
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.overview-description {
+  max-width: 70ch;
+  line-height: 1.85;
+}
+.overview-actions {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.kicker-chip,
+.date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 12px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.overview-kpis {
+  align-items: stretch;
+}
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.metric-card:focus-within,
+.xcard:focus-within {
+  border-color: color-mix(in srgb, var(--teal) 24%, var(--line));
+}
+.overview-section-grid {
+  align-items: start;
+}
+.xcard {
+  min-width: 0;
+}
+.xcard > :first-child {
+  min-width: 0;
+}
+.tbl {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tbl th {
+  white-space: nowrap;
+}
+.tbl td {
+  vertical-align: middle;
+}
+.btn,
+.ctl,
+.sidebar-toggle,
+.logout-button,
+.nav-link {
+  -webkit-tap-highlight-color: transparent;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+@media (min-width: 1280px) {
+  .dashboard-content {
+    padding-inline: 32px;
+  }
+  .overview-page {
+    gap: 30px;
+  }
+}
+@media (max-width: 767.98px) {
+  .overview-page {
+    gap: 20px;
+  }
+  .overview-actions {
+    width: 100%;
+  }
+  .overview-actions .btn {
+    flex: 1 1 auto;
+  }
+  .xcard {
+    border-radius: 15px;
+  }
+}
+@media (max-width: 480px) {
+  .overview-actions .date-chip {
+    width: 100%;
+    justify-content: center;
+  }
+  .overview-actions .btn {
+    min-width: 0;
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+}
