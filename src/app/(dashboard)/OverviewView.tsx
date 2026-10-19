@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useI18n } from "@/components/Providers";
-import { adminIdentity } from "@/config/identity";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import type {
   Order,
