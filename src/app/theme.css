@@ -1,11 +1,11 @@
 /* =========================================================
-   AUTOMED THEME V3
-   Loaded AFTER globals.css (see layout.tsx). Unlayered on purpose:
-   unlayered rules beat the @layer components rules in globals.css,
-   so nothing in globals.css needs to be edited or removed.
+   AUTOMED DASHBOARD PRESENTATION LAYER
+   globals.css owns the shared layout tokens and structural states.
+   This file owns the visual treatment of the rail, active items,
+   cards, and responsive polish; avoid repeating layout dimensions.
 
-   Section 1 — Sidebar rail (desktop only, >= 768px)
-   Mobile keeps the existing drawer behaviour untouched.
+   Sidebar rail styling applies on desktop (>= 768px).
+   Mobile keeps the drawer behavior from globals.css.
    ========================================================= */
 
 @media (min-width: 768px) {
@@ -105,9 +105,9 @@
 
   /* ---------- Nav link: collapsed = round icon button ---------- */
   .dashboard-shell .sidebar .nav-link {
-    width: 46px;
-    height: 46px;
-    min-height: 46px;
+    width: var(--sidebar-rail-control-size);
+    height: var(--sidebar-rail-control-size);
+    min-height: var(--sidebar-rail-control-size);
     margin: 8px auto;
     padding: 0;
     justify-content: center;
@@ -226,9 +226,9 @@
 
   .dashboard-shell .sidebar:not([data-expanded="true"]) .sidebar-status,
   .dashboard-shell .sidebar:not([data-expanded="true"]) .logout-button {
-    width: 46px;
-    height: 46px;
-    min-height: 46px;
+    width: var(--sidebar-rail-control-size);
+    height: var(--sidebar-rail-control-size);
+    min-height: var(--sidebar-rail-control-size);
     margin: 8px auto 0;
     padding: 0;
     justify-content: center;
