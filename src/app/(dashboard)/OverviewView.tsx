@@ -181,7 +181,7 @@ export default function OverviewView({
               >
                 {greeting}،{" "}
                 <bdi>{greetingName}</bdi>
-                {project && (
+                {project && !isAdmin && (
                   <span className="overview-project-inline">
                     <span className="project-trigger-dot" />
                     <bdi>{project.name}</bdi>
