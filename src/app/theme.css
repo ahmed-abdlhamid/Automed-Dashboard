@@ -1313,3 +1313,20 @@ body {
   color: var(--orange) !important;
   stroke: var(--orange) !important;
 }
+
+
+/* KPI arrows get their own orange hover, separate from the card outline. */
+.overview-kpis .metric-arrow,
+.overview-kpis .metric-arrow:hover,
+.overview-kpis .metric-arrow:focus-visible {
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease;
+}
+.overview-kpis .metric-card:hover .metric-arrow {
+  color: var(--orange) !important;
+  border-color: var(--orange) !important;
+  background: color-mix(in srgb, var(--orange) 10%, transparent) !important;
+}
+.overview-kpis .metric-card:hover .metric-arrow svg {
+  color: var(--orange) !important;
+  stroke: var(--orange) !important;
+}
