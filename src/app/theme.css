@@ -1224,3 +1224,47 @@ body {
   .overview-payment-layout { flex-direction: column; }
   .overview-payment-legend { width: 100%; }
 }
+
+
+/* Final cleanup: align date chip with the profile card's inner edge. */
+@media (min-width: 768px) {
+  .overview-actions .date-chip {
+    padding-inline: 22px;
+    min-width: 176px;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+/* Orange edge-only hover, with no orange fill across neutral KPI cards. */
+.overview-kpis .metric-card,
+.overview-kpis .metric-card:hover,
+.overview-kpis .metric-card:focus-within {
+  background-color: var(--card-glass) !important;
+  background-image: none !important;
+}
+.overview-kpis .metric-card.metric-card-featured,
+.overview-kpis .metric-card.metric-card-featured:hover {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(110, 208, 197, 0.18), transparent 38%),
+    linear-gradient(145deg, #167068, #0c4a45) !important;
+}
+.overview-kpis .metric-card:hover {
+  border-color: var(--orange) !important;
+  box-shadow: inset 0 0 0 1px var(--orange),
+              0 0 14px -9px color-mix(in srgb, var(--orange) 45%, transparent) !important;
+  transform: none !important;
+}
+.overview-actions .btn,
+.overview-actions .btn-pri {
+  background: var(--surface-solid) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.overview-actions .btn:hover,
+.overview-actions .btn-pri:hover {
+  background: var(--surface-solid) !important;
+  border-color: var(--orange) !important;
+  box-shadow: inset 0 0 0 1px var(--orange),
+              0 0 12px -8px color-mix(in srgb, var(--orange) 50%, transparent) !important;
+}
