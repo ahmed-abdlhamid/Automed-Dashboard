@@ -933,3 +933,52 @@ body {
 .automation-page .automation-live-panel:last-child {
   padding-bottom: 24px;
 }
+
+
+/* Final alignment pass requested after review. */
+.overview-actions .btn,
+.overview-actions .btn-pri {
+  background: var(--card-glass) !important;
+  color: var(--ink) !important;
+  border-color: var(--card-edge) !important;
+}
+.overview-actions .btn:hover,
+.overview-actions .btn-pri:hover {
+  background: color-mix(in srgb, var(--orange) 12%, var(--card-glass)) !important;
+  color: var(--ink) !important;
+  border-color: var(--orange) !important;
+}
+.overview-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.overview-project-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  border: 1px solid var(--card-edge);
+  border-radius: 999px;
+  background: var(--card-glass);
+  color: var(--mut);
+  font-size: .55em;
+  font-weight: 600;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+@media (min-width: 768px) {
+  .dashboard-shell .topbar {
+    align-items: center;
+  }
+  .dashboard-shell .topbar-actions {
+    margin-inline-start: auto;
+    justify-content: flex-start;
+    align-self: stretch;
+  }
+  .dashboard-shell .topbar-start {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
