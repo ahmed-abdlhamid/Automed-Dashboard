@@ -50,7 +50,8 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/";
+    router.replace("/");
+    router.refresh();
   }
 
   return (
