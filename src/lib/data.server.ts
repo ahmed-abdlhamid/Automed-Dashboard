@@ -227,7 +227,7 @@ export async function getOrders(
   projectId: string,
   options?: number | OrderQueryOptions
 ): Promise<Order[]> {
-  const normalizedOptions =
+  const normalizedOptions: OrderQueryOptions =
     typeof options === "number"
       ? { limit: options }
       : options || {};
