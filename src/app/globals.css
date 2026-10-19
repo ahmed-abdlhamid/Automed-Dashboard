@@ -6117,3 +6117,124 @@
     max-width: 200px;
   }
 }
+
+
+/* =========================================================
+   Automed UI refinement — spacing, readable controls, and login
+   ========================================================= */
+:root {
+  --teal: #1a7872;
+  --teal-2: #145f5a;
+  --teal-soft: #e8f4f2;
+  --teal-mid: #2a9189;
+  --line: rgba(24, 64, 60, 0.12);
+}
+[data-theme="dark"] {
+  --teal: #35a99e;
+  --teal-2: #267f78;
+  --teal-soft: #142b28;
+  --teal-mid: #45b9ae;
+  --line: rgba(237, 245, 243, 0.11);
+}
+.xcard {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+}
+.xcard-hover {
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.xcard-hover:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--teal) 25%, var(--line));
+  box-shadow: var(--shadow-md);
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  padding-block: 11px;
+  padding-inline: 14px;
+  line-height: 1.55;
+}
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--teal) !important;
+  outline: 3px solid color-mix(in srgb, var(--teal) 17%, transparent);
+  outline-offset: 1px;
+}
+.tbl th,
+.tbl td {
+  padding: 13px 16px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.login-password-field {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.login-password-field input {
+  padding-inline-end: 48px;
+}
+.login-password-toggle {
+  position: absolute;
+  inset-inline-end: 8px;
+  top: 50%;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--mut);
+  transition: color .18s ease, background .18s ease;
+}
+.login-password-toggle:hover {
+  color: var(--teal);
+  background: var(--teal-soft);
+}
+.login-recovery-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 9px;
+  padding-inline: 2px;
+}
+.login-forgot-link {
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  text-underline-offset: 4px;
+}
+.login-forgot-link:hover {
+  text-decoration: underline;
+}
+.login-recovery-hint {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--teal) 22%, transparent);
+  border-radius: 12px;
+  background: var(--teal-soft);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.75;
+}
+@media (max-width: 640px) {
+  .xcard { border-radius: 18px; }
+  .tbl th, .tbl td { padding: 11px 12px; }
+}
