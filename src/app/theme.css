@@ -1066,3 +1066,161 @@ body {
     padding: 6px 9px;
   }
 }
+
+
+/* Alignment pass: use one shared horizontal gutter for header controls and page content. */
+@media (min-width: 768px) {
+  .dashboard-shell .topbar {
+    padding-inline: clamp(24px, 2.2vw, 36px);
+    gap: 20px;
+  }
+  .dashboard-shell .topbar-actions {
+    gap: 10px;
+    align-items: center;
+  }
+  .dashboard-shell .topbar-actions .profile-chip,
+  .dashboard-shell .topbar-actions .project-trigger,
+  .dashboard-shell .topbar-actions .topbar-control {
+    min-height: 40px;
+    height: 40px;
+    box-sizing: border-box;
+  }
+  .dashboard-shell .dashboard-content {
+    padding-inline: clamp(24px, 2.2vw, 36px);
+  }
+  .overview-actions {
+    align-items: center;
+    gap: 10px;
+  }
+  .overview-actions .date-chip {
+    min-height: 40px;
+    padding-inline: 18px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+/* The small action buttons and all KPI cards use edge-only orange hover. */
+.overview-actions .btn,
+.overview-actions .btn-pri,
+.overview-actions .btn:hover,
+.overview-actions .btn-pri:hover {
+  background: var(--surface-solid) !important;
+  color: var(--text, var(--ink)) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: none;
+}
+.overview-actions .btn:hover,
+.overview-actions .btn-pri:hover {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--orange) 30%, transparent),
+              0 0 18px -8px color-mix(in srgb, var(--orange) 65%, transparent);
+}
+.overview-kpis .metric-card {
+  transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+}
+.overview-kpis .metric-card:hover {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--orange) 28%, transparent),
+              0 0 24px -10px color-mix(in srgb, var(--orange) 65%, transparent) !important;
+  transform: translateY(-2px);
+}
+.overview-kpis .metric-card:nth-child(2):hover { background: var(--tint-mint) !important; }
+.overview-kpis .metric-card:nth-child(3):hover { background: var(--tint-sand) !important; }
+.overview-kpis .metric-card:nth-child(4):hover { background: var(--tint-mist) !important; }
+.overview-kpis .metric-card.metric-card-featured:hover {
+  background: radial-gradient(circle at 90% 0%, rgba(110, 208, 197, 0.28), transparent 38%),
+              linear-gradient(145deg, #167068, #0c4a45) !important;
+}
+.overview-section-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
+  gap: 20px;
+  align-items: stretch;
+}
+.overview-payment-layout {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 24px 26px;
+  min-height: 245px;
+}
+.overview-payment-donut {
+  width: 156px;
+  height: 156px;
+  flex: 0 0 156px;
+  border-radius: 50%;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.overview-payment-donut::after {
+  content: "";
+  position: absolute;
+  inset: 19px;
+  border-radius: 50%;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+}
+.overview-payment-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.overview-payment-center strong {
+  font-size: 25px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.overview-payment-center span {
+  font-size: 11px;
+  color: var(--mut);
+}
+.overview-payment-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  min-width: 0;
+  flex: 1;
+}
+.overview-payment-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--mut);
+}
+.overview-payment-item strong {
+  margin-inline-start: auto;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.overview-payment-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 9px;
+}
+@media (max-width: 1100px) {
+  .overview-section-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-payment-layout {
+    min-height: 0;
+  }
+}
+@media (max-width: 767.98px) {
+  .dashboard-shell .dashboard-content { padding-inline: 14px; }
+  .dashboard-shell .topbar { padding-inline: 14px; }
+  .overview-section-grid { grid-template-columns: minmax(0, 1fr); }
+  .overview-payment-layout { justify-content: center; gap: 18px; padding-inline: 16px; }
+  .overview-payment-donut { width: 132px; height: 132px; flex-basis: 132px; }
+  .overview-payment-donut::after { inset: 16px; }
+}
+@media (max-width: 420px) {
+  .overview-payment-layout { flex-direction: column; }
+  .overview-payment-legend { width: 100%; }
+}
