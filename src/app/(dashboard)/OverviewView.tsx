@@ -79,6 +79,28 @@ export default function OverviewView({
     0
   );
 
+  const paymentMethods = data.recent.reduce<Array<{ label: string; count: number }>>(
+    (groups, order) => {
+      const raw = (order.paymentMethod || "").trim();
+      const key = raw || t({ ar: "غير محدد", en: "Unspecified" });
+      const existing = groups.find((item) => item.label === key);
+      if (existing) existing.count += 1;
+      else groups.push({ label: key, count: 1 });
+      return groups;
+    },
+    []
+  );
+  const paymentTotal = paymentMethods.reduce((sum, item) => sum + item.count, 0);
+  const paymentColors = ["#0d5c56", "#fd9238", "#8ea7a2", "#c7d5d1"];
+  let paymentOffset = 0;
+  const paymentGradient = paymentMethods.length
+    ? `conic-gradient(${paymentMethods.map((item, index) => {
+        const start = paymentOffset;
+        paymentOffset += (item.count / paymentTotal) * 100;
+        return `${paymentColors[index % paymentColors.length]} ${start}% ${paymentOffset}%`;
+      }).join(", ")})`
+    : "conic-gradient(var(--line) 0% 100%)";
+
   const greetingName = userName ||
       project?.name ||
       t({
@@ -351,6 +373,41 @@ export default function OverviewView({
                 })
               )}
             />
+          </div>
+        </Card>
+
+        <Card
+          title={t({ ar: "وسائل الدفع", en: "Payment methods" })}
+          subtitle={t({
+            ar: "توزيع وسائل الدفع في أحدث العمليات",
+            en: "Payment method mix in recent orders",
+          })}
+        >
+          <div className="overview-payment-layout">
+            <div
+              className="overview-payment-donut"
+              style={{ background: paymentGradient }}
+              role="img"
+              aria-label={t({ ar: "توزيع وسائل الدفع في أحدث العمليات", en: "Payment method distribution in recent orders" })}
+            >
+              <div className="overview-payment-center">
+                <strong>{paymentTotal}</strong>
+                <span>{t({ ar: "عملية", en: "orders" })}</span>
+              </div>
+            </div>
+            <div className="overview-payment-legend">
+              {paymentMethods.length ? paymentMethods.map((item, index) => (
+                <div className="overview-payment-item" key={item.label}>
+                  <span className="overview-payment-dot" style={{ background: paymentColors[index % paymentColors.length] }} />
+                  <span>{item.label}</span>
+                  <strong>{Math.round((item.count / paymentTotal) * 100)}%</strong>
+                </div>
+              )) : (
+                <p className="text-sm text-muted">
+                  {t({ ar: "لا توجد بيانات كافية لعرض وسائل الدفع.", en: "Not enough payment data to display yet." })}
+                </p>
+              )}
+            </div>
           </div>
         </Card>
       </section>
