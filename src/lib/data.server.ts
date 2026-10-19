@@ -533,39 +533,6 @@ export async function getOverview(
     recent:
       orders.slice(0, 5),
 
-    services: [
-      {
-        name: {
-          ar: "واجهة النظام",
-          en: "Dashboard",
-        },
-        ok: true,
-      },
-
-      {
-        name: {
-          ar: "اتصال البيانات",
-          en: "Data connection",
-        },
-        ok: true,
-      },
-
-      {
-        name: {
-          ar: "الأتمتة",
-          en: "Automation",
-        },
-        ok: true,
-      },
-
-      {
-        name: {
-          ar: "بوابة الدفع",
-          en: "Payment gateway",
-        },
-        ok: true,
-      },
-    ],
   };
 }
 
