@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { dashboardConfig } from "@/config/dashboard.config";
 import type { Project } from "./data";
@@ -11,7 +12,7 @@ type ProjectMembership = {
   role: ProjectRole;
 };
 
-async function getCurrentUserMemberships(): Promise<
+const getCurrentUserMemberships = cache(async function getCurrentUserMemberships(): Promise<
   ProjectMembership[]
 > {
   const supabase =
@@ -47,7 +48,9 @@ async function getCurrentUserMemberships(): Promise<
       membership.role === "admin" ||
       membership.role === "client"
   ) as ProjectMembership[];
-}
+});
+
+const getCachedServerProjects = cache(async () => getServerProjects());
 
 export async function getAccessibleProjects(): Promise<
   Project[]
