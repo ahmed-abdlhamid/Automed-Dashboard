@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useEffect,
   useRef,
@@ -33,6 +33,7 @@ export default function Shell({
   const [loggingOut, setLoggingOut] = useState(false);
 
   const pathname = usePathname();
+  const router = useRouter();
   const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -104,7 +105,8 @@ export default function Shell({
       return;
     }
 
-    window.location.href = "/login";
+    router.replace("/login");
+    router.refresh();
   };
 
   const handleSidebarMouseEnter = () => {
