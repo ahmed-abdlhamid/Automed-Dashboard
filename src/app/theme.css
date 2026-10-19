@@ -11,7 +11,7 @@
 @media (min-width: 768px) {
   /* ---------- Rail container (collapsed) ---------- */
   .dashboard-shell .sidebar {
-    padding: 12px 14px;
+    padding: 12px 10px;
     border: 1px solid transparent;
     border-radius: 36px;
     background: transparent;
