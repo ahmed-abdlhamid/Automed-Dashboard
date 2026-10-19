@@ -184,15 +184,13 @@ export async function getProjects(): Promise<
 }
 
 export async function getOrders(
-  projectId: string
+  projectId: string,
+  limit?: number
 ): Promise<Order[]> {
   const supabase =
     await createSupabaseServerClient();
 
-  const {
-    data,
-    error,
-  } = await supabase
+  const query = supabase
     .from("orders")
     .select(
       "id, project_id, order_id, chat_id, order_type, date_time, customer_name, phone_number, delivery_address, ordered_items, total_price, payment_method, payment_status"
@@ -207,6 +205,13 @@ export async function getOrders(
         ascending: false,
       }
     );
+
+  const {
+    data,
+    error,
+  } = typeof limit === "number" && Number.isInteger(limit) && limit > 0
+    ? await query.limit(limit)
+    : await query;
 
   if (error) {
     console.error(
@@ -545,12 +550,8 @@ export async function getAnalytics(
     );
 
   const averageOrderValue =
-    orders.length
-      ? orders.reduce(
-          (sum, order) =>
-            sum + order.amount,
-          0
-        ) / orders.length
+    paidOrders.length
+      ? revenue / paidOrders.length
       : 0;
 
   const totalOrders =
