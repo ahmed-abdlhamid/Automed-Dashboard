@@ -1330,3 +1330,87 @@ body {
   color: var(--orange) !important;
   stroke: var(--orange) !important;
 }
+
+
+/* Final requested polish: KPI hover stays on the outline; arrow hover is independent. */
+.overview-kpis .metric-card:nth-child(2),
+.overview-kpis .metric-card:nth-child(3),
+.overview-kpis .metric-card:nth-child(4),
+.overview-kpis .metric-card:nth-child(2):hover,
+.overview-kpis .metric-card:nth-child(3):hover,
+.overview-kpis .metric-card:nth-child(4):hover,
+.overview-kpis .metric-card:nth-child(2):focus-within,
+.overview-kpis .metric-card:nth-child(3):focus-within,
+.overview-kpis .metric-card:nth-child(4):focus-within {
+  background: var(--surface-solid) !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Hovering a card lights only its border; no colored surface or icon changes. */
+.overview-kpis .metric-card:nth-child(2):hover,
+.overview-kpis .metric-card:nth-child(3):hover,
+.overview-kpis .metric-card:nth-child(4):hover {
+  border-color: var(--orange) !important;
+  box-shadow: inset 0 0 0 1px var(--orange) !important;
+}
+
+/* When the pointer is on the arrow, keep the card outline neutral. */
+.overview-kpis .metric-card:nth-child(2):has(.metric-arrow:hover),
+.overview-kpis .metric-card:nth-child(4):has(.metric-arrow:hover) {
+  border-color: var(--line) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Only the arrow itself turns orange on hover/focus. */
+.overview-kpis .metric-card:nth-child(2) .metric-arrow,
+.overview-kpis .metric-card:nth-child(4) .metric-arrow {
+  color: var(--mut);
+  background: transparent !important;
+  border-color: var(--line) !important;
+}
+.overview-kpis .metric-card:nth-child(2) .metric-arrow:hover,
+.overview-kpis .metric-card:nth-child(2) .metric-arrow:focus-visible,
+.overview-kpis .metric-card:nth-child(4) .metric-arrow:hover,
+.overview-kpis .metric-card:nth-child(4) .metric-arrow:focus-visible {
+  color: #271507 !important;
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+}
+.overview-kpis .metric-card:nth-child(2) .metric-arrow:hover svg,
+.overview-kpis .metric-card:nth-child(2) .metric-arrow:focus-visible svg,
+.overview-kpis .metric-card:nth-child(4) .metric-arrow:hover svg,
+.overview-kpis .metric-card:nth-child(4) .metric-arrow:focus-visible svg {
+  color: #271507 !important;
+  stroke: #271507 !important;
+}
+
+/* Keep the KPI card icons unchanged during card hover. */
+.overview-kpis .metric-card:nth-child(2):hover .metric-icon,
+.overview-kpis .metric-card:nth-child(3):hover .metric-icon,
+.overview-kpis .metric-card:nth-child(4):hover .metric-icon {
+  color: var(--teal) !important;
+  border-color: transparent !important;
+  background: var(--teal-soft) !important;
+}
+.overview-kpis .metric-card:nth-child(2):hover .metric-icon svg,
+.overview-kpis .metric-card:nth-child(3):hover .metric-icon svg,
+.overview-kpis .metric-card:nth-child(4):hover .metric-icon svg {
+  color: var(--teal) !important;
+  stroke: currentColor !important;
+}
+
+/* Slightly enlarge the date chip without changing its alignment. */
+.overview-actions .date-chip {
+  font-size: 13px !important;
+  gap: 9px;
+}
+.overview-actions .date-chip svg {
+  width: 16px;
+  height: 16px;
+}
+@media (min-width: 768px) {
+  .overview-actions .date-chip {
+    padding-inline: 14px !important;
+  }
+}
