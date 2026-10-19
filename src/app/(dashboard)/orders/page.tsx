@@ -47,6 +47,11 @@ export default async function OrdersPage({
 
   let from: string | undefined;
   let to: string | undefined;
+  const customRangeValid =
+    range !== "custom" ||
+    (isDateKey(params.from) &&
+      isDateKey(params.to) &&
+      params.from <= params.to);
 
   if (range === "week") {
     from = shiftDateKey(today, -6);
@@ -63,18 +68,20 @@ export default async function OrdersPage({
 
   const isRecent = range === "recent";
   const pageSize = isRecent ? 10 : 25;
-  const fetchedOrders = await getOrders(
-    projectId,
-    isRecent
-      ? { limit: pageSize }
-      : {
-          from: range === "all" ? undefined : from,
-          to: range === "all" ? undefined : to,
-          limit: pageSize + 1,
-          offset: (pageNumber - 1) * pageSize,
-        }
-  );
-  const hasNextPage = !isRecent && fetchedOrders.length > pageSize;
+  const fetchedOrders = customRangeValid
+    ? await getOrders(
+        projectId,
+        isRecent
+          ? { limit: pageSize }
+          : {
+              from: range === "all" ? undefined : from,
+              to: range === "all" ? undefined : to,
+              limit: pageSize + 1,
+              offset: (pageNumber - 1) * pageSize,
+            }
+      )
+    : [];
+  const hasNextPage = !isRecent && customRangeValid && fetchedOrders.length > pageSize;
   const orders = fetchedOrders.slice(0, pageSize);
 
   return (
