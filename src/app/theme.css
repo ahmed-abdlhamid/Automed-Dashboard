@@ -1460,3 +1460,43 @@ body {
     padding-inline: 12px !important;
   }
 }
+
+
+/* Final correction: featured Total Sales arrow matches Total Orders arrow hover. */
+.overview-kpis .metric-card.metric-card-featured .metric-arrow {
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: var(--teal-2) !important;
+  border-color: transparent !important;
+  transition: background-color .18s ease, color .18s ease !important;
+}
+.overview-kpis .metric-card.metric-card-featured .metric-arrow:hover,
+.overview-kpis .metric-card.metric-card-featured .metric-arrow:focus-visible {
+  background: var(--orange) !important;
+  color: #271507 !important;
+  border-color: var(--orange) !important;
+}
+.overview-kpis .metric-card.metric-card-featured .metric-arrow:hover svg,
+.overview-kpis .metric-card.metric-card-featured .metric-arrow:focus-visible svg {
+  color: #271507 !important;
+  stroke: #271507 !important;
+}
+
+/* Date chip: keep the profile chip's 40px height and tune visual proportions. */
+.overview-actions .date-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 10px !important;
+  gap: 7px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+.overview-actions .date-chip svg {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 14px !important;
+}
