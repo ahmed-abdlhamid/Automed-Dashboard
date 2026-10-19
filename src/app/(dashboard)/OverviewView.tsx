@@ -80,9 +80,7 @@ export default function OverviewView({
     0
   );
 
-  const greetingName = isAdmin
-    ? t(adminIdentity.name)
-    : userName ||
+  const greetingName = userName ||
       project?.name ||
       t({
         ar: "عميلنا",
