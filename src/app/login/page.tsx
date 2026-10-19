@@ -160,7 +160,7 @@ export default function LoginPage() {
                 })}
               </label>
 
-              <div className="login-password-field">
+              <div className="login-password-field" dir={lang === "ar" ? "rtl" : "ltr"}>
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -172,7 +172,7 @@ export default function LoginPage() {
                   required
                   className="w-full rounded-[14px] border border-line bg-card px-4 py-3 text-sm outline-none transition-all focus:border-orange"
                   placeholder="••••••••"
-                  dir="ltr"
+                  dir={lang === "ar" ? "rtl" : "ltr"}
                 />
                 <button
                   type="button"
