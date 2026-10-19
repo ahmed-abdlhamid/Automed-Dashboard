@@ -6636,3 +6636,49 @@ textarea:focus {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* UI refinement pass: align logical controls with the active language and
+   reduce visual noise without changing the established Automed palette. */
+.login-password-field {
+  isolation: isolate;
+}
+.login-password-field input {
+  box-sizing: border-box;
+  padding-inline-start: 14px !important;
+  padding-inline-end: 48px !important;
+  text-align: start;
+}
+.login-password-toggle {
+  inset-inline-end: 7px;
+  inset-inline-start: auto;
+  z-index: 2;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+.login-password-toggle svg {
+  display: block;
+  pointer-events: none;
+}
+.login-password-toggle:focus-visible {
+  outline-offset: 1px;
+}
+@media (max-width: 767.98px) {
+  .sidebar {
+    box-shadow: 0 18px 50px rgba(5, 22, 20, .22);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar *,
+  .dashboard-main,
+  .xcard,
+  .metric-card,
+  .nav-link,
+  .topbar-control {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
