@@ -4,7 +4,7 @@ import ActivityView from "./ActivityView";
 
 export default async function ActivityPage() {
   const projectId = await getCurrentProjectId();
-  const orders = await getOrders(projectId, { limit: 10 });
+  const orders = await getOrders(projectId);
 
-  return <ActivityView orders={orders} />;
+  return <ActivityView orders={orders.slice(0, 10)} />;
 }

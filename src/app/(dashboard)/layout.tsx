@@ -2,7 +2,6 @@ import Shell from "@/components/Shell";
 import {
   getAccessibleProjects,
   getCurrentProjectId,
-  getCurrentUserDisplayName,
   isCurrentUserAdmin,
 } from "@/lib/project";
 
@@ -15,12 +14,10 @@ export default async function DashboardLayout({
     projects,
     currentProjectId,
     isAdmin,
-    userName,
   ] = await Promise.all([
     getAccessibleProjects(),
     getCurrentProjectId(),
     isCurrentUserAdmin(),
-    getCurrentUserDisplayName(),
   ]);
 
   return (
@@ -28,7 +25,6 @@ export default async function DashboardLayout({
       projects={projects}
       currentProjectId={currentProjectId}
       isAdmin={isAdmin}
-      userName={userName}
     >
       {children}
     </Shell>

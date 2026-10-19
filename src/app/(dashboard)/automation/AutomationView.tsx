@@ -57,11 +57,8 @@ export default function AutomationView({ projects, initialProjectId }: {
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   const loadData = useCallback(async (projectId: string, manual = false) => {
-    if (manual) {
-      setRefreshing(true);
-      setError(null);
-      setSaveMessage(null);
-    }
+    if (manual) setRefreshing(true); else setLoading(true);
+    setError(null); setSaveMessage(null);
     try {
       const response = await fetch("/api/automation/n8n?projectId=" + encodeURIComponent(projectId), {
         method: "GET", cache: "no-store",
@@ -69,7 +66,6 @@ export default function AutomationView({ projects, initialProjectId }: {
       const result = await response.json();
       if (!response.ok) throw new Error(typeof result.error === "string" ? result.error : "Could not load n8n data.");
       setData(result as N8nData);
-      setError(null);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : (lang === "ar" ? "تعذر الاتصال بـ n8n." : "Could not connect to n8n."));
       setData(null);
@@ -78,46 +74,10 @@ export default function AutomationView({ projects, initialProjectId }: {
     }
   }, [lang]);
 
-  useEffect(() => {
-    let ignore = false;
-    fetch("/api/automation/n8n?projectId=" + encodeURIComponent(selectedProjectId), {
-      method: "GET",
-      cache: "no-store",
-    })
-      .then(async (response) => {
-        const result = await response.json();
-        if (!ignore) {
-          if (!response.ok) {
-            throw new Error(
-              typeof result.error === "string" ? result.error : "Could not load n8n data."
-            );
-          }
-          setData(result as N8nData);
-          setError(null);
-          setLoading(false);
-        }
-      })
-      .catch((loadError) => {
-        if (!ignore) {
-          setError(
-            loadError instanceof Error
-              ? loadError.message
-              : lang === "ar"
-              ? "تعذر الاتصال بـ n8n."
-              : "Could not connect to n8n."
-          );
-          setData(null);
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      ignore = true;
-    };
-  }, [selectedProjectId, lang]);
+  useEffect(() => { void loadData(selectedProjectId); }, [loadData, selectedProjectId]);
 
   const selectedProject = projects.find((project) => project.id === selectedProjectId);
-  const workflows = useMemo(() => data?.workflows ?? [], [data?.workflows]);
+  const workflows = data?.workflows ?? [];
   const projectWorkflows = useMemo(() => workflows.filter((workflow) => workflow.projectId === selectedProjectId), [workflows, selectedProjectId]);
   const executions = data?.executions ?? [];
   const stats = data?.stats;
@@ -142,7 +102,7 @@ export default function AutomationView({ projects, initialProjectId }: {
     { key: "workflows", icon: "automation" as const, label: { ar: "Workflows المشروع", en: "Project workflows" }, value: stats?.workflows ?? "—", detail: lang === "ar" ? "حالة تفعيل الـ Workflows" : "Workflow activation status" },
     { key: "executions", icon: "activity" as const, label: { ar: "التنفيذات المعروضة", en: "Executions loaded" }, value: stats?.executions ?? "—", detail: lang === "ar" ? "من آخر 50 تنفيذًا كحد أقصى" : "Of up to the latest 50 executions" },
     { key: "success", icon: "check" as const, label: { ar: "تنفيذات ناجحة", en: "Successful executions" }, value: stats?.successfulExecutions ?? "—", detail: lang === "ar" ? "ضمن سجل المشروع" : "In this project's history" },
-    { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: lang === "ar" ? "تحتاج إلى مراجعة أو تصحيح" : "Need review or correction" },
+    { key: "failed", icon: "pulse" as const, label: { ar: "تنفيذات فاشلة", en: "Failed executions" }, value: stats?.failedExecutions ?? "—", detail: lang === "ar" ? "قيد التشغيل أو الانتظار" : "Running or waiting" },
   ];
 
   return <div className="automation-page">
@@ -162,7 +122,7 @@ export default function AutomationView({ projects, initialProjectId }: {
         </div>
       </div>
       <label className="automation-project-select-wrap"><span>{t({ ar: "المشروع", en: "Project" })}</span>
-        <select value={selectedProjectId} onChange={(event) => { setLoading(true); setSelectedProjectId(event.target.value); }}>
+        <select value={selectedProjectId} onChange={(event) => setSelectedProjectId(event.target.value)}>
           {projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
         </select>
       </label>
