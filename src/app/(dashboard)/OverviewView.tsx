@@ -79,28 +79,6 @@ export default function OverviewView({
     0
   );
 
-  const paymentMethods = data.recent.reduce<Array<{ label: string; count: number }>>(
-    (groups, order) => {
-      const raw = (order.paymentMethod || "").trim();
-      const key = raw || t({ ar: "غير محدد", en: "Unspecified" });
-      const existing = groups.find((item) => item.label === key);
-      if (existing) existing.count += 1;
-      else groups.push({ label: key, count: 1 });
-      return groups;
-    },
-    []
-  );
-  const paymentTotal = paymentMethods.reduce((sum, item) => sum + item.count, 0);
-  const paymentColors = ["#0d5c56", "#fd9238", "#8ea7a2", "#c7d5d1"];
-  let paymentOffset = 0;
-  const paymentGradient = paymentMethods.length
-    ? `conic-gradient(${paymentMethods.map((item, index) => {
-        const start = paymentOffset;
-        paymentOffset += (item.count / paymentTotal) * 100;
-        return `${paymentColors[index % paymentColors.length]} ${start}% ${paymentOffset}%`;
-      }).join(", ")})`
-    : "conic-gradient(var(--line) 0% 100%)";
-
   const greetingName = userName ||
       project?.name ||
       t({
@@ -377,34 +355,53 @@ export default function OverviewView({
         </Card>
 
         <Card
-          title={t({ ar: "وسائل الدفع", en: "Payment methods" })}
+          title={t({ ar: "حالة العمليات", en: "Operations overview" })}
           subtitle={t({
-            ar: "توزيع وسائل الدفع في أحدث العمليات",
-            en: "Payment method mix in recent orders",
+            ar: "ملخص سريع لأحدث العمليات المسجلة",
+            en: "A quick summary of recently recorded operations",
           })}
         >
           <div className="overview-payment-layout">
             <div
               className="overview-payment-donut"
-              style={{ background: paymentGradient }}
+              style={{
+                background: `conic-gradient(#159447 0% ${data.recent.length ? (data.recent.filter((order) => order.status === "paid").length / data.recent.length) * 100 : 0}%, #fd9238 ${data.recent.length ? (data.recent.filter((order) => order.status === "paid").length / data.recent.length) * 100 : 0}% ${data.recent.length ? (data.recent.filter((order) => order.status === "paid" || order.status === "pending").length / data.recent.length) * 100 : 0}%, #c93c3c ${data.recent.length ? (data.recent.filter((order) => order.status === "paid" || order.status === "pending").length / data.recent.length) * 100 : 0}% 100%)`,
+              }}
               role="img"
-              aria-label={t({ ar: "توزيع وسائل الدفع في أحدث العمليات", en: "Payment method distribution in recent orders" })}
+              aria-label={t({ ar: "حالة أحدث العمليات", en: "Status of recent operations" })}
             >
               <div className="overview-payment-center">
-                <strong>{paymentTotal}</strong>
-                <span>{t({ ar: "عملية", en: "orders" })}</span>
+                <strong>{data.recent.length}</strong>
+                <span>{t({ ar: "عملية", en: "records" })}</span>
               </div>
             </div>
             <div className="overview-payment-legend">
-              {paymentMethods.length ? paymentMethods.map((item, index) => (
+              {[
+                {
+                  label: t({ ar: "مكتملة", en: "Completed" }),
+                  count: data.recent.filter((order) => order.status === "paid").length,
+                  color: "#159447",
+                },
+                {
+                  label: t({ ar: "قيد الانتظار", en: "Pending" }),
+                  count: data.recent.filter((order) => order.status === "pending").length,
+                  color: "#fd9238",
+                },
+                {
+                  label: t({ ar: "فاشلة", en: "Failed" }),
+                  count: data.recent.filter((order) => order.status === "failed").length,
+                  color: "#c93c3c",
+                },
+              ].map((item) => (
                 <div className="overview-payment-item" key={item.label}>
-                  <span className="overview-payment-dot" style={{ background: paymentColors[index % paymentColors.length] }} />
+                  <span className="overview-payment-dot" style={{ background: item.color }} />
                   <span>{item.label}</span>
-                  <strong>{Math.round((item.count / paymentTotal) * 100)}%</strong>
+                  <strong>{item.count}</strong>
                 </div>
-              )) : (
+              ))}
+              {!data.recent.length && (
                 <p className="text-sm text-muted">
-                  {t({ ar: "لا توجد بيانات كافية لعرض وسائل الدفع.", en: "Not enough payment data to display yet." })}
+                  {t({ ar: "لا توجد عمليات لعرضها حتى الآن.", en: "No operations to display yet." })}
                 </p>
               )}
             </div>
