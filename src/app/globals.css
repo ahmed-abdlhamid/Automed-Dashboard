@@ -4,9 +4,10 @@
   /* Shared layout tokens — consumed by globals.css and theme.css. */
   --sidebar-collapsed-width: 76px;
   --sidebar-expanded-width: 252px;
-  --sidebar-main-offset: 104px;
-  --sidebar-pinned-offset: 280px;
   --sidebar-inset: 14px;
+  --sidebar-gap: 14px;
+  --sidebar-main-offset: calc(var(--sidebar-inset) + var(--sidebar-collapsed-width) + var(--sidebar-gap));
+  --sidebar-pinned-offset: calc(var(--sidebar-inset) + var(--sidebar-expanded-width) + var(--sidebar-gap));
   --sidebar-mobile-width: 244px;
   --dashboard-content-max-width: 1600px;
   --bg: #f4f7f6;
@@ -1981,7 +1982,6 @@
 @media (max-width: 1100px) {
   :root {
     --sidebar-expanded-width: 214px;
-    --sidebar-pinned-offset: 238px;
   }
 
   .sidebar[data-expanded="true"] {
