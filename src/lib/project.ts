@@ -59,7 +59,7 @@ export async function getAccessibleProjects(): Promise<
     projects,
     memberships,
   ] = await Promise.all([
-    getServerProjects(),
+    getCachedServerProjects(),
     getCurrentUserMemberships(),
   ]);
 
@@ -88,7 +88,7 @@ export async function getCurrentProjectId(): Promise<string> {
     await getCurrentUserMemberships();
 
   const projects =
-    await getServerProjects();
+    await getCachedServerProjects();
 
   if (
     memberships.length === 0 ||
@@ -165,7 +165,7 @@ export async function getCurrentProject(): Promise<Project | null> {
     await getCurrentProjectId();
 
   const projects =
-    await getServerProjects();
+    await getCachedServerProjects();
 
   return (
     projects.find(
