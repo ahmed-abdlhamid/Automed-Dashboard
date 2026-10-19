@@ -183,14 +183,59 @@ export async function getProjects(): Promise<
   return data as Project[];
 }
 
+export type OrderQueryOptions = {
+  from?: string;
+  to?: string;
+  limit?: number;
+  offset?: number;
+};
+
+function egyptMidnightUtc(dateKey: string): string {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const targetLocalAsUtc = Date.UTC(year, month - 1, day, 0, 0, 0);
+  let candidate = targetLocalAsUtc;
+
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: EGYPT_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+
+  for (let i = 0; i < 3; i++) {
+    const parts = formatter.formatToParts(new Date(candidate));
+    const get = (type: string) => Number(parts.find((part) => part.type === type)?.value);
+    const representedLocalAsUtc = Date.UTC(
+      get("year"),
+      get("month") - 1,
+      get("day"),
+      get("hour"),
+      get("minute"),
+      get("second")
+    );
+    candidate += targetLocalAsUtc - representedLocalAsUtc;
+  }
+
+  return new Date(candidate).toISOString();
+}
+
 export async function getOrders(
   projectId: string,
-  limit?: number
+  options?: number | OrderQueryOptions
 ): Promise<Order[]> {
+  const normalizedOptions =
+    typeof options === "number"
+      ? { limit: options }
+      : options || {};
+
   const supabase =
     await createSupabaseServerClient();
 
-  const query = supabase
+  let query = supabase
     .from("orders")
     .select(
       "id, project_id, order_id, chat_id, order_type, date_time, customer_name, phone_number, delivery_address, ordered_items, total_price, payment_method, payment_status"
@@ -206,11 +251,30 @@ export async function getOrders(
       }
     );
 
+  if (normalizedOptions.from) {
+    query = query.gte(
+      "date_time",
+      egyptMidnightUtc(normalizedOptions.from)
+    );
+  }
+
+  if (normalizedOptions.to) {
+    query = query.lt(
+      "date_time",
+      egyptMidnightUtc(normalizedOptions.to)
+    );
+  }
+
+  const limit = normalizedOptions.limit;
+  const offset = normalizedOptions.offset || 0;
+
   const {
     data,
     error,
   } = typeof limit === "number" && Number.isInteger(limit) && limit > 0
-    ? await query.limit(limit)
+    ? offset > 0
+      ? await query.range(offset, offset + limit - 1)
+      : await query.limit(limit)
     : await query;
 
   if (error) {
