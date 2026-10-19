@@ -6238,3 +6238,70 @@ textarea:focus-visible {
   .xcard { border-radius: 18px; }
   .tbl th, .tbl td { padding: 11px 12px; }
 }
+
+
+/* Consistent inset and wrapping for page-level filters and toolbars */
+.orders-toolbar,
+.users-toolbar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px 18px;
+}
+.orders-search,
+.users-search {
+  min-width: min(100%, 240px);
+}
+.orders-filters {
+  gap: 7px;
+  min-width: 0;
+}
+.orders-filter {
+  min-height: 38px;
+  padding: 7px 12px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.orders-search-input,
+.users-search input {
+  min-height: 44px;
+  padding-block: 10px;
+  padding-inline-start: 42px;
+  padding-inline-end: 40px;
+  border-radius: 12px;
+}
+.orders-results-bar {
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-inline: 22px;
+}
+.xcard > .relative {
+  min-width: 0;
+}
+.xcard > .relative > :is(.orders-toolbar, .users-toolbar) {
+  max-width: 100%;
+}
+@media (max-width: 760px) {
+  .orders-toolbar,
+  .users-toolbar {
+    align-items: stretch;
+    padding: 15px 14px;
+    gap: 12px;
+  }
+  .orders-search,
+  .users-search {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  .orders-filters {
+    width: 100%;
+  }
+  .orders-filter {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+  .orders-results-bar {
+    padding-inline: 14px;
+  }
+}
