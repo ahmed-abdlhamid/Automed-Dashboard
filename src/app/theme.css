@@ -502,7 +502,7 @@ body {
 .project-trigger,
 .profile-chip {
   border: 1px solid var(--card-edge);
-  border-radius: 999px;
+  border-radius: 12px;
   background: var(--card-glass);
   box-shadow: var(--pill-shadow);
 }
