@@ -166,9 +166,26 @@ export default function OverviewView({
               <h1
                 className="overview-title"
                 suppressHydrationWarning
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "0 0.22em",
+                  lineHeight: 1.25,
+                }}
               >
-                <span className="overview-greeting-text">{greeting}،</span>{" "}
-                <bdi className="overview-greeting-name">{greetingName}</bdi>
+                <span
+                  className="overview-greeting-text"
+                  style={{ display: "inline-flex", alignItems: "center", lineHeight: 1.25 }}
+                >
+                  {greeting}،
+                </span>
+                <bdi
+                  className="overview-greeting-name"
+                  style={{ display: "inline-flex", alignItems: "center", lineHeight: 1.25 }}
+                >
+                  {greetingName}
+                </bdi>
                 {project && !isAdmin && (
                   <span className="overview-project-inline">
                     <span className="project-trigger-dot" />
