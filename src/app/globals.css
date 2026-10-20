@@ -7038,3 +7038,66 @@ header.topbar .topbar-actions .profile-chip-compact:active {
     transform: none;
   }
 }
+
+/* Unified header hover: orange feedback only, with no movement. */
+header.topbar .topbar-actions > .topbar-control,
+header.topbar .topbar-actions > .profile-chip-compact,
+header.topbar .topbar-actions > .topbar-date-card {
+  transform: none !important;
+  box-shadow: none !important;
+  transition:
+    color 0.16s ease,
+    background-color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+header.topbar .topbar-actions > .topbar-control,
+header.topbar .topbar-actions > .profile-chip-compact,
+header.topbar .topbar-actions > .topbar-date-card {
+  border-color: var(--line);
+}
+
+header.topbar .topbar-actions > .topbar-control:hover,
+header.topbar .topbar-actions > .profile-chip-compact:hover,
+header.topbar .topbar-actions > .topbar-date-card:hover {
+  color: #fc9038;
+  background: color-mix(in srgb, #fc9038 10%, var(--surface-solid));
+  border-color: color-mix(in srgb, #fc9038 32%, var(--line));
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+header.topbar .topbar-actions > .topbar-control:hover svg,
+header.topbar .topbar-actions > .topbar-control:hover span,
+header.topbar .topbar-actions > .profile-chip-compact:hover .profile-avatar,
+header.topbar .topbar-actions > .topbar-date-card:hover,
+header.topbar .topbar-actions > .topbar-date-card:hover svg,
+header.topbar .topbar-actions > .topbar-date-card:hover span {
+  color: #fc9038;
+}
+
+header.topbar .topbar-actions > .profile-chip-compact {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+header.topbar .topbar-actions > .profile-chip-compact .profile-avatar {
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+header.topbar .topbar-actions > .topbar-control:active,
+header.topbar .topbar-actions > .profile-chip-compact:active,
+header.topbar .topbar-actions > .topbar-date-card:active {
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header.topbar .topbar-actions > .topbar-control,
+  header.topbar .topbar-actions > .profile-chip-compact,
+  header.topbar .topbar-actions > .topbar-date-card {
+    transition: none;
+  }
+}
