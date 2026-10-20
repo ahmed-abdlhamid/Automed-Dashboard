@@ -57,12 +57,6 @@ export default function LoginPage() {
         <div className="showcase-grid" aria-hidden="true" />
 
         <div className="showcase-inner">
-          <header className="showcase-header">
-            <a className="showcase-brand" href="https://automed-info.vercel.app/" aria-label="Automed">
-              <img src="/automed-logo-dark.png" alt="Automed" />
-            </a>
-          </header>
-
           <div className="showcase-main">
             <div className="showcase-copy">
               <span className="showcase-eyebrow">
@@ -136,12 +130,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <footer className="showcase-footer">
-            <div className="showcase-bottom-brand">
-              <img src="/automed-logo-dark.png" alt="Automed" />
-              <span>{t({ ar: "وفّر وقتك", en: "Save Your Time" })}</span>
-            </div>
-          </footer>
         </div>
       </aside>
 
