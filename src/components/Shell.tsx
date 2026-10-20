@@ -446,6 +446,7 @@ export default function Shell({
           </div>
 
           <div className="topbar-actions" dir={lang === "ar" ? "rtl" : "ltr"}>
+            {/* 1. Project name */}
             {isAdmin &&
               projects.length > 0 && (
                 <div
@@ -529,6 +530,7 @@ export default function Shell({
                 </div>
               )}
 
+            {/* 2. User name */}
             <button
               type="button"
               className="profile-chip profile-chip-compact"
@@ -541,6 +543,7 @@ export default function Shell({
               <span className="profile-meta">{t(adminIdentity.name)}</span>
             </button>
 
+            {/* 3. Notification icon */}
             <button
               type="button"
               className="topbar-control notification-control"
@@ -551,6 +554,7 @@ export default function Shell({
               <Icon name="bell" size={18} />
             </button>
 
+            {/* 4. Language switcher */}
             <button
               type="button"
               className="topbar-control lang-control"
@@ -561,6 +565,7 @@ export default function Shell({
               {lang === "ar" ? "EN" : "AR"}
             </button>
 
+            {/* 5. Dark mode toggle */}
             <button
               type="button"
               className="topbar-control"
@@ -571,6 +576,7 @@ export default function Shell({
               <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
             </button>
 
+            {/* 6. Date */}
             <span
               className="topbar-date-card"
               title={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
