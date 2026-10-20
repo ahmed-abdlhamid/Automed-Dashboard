@@ -79,8 +79,8 @@ export default function LoginPage() {
 
               <p className="showcase-description">
                 {t({
-                  ar: "نستخدم الذكاء الاصطناعي لمساعدتك في تنظيم الطلبات والرسائل ومتابعة العملاء، مع لوحات متابعة تعرض بيانات أعمالك وأداءها بوضوح؛ عشان توفّر وقتك، تقلّل المجهود اليدوي، وتدير شغلك بكفاءة أكبر.",
-                  en: "We use AI to organize requests and messages, follow up with customers, and turn business data into clear, actionable insights—so you save time, reduce manual work, and run your business more efficiently.",
+                  ar: "أصمّم وأبني أنظمة أتمتة ذكية تتولّى المهام اليومية المتكررة في شغلك، من الرد على العملاء وتسجيل الطلبات لمتابعة العمليات الداخلية، وتشتغل على القنوات اللي فريقك بيستخدمها فعلًا. النتيجة وقت أوفر وأخطاء أقل وشغل بيمشي بانتظام وإنت مركّز على نمو شغلك، مع دعم مستمر بعد التسليم.",
+                  en: "I design and build intelligent automation systems that handle repetitive day-to-day work—from customer replies and order logging to internal operations—using the channels your team already works with. The result: more time, fewer errors, smoother operations, and ongoing support after delivery.",
                 })}
               </p>
 
@@ -148,7 +148,7 @@ export default function LoginPage() {
               </a>
               <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="showcase-contact-card">
                 <span className="showcase-contact-card-icon showcase-contact-card-whatsapp" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M20.1 11.8a8.1 8.1 0 0 1-12 7.1L3 20l1.2-4.9a8.1 8.1 0 1 1 15.9-3.3Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="M8.2 7.8c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4-.1.6.6 1 1.4 1.8 2.4 2.3.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.2-.7 1.6-.5.5-1.2.7-2 .5-1-.2-2.3-.8-3.7-2.1-1.1-1-2-2.3-2.2-3.3-.3-.9.1-1.9.3-2.3Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2a9.87 9.87 0 0 0-8.46 14.96L2.2 22l5.2-1.36A9.94 9.94 0 0 0 12.04 22h.01A10 10 0 0 0 12.04 2Zm0 18.18a8.25 8.25 0 0 1-4.2-1.15l-.3-.18-3.09.81.83-3.01-.2-.31a8.2 8.2 0 1 1 6.96 3.84Zm4.51-6.15c-.25-.13-1.48-.73-1.71-.81-.23-.08-.4-.13-.56.13-.17.25-.65.81-.8.97-.15.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.15-.25-.02-.39.11-.52.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.67 4.23 3.74.59.25 1.05.4 1.41.51.59.19 1.13.16 1.56.1.47-.07 1.48-.6 1.69-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.29Z"/></svg>
                 </span>
                 <span className="showcase-contact-card-text" dir="ltr">{CONTACT_PHONE}</span>
               </a>
