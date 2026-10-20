@@ -65,13 +65,13 @@ export default function LoginPage() {
               <img
                 src={cfg.brand.logo.light}
                 alt={cfg.brand.name}
-                className="logo-light h-9 w-auto"
+                className="logo-light login-brand-logo"
               />
 
               <img
                 src={cfg.brand.logo.dark}
                 alt={cfg.brand.name}
-                className="logo-dark h-9 w-auto"
+                className="logo-dark login-brand-logo"
               />
             </div>
 
