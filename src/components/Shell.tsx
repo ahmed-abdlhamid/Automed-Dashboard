@@ -444,20 +444,16 @@ export default function Shell({
           </div>
 
           {/*
-            Visual order LEFT → RIGHT (forced with dir="ltr"):
+            Visual order RIGHT → LEFT (dir=rtl):
             1. Project name
-            2. User (initial only; full name on hover via title)
+            2. User (letter only; full name on hover)
             3. Notifications
-            4. Language
-            5. Dark mode
+            4. Dark mode
+            5. Language
             6. Date
           */}
-          <div
-            className="topbar-actions"
-            dir="ltr"
-            style={{ direction: "ltr", flexDirection: "row" }}
-          >
-            {/* 1. Project */}
+          <div className="topbar-actions" dir="rtl">
+            {/* 1. Project (rightmost) */}
             {isAdmin &&
               projects.length > 0 && (
                 <div
@@ -541,7 +537,7 @@ export default function Shell({
                 </div>
               )}
 
-            {/* 2. User — letter only; full name on hover */}
+            {/* 2. User — letter only */}
             <button
               type="button"
               className="profile-chip profile-chip-compact"
@@ -566,18 +562,7 @@ export default function Shell({
               <Icon name="bell" size={18} />
             </button>
 
-            {/* 4. Language */}
-            <button
-              type="button"
-              className="topbar-control lang-control"
-              onClick={toggleLang}
-              aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
-              title={t({ ar: "تغيير اللغة", en: "Toggle language" })}
-            >
-              {lang === "ar" ? "EN" : "AR"}
-            </button>
-
-            {/* 5. Dark mode */}
+            {/* 4. Dark mode */}
             <button
               type="button"
               className="topbar-control"
@@ -588,7 +573,18 @@ export default function Shell({
               <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
             </button>
 
-            {/* 6. Date */}
+            {/* 5. Language */}
+            <button
+              type="button"
+              className="topbar-control lang-control"
+              onClick={toggleLang}
+              aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
+              title={t({ ar: "تغيير اللغة", en: "Toggle language" })}
+            >
+              {lang === "ar" ? "EN" : "AR"}
+            </button>
+
+            {/* 6. Date (leftmost) */}
             <span
               className="topbar-date-card"
               title={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
