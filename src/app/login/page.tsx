@@ -59,11 +59,6 @@ export default function LoginPage() {
         <div className="showcase-inner">
           <div className="showcase-main">
             <div className="showcase-copy">
-              <span className="showcase-eyebrow">
-                <span className="showcase-eyebrow-dot" />
-                {t({ ar: "حلول ذكية للأعمال", en: "INTELLIGENT BUSINESS SOLUTIONS" })}
-              </span>
-
               <h1>
                 {t({ ar: "حوّل المهام المتكررة", en: "Turn repetitive work" })}
                 <span>{t({ ar: "إلى أنظمة ذكية.", en: "into intelligent systems." })}</span>
@@ -144,14 +139,6 @@ export default function LoginPage() {
         </div>
 
         <div className="login-card">
-          <div className="login-card-brand">
-            <img
-              src={theme === "dark" ? cfg.brand.logo.dark : cfg.brand.logo.light}
-              alt={cfg.brand.name}
-              className="login-brand-logo"
-            />
-          </div>
-
           <div className="login-heading">
             <h2>{t({ ar: "مرحبًا بعودتك", en: "Welcome back" })}</h2>
             <p>{t({ ar: "سجّل الدخول للمتابعة في لوحة التحكم", en: "Sign in to continue to your dashboard" })}</p>
