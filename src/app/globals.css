@@ -7093,6 +7093,12 @@ header.topbar .topbar-actions .project-trigger-card:hover svg {
 .showcase-glow-one { width: 330px; height: 330px; top: 22%; right: -100px; border: 1px solid rgba(57, 209, 190, .16); box-shadow: 0 0 90px rgba(17, 165, 149, .12) inset; }
 .showcase-glow-two { width: 200px; height: 200px; bottom: 4%; left: -90px; background: rgba(17, 146, 132, .1); filter: blur(45px); }
 .showcase-grid { position: absolute; z-index: -1; width: 360px; height: 360px; top: 16%; right: 5%; border: 1px solid rgba(66, 206, 189, .1); border-radius: 50%; }
+.showcase-controls { position: absolute; z-index: 5; top: 24px; inset-inline-end: clamp(22px, 3vw, 42px); display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.showcase-control-group { display: inline-flex; align-items: center; gap: 3px; padding: 4px; border: 1px solid rgba(230,255,250,.25); border-radius: 13px; background: rgba(5,53,49,.34); backdrop-filter: blur(12px); }
+.showcase-control-option { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 31px; padding: 0 10px; border: 0; border-radius: 9px; background: transparent; color: rgba(246,255,252,.78); font-size: 11px; font-weight: 700; cursor: pointer; transition: background .18s ease, color .18s ease; }
+.showcase-control-option:hover { color: #fff; background: rgba(255,255,255,.09); }
+.showcase-control-option.is-active { color: #155f59; background: #f4fffc; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+@media (max-width: 640px) { .showcase-controls { top: 14px; inset-inline-end: 14px; gap: 6px; } .showcase-control-option { padding-inline: 8px; font-size: 10px; } }
 .showcase-inner { display: flex; flex-direction: column; width: 100%; max-width: 900px; min-height: calc(100vh - clamp(56px, 8vw, 124px)); margin-inline: auto; }
 .showcase-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .showcase-brand { display: inline-flex; align-items: center; min-width: 0; }
