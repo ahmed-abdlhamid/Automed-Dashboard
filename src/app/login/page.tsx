@@ -60,14 +60,14 @@ export default function LoginPage() {
           <div className="showcase-main">
             <div className="showcase-copy">
               <h1>
-                {t({ ar: "حوّل المهام المتكررة", en: "Turn repetitive work" })}
+                {t({ ar: "أحوّل المهام المتكررة", en: "Turn repetitive work" })}
                 <span>{t({ ar: "إلى أنظمة ذكية.", en: "into intelligent systems." })}</span>
               </h1>
 
               <p className="showcase-description">
                 {t({
-                  ar: "أصمّم وأبني أنظمة أتمتة ذكية تتولّى المهام اليومية المتكررة في شغلك، من الرد على العملاء وتسجيل الطلبات لمتابعة العمليات الداخلية، وتشتغل على القنوات اللي فريقك بيستخدمها فعلًا. النتيجة وقت أوفر وأخطاء أقل وشغل بيمشي بانتظام وإنت مركّز على نمو شغلك، مع دعم مستمر بعد التسليم.",
-                  en: "I design and build intelligent automation systems that handle repetitive day-to-day work—from customer replies and order logging to internal operations—using the channels your team already works with. The result: more time, fewer errors, smoother operations, and ongoing support after delivery.",
+                  ar: "حلول ذكية تساعد شغلك يمشي بسلاسة.",
+                  en: "Smart solutions that keep your business moving.",
                 })}
               </p>
 
