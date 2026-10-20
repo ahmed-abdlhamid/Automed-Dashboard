@@ -7039,30 +7039,22 @@ header.topbar .topbar-actions .profile-chip-compact:active {
   }
 }
 
-/* Unified header hover: orange feedback only, with no movement. */
+
+/* Unified header hover: only the content turns orange. Keep surfaces and borders unchanged. */
 header.topbar .topbar-actions > .topbar-control,
 header.topbar .topbar-actions > .profile-chip-compact,
 header.topbar .topbar-actions > .topbar-date-card {
   transform: none !important;
   box-shadow: none !important;
-  transition:
-    color 0.16s ease,
-    background-color 0.16s ease,
-    border-color 0.16s ease;
-}
-
-header.topbar .topbar-actions > .topbar-control,
-header.topbar .topbar-actions > .profile-chip-compact,
-header.topbar .topbar-actions > .topbar-date-card {
-  border-color: var(--line);
+  transition: color 0.16s ease;
 }
 
 header.topbar .topbar-actions > .topbar-control:hover,
 header.topbar .topbar-actions > .profile-chip-compact:hover,
 header.topbar .topbar-actions > .topbar-date-card:hover {
   color: #fc9038;
-  background: color-mix(in srgb, #fc9038 10%, var(--surface-solid));
-  border-color: color-mix(in srgb, #fc9038 32%, var(--line));
+  background: transparent !important;
+  border-color: var(--line) !important;
   transform: none !important;
   box-shadow: none !important;
 }
@@ -7073,7 +7065,7 @@ header.topbar .topbar-actions > .profile-chip-compact:hover .profile-avatar,
 header.topbar .topbar-actions > .topbar-date-card:hover,
 header.topbar .topbar-actions > .topbar-date-card:hover svg,
 header.topbar .topbar-actions > .topbar-date-card:hover span {
-  color: #fc9038;
+  color: #fc9038 !important;
 }
 
 header.topbar .topbar-actions > .profile-chip-compact {
