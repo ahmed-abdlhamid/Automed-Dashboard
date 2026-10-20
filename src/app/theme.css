@@ -898,10 +898,21 @@ body {
   align-items: center;
   gap: 10px;
 }
-.topbar-actions .profile-chip { order: 1; }
-.topbar-actions .project-picker { order: 2; }
-.topbar-actions .topbar-control:not(.lang-control) { order: 3; }
-.topbar-actions .lang-control { order: 4; }
+/* Header order only: project, user, notifications, language, theme, date.
+   Keep the same visual styles; reverse order values in RTL because flex starts on the right. */
+.topbar-actions[dir="ltr"] .project-picker { order: 1; }
+.topbar-actions[dir="ltr"] .profile-chip { order: 2; }
+.topbar-actions[dir="ltr"] .notification-control { order: 3; }
+.topbar-actions[dir="ltr"] .lang-control { order: 4; }
+.topbar-actions[dir="ltr"] > .topbar-control:not(.lang-control):not(.notification-control) { order: 5; }
+.topbar-actions[dir="ltr"] .topbar-date-card { order: 6; }
+
+.topbar-actions[dir="rtl"] .topbar-date-card { order: 1; }
+.topbar-actions[dir="rtl"] > .topbar-control:not(.lang-control):not(.notification-control) { order: 2; }
+.topbar-actions[dir="rtl"] .lang-control { order: 3; }
+.topbar-actions[dir="rtl"] .notification-control { order: 4; }
+.topbar-actions[dir="rtl"] .profile-chip { order: 5; }
+.topbar-actions[dir="rtl"] .project-picker { order: 6; }
 .profile-chip {
   min-height: 40px;
   align-self: center;
