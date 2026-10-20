@@ -537,7 +537,6 @@ export default function Shell({
               title={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
             >
               <Icon name="bell" size={18} />
-              <span className="notification-indicator" aria-hidden="true" />
             </button>
 
             <button
