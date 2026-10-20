@@ -541,12 +541,13 @@ export default function Shell({
 
             <button
               type="button"
-              className="topbar-control"
-              onClick={toggleTheme}
-              aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
-              title={t({ ar: "الوضع الداكن", en: "Dark mode" })}
+              className="profile-chip profile-chip-compact"
+              title={t(adminIdentity.name)}
+              aria-label={t(adminIdentity.name)}
             >
-              <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
+              <span className="profile-avatar" aria-hidden="true">
+                {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
+              </span>
             </button>
 
             <button
@@ -561,13 +562,12 @@ export default function Shell({
 
             <button
               type="button"
-              className="profile-chip profile-chip-compact"
-              title={t(adminIdentity.name)}
-              aria-label={t(adminIdentity.name)}
+              className="topbar-control"
+              onClick={toggleTheme}
+              aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
+              title={t({ ar: "الوضع الداكن", en: "Dark mode" })}
             >
-              <span className="profile-avatar" aria-hidden="true">
-                {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
-              </span>
+              <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
             </button>
 
             <span
@@ -588,8 +588,8 @@ export default function Shell({
             >
               <Icon name="calendar" size={16} />
               <span>{new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
-                day: "numeric",
-                month: "long",
+                day: "2-digit",
+                month: "short",
                 timeZone: "Africa/Cairo",
               }).format(new Date())}</span>
             </span>
