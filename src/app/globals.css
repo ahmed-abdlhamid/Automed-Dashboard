@@ -6768,3 +6768,90 @@ textarea:focus {
     display: none;
   }
 }
+
+
+/* Agreed header polish: consistent control sizing and true greeting alignment. */
+.topbar-actions {
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-control {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 12px;
+}
+
+.project-trigger-card {
+  min-height: 40px;
+  height: 40px;
+  min-width: 0;
+  width: max-content;
+  max-width: min(240px, 30vw);
+  justify-content: center;
+  gap: 8px;
+  padding-inline: 11px;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.project-trigger-card .project-trigger-name {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.profile-chip-compact {
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.topbar-date-card {
+  min-height: 40px;
+  height: 40px;
+  gap: 6px;
+  padding-inline: 10px;
+  border-radius: 12px;
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.overview-title {
+  align-items: center;
+  line-height: 1.25;
+}
+
+.overview-title .overview-greeting-text,
+.overview-title .overview-greeting-name {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+.overview-title .overview-greeting-name {
+  color: var(--teal);
+}
+
+@media (max-width: 767.98px) {
+  .topbar-actions {
+    gap: 5px;
+  }
+
+  .project-trigger-card {
+    max-width: 34vw;
+    padding-inline: 8px;
+    gap: 6px;
+  }
+
+  .topbar-date-card {
+    padding-inline: 7px;
+    font-size: 10px;
+  }
+}
