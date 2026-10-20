@@ -6955,43 +6955,46 @@ header.topbar .topbar-actions > .topbar-date-card {
 }
 
 
-/* Subtle, consistent hover feedback for all header controls. */
-header.topbar .topbar-actions .topbar-date-card {
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface-solid) 72%, transparent);
-  color: var(--ink);
-  box-shadow: none;
-  cursor: default;
-  transition:
-    color 0.18s ease,
-    background-color 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s ease;
-}
-
-header.topbar .topbar-actions .topbar-date-card:hover {
-  color: var(--teal);
-  background: var(--surface);
-  border-color: color-mix(in srgb, var(--teal) 35%, var(--line));
-  transform: translateY(-1px);
-}
-
-header.topbar .topbar-actions .topbar-date-card:hover svg,
-header.topbar .topbar-actions .topbar-date-card:hover span {
-  color: var(--teal);
-}
-
-header.topbar .topbar-actions .profile-chip-compact {
+/* Subtle header controls: rounded-rect group, color-only hover (#FC9038). */
+header.topbar .topbar-actions > .topbar-control,
+header.topbar .topbar-actions > .profile-chip-compact,
+header.topbar .topbar-actions > .topbar-date-card {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: color-mix(in srgb, var(--surface-solid) 72%, transparent);
   color: var(--ink);
   box-shadow: none;
-  transition:
-    color 0.18s ease,
-    background-color 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s ease;
+  transform: none;
+  transition: color 0.18s ease;
+}
+
+header.topbar .topbar-actions > .topbar-date-card {
+  cursor: default;
+}
+
+/* Kill background / border / lift changes on hover for interactive controls */
+header.topbar .topbar-actions > .topbar-control:hover,
+header.topbar .topbar-actions > .topbar-control:active,
+header.topbar .topbar-actions > .profile-chip-compact:hover,
+header.topbar .topbar-actions > .profile-chip-compact:active,
+header.topbar .topbar-actions > .topbar-date-card:hover,
+header.topbar .topbar-actions > .topbar-date-card:active {
+  background: color-mix(in srgb, var(--surface-solid) 72%, transparent) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Foreground only → brand orange */
+header.topbar .topbar-actions > .topbar-control:hover,
+header.topbar .topbar-actions > .topbar-control:hover svg,
+header.topbar .topbar-actions > .topbar-control:hover span,
+header.topbar .topbar-actions > .profile-chip-compact:hover,
+header.topbar .topbar-actions > .profile-chip-compact:hover .profile-avatar,
+header.topbar .topbar-actions > .topbar-date-card:hover,
+header.topbar .topbar-actions > .topbar-date-card:hover svg,
+header.topbar .topbar-actions > .topbar-date-card:hover span {
+  color: #fc9038 !important;
 }
 
 header.topbar .topbar-actions .profile-chip-compact .profile-avatar {
@@ -7009,56 +7012,30 @@ header.topbar .topbar-actions .profile-chip-compact .profile-avatar {
   transition: color 0.18s ease;
 }
 
-header.topbar .topbar-actions .profile-chip-compact:hover {
-  color: var(--teal);
-  background: var(--surface);
-  border-color: color-mix(in srgb, var(--teal) 35%, var(--line));
-  transform: translateY(-1px);
+/* Project name: visually distinct, zero hover effect */
+header.topbar .topbar-actions .project-trigger-card,
+header.topbar .topbar-actions .project-trigger-card:hover,
+header.topbar .topbar-actions .project-trigger-card[aria-expanded="true"],
+header.topbar .topbar-actions .project-trigger.project-trigger-card:hover,
+header.topbar .topbar-actions .project-trigger.project-trigger-card[aria-expanded="true"] {
+  background: var(--surface-solid) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+  color: var(--ink) !important;
+  transform: none !important;
 }
 
-header.topbar .topbar-actions .profile-chip-compact:hover .profile-avatar {
-  color: var(--teal);
-}
-
-header.topbar .topbar-actions .topbar-control:hover {
-  transform: translateY(-1px);
-  box-shadow: none;
-}
-
-header.topbar .topbar-actions .topbar-control:active,
-header.topbar .topbar-actions .profile-chip-compact:active {
-  transform: translateY(0) scale(0.98);
+header.topbar .topbar-actions .project-trigger-card .project-trigger-name,
+header.topbar .topbar-actions .project-trigger-card:hover .project-trigger-name,
+header.topbar .topbar-actions .project-trigger-card svg,
+header.topbar .topbar-actions .project-trigger-card:hover svg {
+  color: inherit !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  header.topbar .topbar-actions .topbar-date-card,
-  header.topbar .topbar-actions .profile-chip-compact,
-  header.topbar .topbar-actions .topbar-control {
+  header.topbar .topbar-actions > .topbar-control,
+  header.topbar .topbar-actions > .profile-chip-compact,
+  header.topbar .topbar-actions > .topbar-date-card {
     transition: none;
-    transform: none;
   }
-}
-
-
-/* Header hover: change content color only; never override control surfaces or borders. */
-header.topbar .topbar-actions > .topbar-control,
-header.topbar .topbar-actions > .profile-chip-compact,
-header.topbar .topbar-actions > .topbar-date-card {
-  transform: none !important;
-  transition: none !important;
-}
-
-header.topbar .topbar-actions > .topbar-control:hover svg,
-header.topbar .topbar-actions > .topbar-control:hover span,
-header.topbar .topbar-actions > .profile-chip-compact:hover .profile-avatar,
-header.topbar .topbar-actions > .topbar-date-card:hover,
-header.topbar .topbar-actions > .topbar-date-card:hover svg,
-header.topbar .topbar-actions > .topbar-date-card:hover span {
-  color: #fc9038 !important;
-}
-
-header.topbar .topbar-actions > .topbar-control:active,
-header.topbar .topbar-actions > .profile-chip-compact:active,
-header.topbar .topbar-actions > .topbar-date-card:active {
-  transform: none !important;
 }
