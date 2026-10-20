@@ -531,16 +531,6 @@ export default function Shell({
 
             <button
               type="button"
-              className="topbar-control notification-control"
-              onClick={() => router.push("/orders")}
-              aria-label={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
-              title={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
-            >
-              <Icon name="bell" size={18} />
-            </button>
-
-            <button
-              type="button"
               className="profile-chip profile-chip-compact"
               title={t(adminIdentity.name)}
               aria-label={t(adminIdentity.name)}
@@ -548,6 +538,16 @@ export default function Shell({
               <span className="profile-avatar" aria-hidden="true">
                 {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
               </span>
+            </button>
+
+            <button
+              type="button"
+              className="topbar-control notification-control"
+              onClick={() => router.push("/orders")}
+              aria-label={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
+              title={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
+            >
+              <Icon name="bell" size={18} />
             </button>
 
             <button
