@@ -7,47 +7,42 @@ import { useI18n } from "@/components/Providers";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import { Icon } from "@/components/ui";
 
+const CONTACT_EMAIL = "automed.official@gmail.com";
+const CONTACT_PHONE = "01021804181";
+const WHATSAPP_URL = "https://wa.me/201021804181";
+
 export default function LoginPage() {
   const router = useRouter();
-  const { t, lang, theme, toggleLang, toggleTheme } =
-    useI18n();
+  const { t, lang, theme, toggleLang, toggleTheme } = useI18n();
+  const isArabic = lang === "ar";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRecoveryHint, setShowRecoveryHint] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     if (loading) return;
 
     setLoading(true);
     setError("");
 
-    const { error: signInError } =
-      await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
 
     if (signInError) {
-      console.error(
-        "Supabase login error:",
-        signInError
-      );
-
+      console.error("Supabase login error:", signInError);
       setError(
-        lang === "ar"
-          ? "البريد الإلكتروني أو كلمة المرور غير صحيحة."
-          : "Invalid email or password."
+        t({
+          ar: "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+          en: "Invalid email or password.",
+        })
       );
-
       setLoading(false);
       return;
     }
@@ -57,122 +52,172 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen p-4">
-      <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-[1600px] items-center justify-center">
-        <section className="xcard w-full max-w-md p-6 md:p-8">
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <img
-                src={cfg.brand.logo.light}
-                alt={cfg.brand.name}
-                className="logo-light login-brand-logo"
-              />
+    <main className="login-experience" dir="ltr">
+      <aside className="login-showcase" dir={isArabic ? "rtl" : "ltr"}>
+        <div className="showcase-glow showcase-glow-one" />
+        <div className="showcase-glow showcase-glow-two" />
+        <div className="showcase-grid" aria-hidden="true" />
 
-              <img
-                src={cfg.brand.logo.dark}
-                alt={cfg.brand.name}
-                className="logo-dark login-brand-logo"
-              />
-            </div>
+        <div className="showcase-inner">
+          <header className="showcase-header">
+            <a className="showcase-brand" href="https://automed-info.vercel.app/" aria-label="Automed">
+              <img src="/automed-logo-dark.png" alt="Automed" />
+            </a>
+            <span className="showcase-brand-slogan">
+              {t({ ar: "وفّر وقتك", en: "Save Your Time" })}
+            </span>
+          </header>
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="ctl"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-              >
-                <Icon
-                  name={
-                    theme === "dark"
-                      ? "sun"
-                      : "moon"
-                  }
-                  size={17}
-                />
-              </button>
+          <div className="showcase-main">
+            <div className="showcase-copy">
+              <span className="showcase-eyebrow">
+                <span className="showcase-eyebrow-dot" />
+                {t({ ar: "حلول ذكية للأعمال", en: "INTELLIGENT BUSINESS SOLUTIONS" })}
+              </span>
 
-              <button
-                type="button"
-                className="ctl"
-                onClick={toggleLang}
-                aria-label="Toggle language"
-              >
-                {lang === "ar" ? "EN" : "AR"}
-              </button>
-            </div>
-          </div>
+              <h1>
+                {t({ ar: "حوّل المهام المتكررة", en: "Turn repetitive work" })}
+                <span>{t({ ar: "لأنظمة ذكية", en: "into intelligent systems" })}</span>
+              </h1>
 
-          <div className="mb-8">
-            <h1 className="font-head text-2xl font-bold">
-              {t({
-                ar: "مرحبًا بك",
-                en: "Welcome back",
-              })}
-            </h1>
-
-            <p className="mt-2 text-sm leading-6 text-mut">
-              {t({
-                ar: "سجل الدخول للوصول إلى لوحة التحكم.",
-                en: "Sign in to access your dashboard.",
-              })}
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-5"
-          >
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium"
-              >
+              <p className="showcase-description">
                 {t({
-                  ar: "البريد الإلكتروني",
-                  en: "Email",
+                  ar: "نستخدم الذكاء الاصطناعي لمساعدتك في تنظيم الطلبات والرسائل ومتابعة العملاء، مع لوحات متابعة تعرض بيانات أعمالك وأداءها بوضوح؛ عشان توفّر وقتك، تقلّل المجهود اليدوي، وتدير شغلك بكفاءة أكبر.",
+                  en: "We use AI to organize requests and messages, follow up with customers, and turn business data into clear, actionable insights—so you save time, reduce manual work, and run your business more efficiently.",
                 })}
-              </label>
+              </p>
 
+              <div className="showcase-features">
+                <div className="showcase-feature">
+                  <span className="showcase-feature-icon"><Icon name="automation" size={22} /></span>
+                  <span className="showcase-feature-title">{t({ ar: "وكلاء ذكاء اصطناعي", en: "AI Agents" })}</span>
+                  <span className="showcase-feature-caption">{t({ ar: "مهام تنفّذ بذكاء", en: "Work that runs smarter" })}</span>
+                </div>
+                <div className="showcase-feature">
+                  <span className="showcase-feature-icon"><Icon name="pulse" size={22} /></span>
+                  <span className="showcase-feature-title">{t({ ar: "أتمتة المهام", en: "Smart Automation" })}</span>
+                  <span className="showcase-feature-caption">{t({ ar: "وقت أقل ومجهود أقل", en: "Less manual work" })}</span>
+                </div>
+                <div className="showcase-feature">
+                  <span className="showcase-feature-icon"><Icon name="analytics" size={22} /></span>
+                  <span className="showcase-feature-title">{t({ ar: "لوحات متابعة", en: "Business Insights" })}</span>
+                  <span className="showcase-feature-caption">{t({ ar: "قرارات أوضح", en: "Clearer decisions" })}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="showcase-visual" aria-hidden="true">
+              <div className="visual-orbit orbit-one" />
+              <div className="visual-orbit orbit-two" />
+              <div className="visual-core">
+                <span className="visual-core-symbol">A</span>
+                <span className="visual-core-pulse" />
+              </div>
+              <div className="visual-card visual-card-top">
+                <span className="visual-card-icon"><Icon name="check" size={16} /></span>
+                <span>{t({ ar: "المهام المتكررة", en: "Repetitive tasks" })}</span>
+                <b>↗</b>
+              </div>
+              <div className="visual-dashboard">
+                <div className="visual-dashboard-bar"><i /><i /><i /></div>
+                <div className="visual-dashboard-content">
+                  <div className="visual-dashboard-sidebar"><span /><span /><span /><span /></div>
+                  <div className="visual-dashboard-main">
+                    <div className="visual-dashboard-heading" />
+                    <div className="visual-stats"><span /><span /><span /></div>
+                    <div className="visual-chart">
+                      <i /><i /><i /><i /><i /><i /><i />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="visual-card visual-card-bottom">
+                <span className="visual-mini-bars"><i /><i /><i /><i /></span>
+                <span><small>{t({ ar: "أداء الأعمال", en: "Business performance" })}</small><b>+32%</b></span>
+              </div>
+              <span className="visual-floating-dot dot-one" />
+              <span className="visual-floating-dot dot-two" />
+              <span className="visual-floating-dot dot-three" />
+            </div>
+          </div>
+
+          <footer className="showcase-footer">
+            <div className="showcase-contact">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="showcase-contact-link">
+                <span className="contact-symbol contact-email">✉</span>
+                <span>{CONTACT_EMAIL}</span>
+              </a>
+              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="showcase-contact-link">
+                <span className="contact-symbol contact-whatsapp">◉</span>
+                <span dir="ltr">{CONTACT_PHONE}</span>
+              </a>
+            </div>
+            <div className="showcase-contact-cta">
+              <span>{t({ ar: "خلّينا نبدأ", en: "LET'S GET STARTED" })}</span>
+              <b>{t({ ar: "تواصل معنا", en: "Talk to our team" })}</b>
+              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label={t({ ar: "تواصل معنا عبر واتساب", en: "Contact us on WhatsApp" })}>
+                <Icon name="arrowUpRight" size={20} />
+              </a>
+            </div>
+          </footer>
+          <div className="showcase-bottomline">
+            <span>AUTOMED</span><i />{t({ ar: "وفّر وقتك", en: "SAVE YOUR TIME" })}
+          </div>
+        </div>
+      </aside>
+
+      <section className="login-panel" dir={isArabic ? "rtl" : "ltr"}>
+        <div className="login-panel-controls">
+          <button type="button" className="login-utility-button" onClick={toggleLang} aria-label={t({ ar: "Switch to English", en: "التغيير إلى العربية" })}>
+            <span className="login-language-globe">◎</span>{lang === "ar" ? "EN" : "AR"}
+          </button>
+          <button type="button" className="login-utility-button login-theme-button" onClick={toggleTheme} aria-label="Toggle theme">
+            <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
+          </button>
+        </div>
+
+        <div className="login-card">
+          <div className="login-card-brand">
+            <img
+              src={theme === "dark" ? cfg.brand.logo.dark : cfg.brand.logo.light}
+              alt={cfg.brand.name}
+              className="login-brand-logo"
+            />
+            <p>{t({ ar: "وفّر وقتك", en: "Save Your Time" })}</p>
+          </div>
+
+          <div className="login-heading">
+            <h2>{t({ ar: "مرحبًا بعودتك", en: "Welcome back" })}</h2>
+            <p>{t({ ar: "سجّل الدخول للمتابعة في لوحة التحكم", en: "Sign in to continue to your dashboard" })}</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="login-field">
+              <label htmlFor="email">{t({ ar: "البريد الإلكتروني", en: "Email address" })}</label>
               <input
                 id="email"
                 type="email"
                 value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
+                onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
                 required
-                className="w-full rounded-[14px] border border-line bg-card px-4 py-3 text-sm outline-none transition-all focus:border-orange"
-                placeholder="name@example.com"
+                placeholder={t({ ar: "أدخل بريدك الإلكتروني", en: "Enter your email address" })}
                 dir="ltr"
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium"
-              >
-                {t({
-                  ar: "كلمة المرور",
-                  en: "Password",
-                })}
-              </label>
-
-              <div className="login-password-field" dir={lang === "ar" ? "rtl" : "ltr"}>
+            <div className="login-field">
+              <label htmlFor="password">{t({ ar: "كلمة المرور", en: "Password" })}</label>
+              <div className="login-password-field" dir={isArabic ? "rtl" : "ltr"}>
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(event) =>
-                    setPassword(event.target.value)
-                  }
+                  onChange={(event) => setPassword(event.target.value)}
                   autoComplete="current-password"
                   required
-                  className="w-full rounded-[14px] border border-line bg-card px-4 py-3 text-sm outline-none transition-all focus:border-orange"
-                  placeholder="••••••••"
-                  dir={lang === "ar" ? "rtl" : "ltr"}
+                  placeholder="••••••••••"
+                  dir={isArabic ? "rtl" : "ltr"}
                 />
                 <button
                   type="button"
@@ -188,12 +233,7 @@ export default function LoginPage() {
                 </button>
               </div>
               <div className="login-recovery-row">
-                <button
-                  type="button"
-                  className="login-forgot-link"
-                  onClick={() => setShowRecoveryHint((visible) => !visible)}
-                  aria-expanded={showRecoveryHint}
-                >
+                <button type="button" className="login-forgot-link" onClick={() => setShowRecoveryHint((visible) => !visible)} aria-expanded={showRecoveryHint}>
                   {t({ ar: "هل نسيت كلمة المرور؟", en: "Forgot password?" })}
                 </button>
               </div>
@@ -207,30 +247,27 @@ export default function LoginPage() {
               )}
             </div>
 
-            {error && (
-              <div className="rounded-[14px] border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                {error}
-              </div>
-            )}
+            {error && <div className="login-error" role="alert">{error}</div>}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-[14px] bg-orange px-4 py-3 text-sm font-semibold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-            >
+            <button type="submit" disabled={loading} className="login-submit-button">
               {loading
-                ? t({
-                    ar: "جاري تسجيل الدخول...",
-                    en: "Signing in...",
-                  })
-                : t({
-                    ar: "تسجيل الدخول",
-                    en: "Sign in",
-                  })}
+                ? t({ ar: "جاري تسجيل الدخول...", en: "Signing in..." })
+                : t({ ar: "تسجيل الدخول", en: "Sign in" })}
+              <span aria-hidden="true">{isArabic ? "←" : "→"}</span>
             </button>
           </form>
-        </section>
-      </div>
+
+          <div className="login-bottom-contact">
+            <span>{t({ ar: "ليس لديك حساب؟", en: "Need a system for your business?" })}</span>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+              {t({ ar: "تواصل معنا", en: "Talk to us" })}
+              <Icon name="arrowUpRight" size={14} />
+            </a>
+          </div>
+        </div>
+
+        <p className="login-panel-footnote">© {new Date().getFullYear()} Automed. {t({ ar: "جميع الحقوق محفوظة", en: "All rights reserved" })}</p>
+      </section>
     </main>
   );
 }
