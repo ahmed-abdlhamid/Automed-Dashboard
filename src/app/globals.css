@@ -6651,3 +6651,120 @@ textarea:focus {
     justify-content: flex-start;
   }
 }
+
+
+/* Automed topbar refinements: compact cards and cleaner hierarchy. */
+.topbar-page {
+  display: none !important;
+}
+
+.topbar-actions {
+  align-items: center;
+  gap: 10px;
+}
+
+.project-trigger-card {
+  min-height: 44px;
+  min-width: 150px;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+  padding: 0 14px;
+}
+
+.project-trigger-card .project-trigger-name {
+  text-align: center;
+}
+
+.notification-control {
+  position: relative;
+}
+
+.notification-indicator {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 2px var(--surface-solid);
+}
+
+.profile-chip-compact {
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+  cursor: default;
+}
+
+.profile-chip-compact .profile-avatar {
+  margin: 0;
+}
+
+.topbar-date-card {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-sm);
+  color: var(--mut);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.overview-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.22em;
+}
+
+.overview-title bdi {
+  display: inline;
+  vertical-align: baseline;
+  line-height: inherit;
+}
+
+@media (max-width: 767px) {
+  .topbar-actions {
+    gap: 6px;
+  }
+
+  .project-trigger-card {
+    min-width: 0;
+    max-width: 128px;
+    padding: 0 8px;
+  }
+
+  .project-trigger-card .project-trigger-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar-date-card {
+    gap: 4px;
+    padding: 0 7px;
+    font-size: 11px;
+  }
+
+  .topbar-date-card svg {
+    display: none;
+  }
+}
