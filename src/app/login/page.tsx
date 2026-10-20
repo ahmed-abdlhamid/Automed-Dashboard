@@ -139,13 +139,23 @@ export default function LoginPage() {
           </div>
 
           <footer className="showcase-footer">
-            <div className="showcase-social-links" aria-label={t({ ar: "طرق التواصل", en: "Contact options" })}>
-              <a href={`mailto:${CONTACT_EMAIL}`} className="showcase-social-link showcase-social-email" aria-label={t({ ar: "راسلنا عبر البريد الإلكتروني", en: "Email Automed" })}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5h18v13H3z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="m4 6.5 8 6.2 8-6.2" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>
+            <div className="showcase-contact-cards">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="showcase-contact-card">
+                <span className="showcase-contact-card-icon showcase-contact-card-email" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M3 5.5h18v13H3z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="m4 6.5 8 6.2 8-6.2" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>
+                </span>
+                <span className="showcase-contact-card-text" dir="ltr">{CONTACT_EMAIL}</span>
               </a>
-              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="showcase-social-link showcase-social-whatsapp" aria-label={t({ ar: "تواصل عبر واتساب", en: "Contact on WhatsApp" })}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.1 11.8a8.1 8.1 0 0 1-12 7.1L3 20l1.2-4.9a8.1 8.1 0 1 1 15.9-3.3Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="M8.2 7.8c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4-.1.6.6 1 1.4 1.8 2.4 2.3.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.2-.7 1.6-.5.5-1.2.7-2 .5-1-.2-2.3-.8-3.7-2.1-1.1-1-2-2.3-2.2-3.3-.3-.9.1-1.9.3-2.3Z" fill="currentColor"/></svg>
+              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="showcase-contact-card">
+                <span className="showcase-contact-card-icon showcase-contact-card-whatsapp" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M20.1 11.8a8.1 8.1 0 0 1-12 7.1L3 20l1.2-4.9a8.1 8.1 0 1 1 15.9-3.3Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="M8.2 7.8c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4-.1.6.6 1 1.4 1.8 2.4 2.3.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.2-.7 1.6-.5.5-1.2.7-2 .5-1-.2-2.3-.8-3.7-2.1-1.1-1-2-2.3-2.2-3.3-.3-.9.1-1.9.3-2.3Z" fill="currentColor"/></svg>
+                </span>
+                <span className="showcase-contact-card-text" dir="ltr">{CONTACT_PHONE}</span>
               </a>
+            </div>
+            <div className="showcase-bottom-brand">
+              <img src="/automed-logo-dark.png" alt="Automed" />
+              <span>{t({ ar: "وفّر وقتك", en: "Save Your Time" })}</span>
             </div>
           </footer>
         </div>
@@ -154,7 +164,7 @@ export default function LoginPage() {
       <section className="login-panel" dir={isArabic ? "rtl" : "ltr"}>
         <div className="login-panel-controls">
           <button type="button" className="login-utility-button" onClick={toggleLang} aria-label={t({ ar: "Switch to English", en: "التغيير إلى العربية" })}>
-            <span className="login-language-globe">◎</span>{lang === "ar" ? "EN" : "AR"}
+            {lang === "ar" ? "EN" : "AR"}
           </button>
           <button type="button" className="login-utility-button login-theme-button" onClick={toggleTheme} aria-label="Toggle theme">
             <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
