@@ -13,6 +13,8 @@ export default async function OpenGraphImage() {
     if (response.ok) logo = await response.arrayBuffer();
   } catch {}
 
+  const logoBase64 = logo ? btoa(Array.from(new Uint8Array(logo), (byte) => String.fromCharCode(byte)).join("")) : null;
+
   return new ImageResponse(
     (
       <div
@@ -34,7 +36,7 @@ export default async function OpenGraphImage() {
         <div style={{ position: "absolute", right: 0, bottom: 0, width: 440, height: 12, background: "#fc9038", transform: "rotate(-38deg)", transformOrigin: "bottom right", display: "flex" }} />
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", padding: "68px 82px", position: "relative" }}>
           {logo ? (
-            <img src={`data:image/png;base64,${Buffer.from(logo).toString("base64")}`} width="370" height="100" style={{ objectFit: "contain", objectPosition: "left center", marginBottom: 44 }} />
+            <img src={`data:image/png;base64,${logoBase64}`} width="370" height="100" style={{ objectFit: "contain", objectPosition: "left center", marginBottom: 44 }} />
           ) : (
             <div style={{ display: "flex", color: "#f7fbfa", fontSize: 54, fontWeight: 800, marginBottom: 44 }}>AUTOMED</div>
           )}
