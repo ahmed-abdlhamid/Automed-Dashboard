@@ -7244,3 +7244,107 @@ header.topbar .topbar-actions .project-trigger-card:hover svg {
 @media (prefers-reduced-motion: reduce) {
   .login-utility-button, .login-submit-button, .showcase-contact-cta > a { transition: none; }
 }
+
+
+/* Login refinements: single-screen desktop layout, clean branding and icon-only contacts */
+.login-experience {
+  height: 100vh;
+  min-height: 0;
+  max-height: 100vh;
+  overflow: hidden;
+}
+.login-showcase,
+.login-panel {
+  height: 100vh;
+  min-height: 0;
+  max-height: 100vh;
+  box-sizing: border-box;
+}
+.login-showcase { padding: clamp(22px, 2.5vw, 38px); }
+.showcase-inner { min-height: 0; height: 100%; }
+.showcase-header { flex-shrink: 0; }
+.showcase-main { min-height: 0; padding-block: 18px; }
+.showcase-copy h1 { font-size: clamp(29px, 2.65vw, 42px); line-height: 1.28; }
+.showcase-description { margin-top: 14px; line-height: 1.8; font-size: clamp(12px, .9vw, 14px); }
+.showcase-eyebrow { margin-bottom: 14px; }
+.showcase-features { margin-top: 20px; }
+.showcase-visual { height: clamp(260px, 30vw, 390px); min-height: 0; }
+.showcase-footer {
+  flex-shrink: 0;
+  justify-content: flex-end;
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.showcase-social-links { display: flex; align-items: center; gap: 12px; }
+.showcase-social-link {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(123,225,203,.38);
+  border-radius: 13px;
+  background: rgba(3,43,40,.48);
+  color: #bcefe5;
+  transition: transform .18s ease, color .18s ease, background .18s ease, border-color .18s ease;
+}
+.showcase-social-link svg { width: 21px; height: 21px; }
+.showcase-social-link:hover { transform: translateY(-2px); color: #fff; border-color: #fc9038; background: rgba(252,144,56,.16); }
+.showcase-social-whatsapp { color: #7be1cb; }
+.showcase-bottomline { display: none; }
+.login-panel { padding: 66px clamp(28px, 5vw, 80px) 44px; }
+.login-card { margin-block: auto; }
+.login-card-brand { margin-bottom: 30px; }
+.login-brand-logo { width: min(250px, 80%); max-height: 78px; }
+.login-card-brand p { display: none; }
+.login-heading { margin-bottom: 24px; }
+.login-form { gap: 17px; }
+.login-field > input, .login-password-field > input { min-height: 50px; }
+.login-submit-button { min-height: 51px; }
+.login-bottom-contact { margin-top: 22px; }
+.login-panel-footnote { bottom: 14px; }
+@media (max-width: 1180px) and (min-width: 821px) {
+  .login-showcase { padding: 26px; }
+  .showcase-main { padding-block: 12px; }
+  .showcase-copy h1 { font-size: clamp(28px, 3vw, 37px); }
+  .showcase-description { font-size: 12px; line-height: 1.7; }
+  .showcase-features { margin-top: 15px; gap: 8px; }
+  .showcase-feature-icon { width: 36px; height: 36px; }
+  .showcase-visual { display: none; }
+}
+@media (max-height: 760px) and (min-width: 821px) {
+  .login-showcase { padding-block: 18px; }
+  .showcase-main { padding-block: 8px; }
+  .showcase-copy h1 { font-size: clamp(26px, 2.5vw, 35px); }
+  .showcase-description { margin-top: 10px; font-size: 11px; line-height: 1.65; }
+  .showcase-features { margin-top: 12px; }
+  .showcase-feature-icon { width: 32px; height: 32px; }
+  .showcase-visual { height: 250px; }
+  .login-panel { padding-top: 58px; padding-bottom: 36px; }
+  .login-card-brand { margin-bottom: 20px; }
+  .login-brand-logo { max-height: 60px; }
+  .login-heading { margin-bottom: 18px; }
+  .login-form { gap: 13px; }
+  .login-field > input, .login-password-field > input { min-height: 45px; }
+  .login-submit-button { min-height: 47px; }
+  .login-bottom-contact { margin-top: 16px; }
+}
+@media (max-width: 820px) {
+  .login-experience { height: auto; min-height: 100vh; max-height: none; overflow: visible; }
+  .login-panel { height: auto; min-height: 100vh; max-height: none; padding: 82px 24px 58px; }
+  .login-showcase { height: auto; min-height: 0; max-height: none; padding: 30px 24px 24px; }
+  .showcase-inner { height: auto; min-height: 0; }
+  .showcase-main { padding-block: 28px 22px; }
+  .showcase-footer { margin-top: 4px; }
+  .showcase-social-links { justify-content: center; width: 100%; }
+  .login-card-brand p { display: none; }
+}
+@media (max-width: 520px) {
+  .login-panel { padding: 80px 20px 58px; }
+  .login-showcase { padding: 26px 20px 22px; }
+  .showcase-header { align-items: flex-start; flex-direction: column; gap: 0; }
+  .showcase-main { padding-block: 24px 20px; }
+  .showcase-social-link { width: 40px; height: 40px; }
+}
