@@ -538,6 +538,7 @@ export default function Shell({
               <span className="profile-avatar" aria-hidden="true">
                 {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
               </span>
+              <span className="profile-meta">{t(adminIdentity.name)}</span>
             </button>
 
             <button
