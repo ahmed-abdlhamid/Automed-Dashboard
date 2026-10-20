@@ -6855,3 +6855,101 @@ textarea:focus {
     font-size: 10px;
   }
 }
+
+
+/* Final corrective pass: explicit topbar geometry and greeting alignment. */
+header.topbar .topbar-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+header.topbar .topbar-actions > .topbar-control,
+header.topbar .topbar-actions > .profile-chip-compact {
+  box-sizing: border-box;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  flex: 0 0 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header.topbar .topbar-actions > .project-picker {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+header.topbar .topbar-actions .project-trigger-card {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  min-width: 0;
+  max-width: min(240px, 30vw);
+  height: 40px;
+  min-height: 40px;
+  padding-inline: 11px;
+  gap: 8px;
+}
+
+header.topbar .topbar-actions .project-trigger-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+header.topbar .topbar-actions > .topbar-date-card {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-height: 40px;
+  flex: 0 0 auto;
+  padding-inline: 10px;
+  white-space: nowrap;
+}
+
+.overview-heading .overview-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
+  line-height: 1.25;
+}
+
+.overview-heading .overview-title > .overview-greeting-text,
+.overview-heading .overview-title > .overview-greeting-name {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+
+@media (max-width: 767.98px) {
+  header.topbar .topbar-actions {
+    gap: 5px;
+  }
+
+  header.topbar .topbar-actions .project-trigger-card {
+    max-width: 34vw;
+    padding-inline: 8px;
+    gap: 6px;
+  }
+
+  header.topbar .topbar-actions > .topbar-date-card {
+    padding-inline: 7px;
+    font-size: 10px;
+  }
+}
