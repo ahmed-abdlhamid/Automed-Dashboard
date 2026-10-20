@@ -445,7 +445,7 @@ export default function Shell({
 
           </div>
 
-          <div className="topbar-actions">
+          <div className="topbar-actions" dir={lang === "ar" ? "rtl" : "ltr"}>
             {isAdmin &&
               projects.length > 0 && (
                 <div
