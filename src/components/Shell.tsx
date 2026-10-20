@@ -445,7 +445,18 @@ export default function Shell({
 
           </div>
 
-          <div className="topbar-actions" dir={lang === "ar" ? "rtl" : "ltr"}>
+          {/*
+            Header controls order (visual left → right):
+            1. Project name
+            2. User name
+            3. Notifications
+            4. Language (AR / EN)
+            5. Dark mode
+            6. Date
+
+            dir="ltr" keeps this visual order stable in both Arabic and English UI.
+          */}
+          <div className="topbar-actions" dir="ltr">
             {isAdmin &&
               projects.length > 0 && (
                 <div
@@ -538,6 +549,7 @@ export default function Shell({
               <span className="profile-avatar" aria-hidden="true">
                 {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
               </span>
+              <span className="profile-meta">{t(adminIdentity.name)}</span>
             </button>
 
             <button
