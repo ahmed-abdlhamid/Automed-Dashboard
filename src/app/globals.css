@@ -6605,3 +6605,50 @@ textarea:focus {
     transition-duration: .01ms !important;
   }
 }
+
+
+/* =========================================================
+   Automed finishing touches — logo sizing and header alignment
+   ========================================================= */
+.brand-lockup .brand-mark img {
+  height: 30px;
+  max-width: 30px;
+}
+
+.brand-lockup .brand-full img {
+  width: auto;
+  max-width: 142px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.login-brand-logo {
+  display: block;
+  width: auto;
+  max-width: 148px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.overview-header {
+  align-items: flex-start;
+}
+
+.overview-actions {
+  align-items: flex-start;
+}
+
+.overview-actions .date-chip {
+  margin-block-start: 2px;
+}
+
+@media (max-width: 767.98px) {
+  .overview-header {
+    align-items: stretch;
+  }
+
+  .overview-actions {
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
