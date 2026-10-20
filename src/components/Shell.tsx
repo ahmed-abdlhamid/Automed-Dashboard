@@ -441,22 +441,23 @@ export default function Shell({
                 size={18}
               />
             </button>
-
-
           </div>
 
           {/*
-            Header controls order (visual left → right):
+            Visual order LEFT → RIGHT (forced with dir="ltr"):
             1. Project name
-            2. User name
+            2. User (initial only; full name on hover via title)
             3. Notifications
-            4. Language (AR / EN)
+            4. Language
             5. Dark mode
             6. Date
-
-            dir="ltr" keeps this visual order stable in both Arabic and English UI.
           */}
-          <div className="topbar-actions" dir="ltr">
+          <div
+            className="topbar-actions"
+            dir="ltr"
+            style={{ direction: "ltr", flexDirection: "row" }}
+          >
+            {/* 1. Project */}
             {isAdmin &&
               projects.length > 0 && (
                 <div
@@ -540,6 +541,7 @@ export default function Shell({
                 </div>
               )}
 
+            {/* 2. User — letter only; full name on hover */}
             <button
               type="button"
               className="profile-chip profile-chip-compact"
@@ -547,10 +549,13 @@ export default function Shell({
               aria-label={t(adminIdentity.name)}
             >
               <span className="profile-avatar" aria-hidden="true">
-                {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
+                {isAdmin
+                  ? Array.from(t(adminIdentity.name))[0]?.toUpperCase()
+                  : <Icon name="users" size={17} />}
               </span>
             </button>
 
+            {/* 3. Notifications */}
             <button
               type="button"
               className="topbar-control notification-control"
@@ -561,6 +566,7 @@ export default function Shell({
               <Icon name="bell" size={18} />
             </button>
 
+            {/* 4. Language */}
             <button
               type="button"
               className="topbar-control lang-control"
@@ -571,6 +577,7 @@ export default function Shell({
               {lang === "ar" ? "EN" : "AR"}
             </button>
 
+            {/* 5. Dark mode */}
             <button
               type="button"
               className="topbar-control"
@@ -581,6 +588,7 @@ export default function Shell({
               <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
             </button>
 
+            {/* 6. Date */}
             <span
               className="topbar-date-card"
               title={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
