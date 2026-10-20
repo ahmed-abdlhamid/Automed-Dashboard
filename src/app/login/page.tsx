@@ -58,12 +58,12 @@ export default function LoginPage() {
 
         <div className="showcase-controls" dir="ltr" aria-label="Display preferences">
           <div className="showcase-control-group" aria-label="Language">
-            <button type="button" className={"showcase-control-option " + (lang === "ar" ? "is-active" : "")} onClick={() => { if (lang !== "ar") toggleLang(); }} aria-pressed={lang === "ar"}>العربية</button>
+            <button type="button" className={"showcase-control-option " + (lang === "ar" ? "is-active" : "")} onClick={() => { if (lang !== "ar") toggleLang(); }} aria-pressed={lang === "ar"}>AR</button>
             <button type="button" className={"showcase-control-option " + (lang === "en" ? "is-active" : "")} onClick={() => { if (lang !== "en") toggleLang(); }} aria-pressed={lang === "en"}>EN</button>
           </div>
           <div className="showcase-control-group" aria-label="Color theme">
-            <button type="button" className={"showcase-control-option " + (theme === "light" ? "is-active" : "")} onClick={() => { if (theme !== "light") toggleTheme(); }} aria-pressed={theme === "light"}><Icon name="sun" size={15} /> فاتح</button>
-            <button type="button" className={"showcase-control-option " + (theme === "dark" ? "is-active" : "")} onClick={() => { if (theme !== "dark") toggleTheme(); }} aria-pressed={theme === "dark"}><Icon name="moon" size={15} /> داكن</button>
+            <button type="button" className={"showcase-control-option " + (theme === "light" ? "is-active" : "")} onClick={() => { if (theme !== "light") toggleTheme(); }} aria-label={t({ ar: "الوضع الفاتح", en: "Light mode" })} aria-pressed={theme === "light"}><Icon name="sun" size={16} /></button>
+            <button type="button" className={"showcase-control-option " + (theme === "dark" ? "is-active" : "")} onClick={() => { if (theme !== "dark") toggleTheme(); }} aria-label={t({ ar: "الوضع الداكن", en: "Dark mode" })} aria-pressed={theme === "dark"}><Icon name="moon" size={16} /></button>
           </div>
         </div>
 
@@ -86,17 +86,14 @@ export default function LoginPage() {
                 <div className="showcase-feature">
                   <span className="showcase-feature-icon"><Icon name="automation" size={22} /></span>
                   <span className="showcase-feature-title">{t({ ar: "وكلاء ذكاء اصطناعي", en: "AI Agents" })}</span>
-                  <span className="showcase-feature-caption">{t({ ar: "مهام تنفّذ بذكاء", en: "Work that runs smarter" })}</span>
-                </div>
+                                  </div>
                 <div className="showcase-feature">
                   <span className="showcase-feature-icon"><Icon name="pulse" size={22} /></span>
                   <span className="showcase-feature-title">{t({ ar: "أتمتة المهام", en: "Smart Automation" })}</span>
-                  <span className="showcase-feature-caption">{t({ ar: "وقت أقل ومجهود أقل", en: "Less manual work" })}</span>
-                </div>
+                                  </div>
                 <div className="showcase-feature">
                   <span className="showcase-feature-icon"><Icon name="analytics" size={22} /></span>
-                  <span className="showcase-feature-title">{t({ ar: "لوحات متابعة", en: "Business Insights" })}</span>
-                  <span className="showcase-feature-caption">{t({ ar: "قرارات أوضح", en: "Clearer decisions" })}</span>
+                  <span className="showcase-feature-title">{t({ ar: "تحليل الأعمال", en: "Business Analysis" })}</span>
                 </div>
               </div>
             </div>
