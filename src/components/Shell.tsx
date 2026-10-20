@@ -67,10 +67,6 @@ export default function Shell({
       ? pathname === "/"
       : pathname.startsWith(href);
 
-  const currentNav = cfg.nav.find((item) =>
-    isActive(item.href)
-  );
-
   const selectedProject =
     projects.find(
       (project) => project.id === currentProjectId
@@ -446,22 +442,7 @@ export default function Shell({
               />
             </button>
 
-            <div className="topbar-page">
-              <span className="topbar-kicker">
-                Automed
-              </span>
 
-              <strong>
-                {currentNav
-                  ? t(currentNav.label)
-                  : pathname === "/users"
-                  ? t({
-                      ar: "المستخدمون",
-                      en: "Users",
-                    })
-                  : cfg.brand.name}
-              </strong>
-            </div>
           </div>
 
           <div className="topbar-actions">
@@ -473,7 +454,7 @@ export default function Shell({
                 >
                   <button
                     type="button"
-                    className="project-trigger"
+                    className="project-trigger project-trigger-card"
                     onClick={() =>
                       setProjectMenuOpen(
                         (value) => !value
@@ -548,42 +529,23 @@ export default function Shell({
                 </div>
               )}
 
-            <div className="profile-chip">
-              <span
-                className="profile-avatar"
-                aria-hidden="true"
-              >
-                {isAdmin ? (
-                  Array.from(
-                    t(adminIdentity.name)
-                  )[0]?.toUpperCase()
-                ) : (
-                  <Icon
-                    name="users"
-                    size={17}
-                  />
-                )}
-              </span>
-
-              <div className="profile-meta">
-                {isAdmin && (
-                  <span className="profile-name">
-                    <bdi>{t(adminIdentity.name)}</bdi>
-                  </span>
-                )}
-                <span className={isAdmin ? "profile-role" : "profile-name"}>
-                  {isAdmin
-                    ? t({ ar: "مسؤول", en: "Admin" })
-                    : t({ ar: "عميل", en: "Client" })}
-                </span>
-              </div>
-            </div>
+            <button
+              type="button"
+              className="topbar-control notification-control"
+              onClick={() => router.push("/orders")}
+              aria-label={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
+              title={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
+            >
+              <Icon name="bell" size={18} />
+              <span className="notification-indicator" aria-hidden="true" />
+            </button>
 
             <button
               type="button"
               className="topbar-control"
               onClick={toggleTheme}
               aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
+              title={t({ ar: "الوضع الداكن", en: "Dark mode" })}
             >
               <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
             </button>
@@ -593,9 +555,45 @@ export default function Shell({
               className="topbar-control lang-control"
               onClick={toggleLang}
               aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
+              title={t({ ar: "تغيير اللغة", en: "Toggle language" })}
             >
               {lang === "ar" ? "EN" : "AR"}
             </button>
+
+            <button
+              type="button"
+              className="profile-chip profile-chip-compact"
+              title={t(adminIdentity.name)}
+              aria-label={t(adminIdentity.name)}
+            >
+              <span className="profile-avatar" aria-hidden="true">
+                {isAdmin ? Array.from(t(adminIdentity.name))[0]?.toUpperCase() : <Icon name="users" size={17} />}
+              </span>
+            </button>
+
+            <span
+              className="topbar-date-card"
+              title={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "Africa/Cairo",
+              }).format(new Date())}
+              aria-label={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "Africa/Cairo",
+              }).format(new Date())}
+            >
+              <Icon name="calendar" size={16} />
+              <span>{new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
+                day: "numeric",
+                month: "long",
+                timeZone: "Africa/Cairo",
+              }).format(new Date())}</span>
+            </span>
           </div>
         </header>
 
