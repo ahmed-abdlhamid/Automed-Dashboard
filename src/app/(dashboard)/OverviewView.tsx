@@ -167,8 +167,8 @@ export default function OverviewView({
                 className="overview-title"
                 suppressHydrationWarning
               >
-                {greeting}،{" "}
-                <bdi>{greetingName}</bdi>
+                <span className="overview-greeting-text">{greeting}،</span>{" "}
+                <bdi className="overview-greeting-name">{greetingName}</bdi>
                 {project && !isAdmin && (
                   <span className="overview-project-inline">
                     <span className="project-trigger-dot" />
