@@ -51,7 +51,7 @@ export default function LoginPage() {
 
   return (
     <main className="login-experience" dir="ltr">
-      <aside className="login-showcase" dir={isArabic ? "rtl" : "ltr"}>
+      <aside className="login-showcase" dir={isArabic ? "rtl" : "ltr"} style={{ background: "radial-gradient(ellipse at 72% 48%, rgba(65,190,173,.26), transparent 38%), radial-gradient(ellipse at 10% 100%, rgba(15,102,95,.5), transparent 42%), linear-gradient(135deg, #0f665f 0%, #1a7872 48%, #0b514c 100%)" }}>
         <div className="showcase-glow showcase-glow-one" />
         <div className="showcase-glow showcase-glow-two" />
         <div className="showcase-grid" aria-hidden="true" />
@@ -75,17 +75,17 @@ export default function LoginPage() {
                 <div className="showcase-feature">
                   <span className="showcase-feature-icon"><Icon name="automation" size={22} /></span>
                   <span className="showcase-feature-title">{t({ ar: "وكلاء ذكاء اصطناعي", en: "AI Agents" })}</span>
-                  <span className="showcase-feature-caption">{t({ ar: "مهام تنفّذ بذكاء", en: "Work that runs smarter" })}</span>
+                  
                 </div>
                 <div className="showcase-feature">
                   <span className="showcase-feature-icon"><Icon name="pulse" size={22} /></span>
                   <span className="showcase-feature-title">{t({ ar: "أتمتة المهام", en: "Smart Automation" })}</span>
-                  <span className="showcase-feature-caption">{t({ ar: "وقت أقل ومجهود أقل", en: "Less manual work" })}</span>
+                  
                 </div>
                 <div className="showcase-feature">
                   <span className="showcase-feature-icon"><Icon name="analytics" size={22} /></span>
                   <span className="showcase-feature-title">{t({ ar: "لوحات متابعة", en: "Business Insights" })}</span>
-                  <span className="showcase-feature-caption">{t({ ar: "قرارات أوضح", en: "Clearer decisions" })}</span>
+                  
                 </div>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 <span>{t({ ar: "المهام المتكررة", en: "Repetitive tasks" })}</span>
                 <b>↗</b>
               </div>
-              <div className="visual-dashboard">
+              <div className="visual-dashboard" style={{ display: "none" }}>
                 <div className="visual-dashboard-bar"><i /><i /><i /></div>
                 <div className="visual-dashboard-content">
                   <div className="visual-dashboard-sidebar"><span /><span /><span /><span /></div>
