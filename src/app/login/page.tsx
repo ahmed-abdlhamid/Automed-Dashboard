@@ -63,9 +63,6 @@ export default function LoginPage() {
             <a className="showcase-brand" href="https://automed-info.vercel.app/" aria-label="Automed">
               <img src="/automed-logo-dark.png" alt="Automed" />
             </a>
-            <span className="showcase-brand-slogan">
-              {t({ ar: "وفّر وقتك", en: "Save Your Time" })}
-            </span>
           </header>
 
           <div className="showcase-main">
@@ -142,27 +139,15 @@ export default function LoginPage() {
           </div>
 
           <footer className="showcase-footer">
-            <div className="showcase-contact">
-              <a href={`mailto:${CONTACT_EMAIL}`} className="showcase-contact-link">
-                <span className="contact-symbol contact-email">✉</span>
-                <span>{CONTACT_EMAIL}</span>
+            <div className="showcase-social-links" aria-label={t({ ar: "طرق التواصل", en: "Contact options" })}>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="showcase-social-link showcase-social-email" aria-label={t({ ar: "راسلنا عبر البريد الإلكتروني", en: "Email Automed" })}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5h18v13H3z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="m4 6.5 8 6.2 8-6.2" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>
               </a>
-              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="showcase-contact-link">
-                <span className="contact-symbol contact-whatsapp">◉</span>
-                <span dir="ltr">{CONTACT_PHONE}</span>
-              </a>
-            </div>
-            <div className="showcase-contact-cta">
-              <span>{t({ ar: "خلّينا نبدأ", en: "LET'S GET STARTED" })}</span>
-              <b>{t({ ar: "تواصل معنا", en: "Talk to our team" })}</b>
-              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label={t({ ar: "تواصل معنا عبر واتساب", en: "Contact us on WhatsApp" })}>
-                <Icon name="arrowUpRight" size={20} />
+              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="showcase-social-link showcase-social-whatsapp" aria-label={t({ ar: "تواصل عبر واتساب", en: "Contact on WhatsApp" })}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.1 11.8a8.1 8.1 0 0 1-12 7.1L3 20l1.2-4.9a8.1 8.1 0 1 1 15.9-3.3Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/><path d="M8.2 7.8c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4-.1.6.6 1 1.4 1.8 2.4 2.3.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.2-.7 1.6-.5.5-1.2.7-2 .5-1-.2-2.3-.8-3.7-2.1-1.1-1-2-2.3-2.2-3.3-.3-.9.1-1.9.3-2.3Z" fill="currentColor"/></svg>
               </a>
             </div>
           </footer>
-          <div className="showcase-bottomline">
-            <span>AUTOMED</span><i />{t({ ar: "وفّر وقتك", en: "SAVE YOUR TIME" })}
-          </div>
         </div>
       </aside>
 
@@ -183,7 +168,6 @@ export default function LoginPage() {
               alt={cfg.brand.name}
               className="login-brand-logo"
             />
-            <p>{t({ ar: "وفّر وقتك", en: "Save Your Time" })}</p>
           </div>
 
           <div className="login-heading">
