@@ -6,8 +6,46 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "Automed Dashboard",
-  description: "Automed operations dashboard",
+  metadataBase: new URL("https://automed-dashboard.vercel.app"),
+  title: {
+    default: "Automed Dashboard",
+    template: "%s | Automed",
+  },
+  description:
+    "Automed Dashboard — مساحة موحدة لمتابعة الطلبات والأداء والتحليلات وإدارة أنظمة الأتمتة.",
+  applicationName: "Automed Dashboard",
+  keywords: [
+    "Automed",
+    "Automed Dashboard",
+    "AI automation",
+    "business automation",
+    "orders dashboard",
+    "لوحة تحكم Automed",
+    "أتمتة الأعمال",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "Automed",
+    title: "Automed Dashboard",
+    description:
+      "تابع الطلبات والأداء والتحليلات وإدارة أنظمة الأتمتة من مساحة واحدة.",
+    url: "https://automed-dashboard.vercel.app",
+    locale: "ar_EG",
+  },
+  twitter: {
+    card: "summary",
+    title: "Automed Dashboard",
+    description:
+      "تابع الطلبات والأداء والتحليلات وإدارة أنظمة الأتمتة من مساحة واحدة.",
+  },
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
 };
 
 // Runs before first paint: applies saved (or system) theme + language to <html>
