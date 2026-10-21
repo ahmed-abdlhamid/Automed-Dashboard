@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useI18n } from "@/components/Providers";
-import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import { Icon } from "@/components/ui";
 
 const WHATSAPP_URL = "https://wa.me/201021804181";
@@ -71,14 +70,14 @@ export default function LoginPage() {
           <div className="showcase-main">
             <div className="showcase-copy">
               <h1>
-                {t({ ar: "أحوّل المهام المتكررة", en: "Turn repetitive work" })}
-                <span>{t({ ar: "إلى أنظمة ذكية.", en: "into intelligent systems." })}</span>
+                {t({ ar: "مرحبًا بك", en: "Welcome to" })}
+                <span>{t({ ar: "في عائلة Automed", en: "the Automed family" })}</span>
               </h1>
 
               <p className="showcase-description">
                 {t({
-                  ar: "حلول ذكية تساعد شغلك يمشي بسلاسة.",
-                  en: "Smart solutions that keep your business moving.",
+                  ar: "شغلك ماشي بذكاء، وبياناتك قدامك بوضوح. تابع أداء أعمالك وتحكّم في أنظمتك من مكان واحد.",
+                  en: "Your business running smarter, your numbers clearer. Track performance and manage your automations in one place.",
                 })}
               </p>
 
@@ -139,7 +138,7 @@ export default function LoginPage() {
       <section className="login-panel" dir={isArabic ? "rtl" : "ltr"}>
         <div className="login-card">
           <div className="login-heading">
-            <h2>{t({ ar: "مرحبًا بك في عائلتنا", en: "Welcome to our family" })}</h2>
+            <h2>{t({ ar: "تسجيل الدخول", en: "Sign in" })}</h2>
             <p>{t({ ar: "سجّل دخولك وكمّل رحلتك مع Automed", en: "Sign in and continue your journey with Automed" })}</p>
           </div>
 
