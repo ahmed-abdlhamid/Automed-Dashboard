@@ -36,10 +36,10 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US"],
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: "Automed Dashboard | Track your business",
+        alt: "Automed — تابع أعمالك، وفّر وقتك",
       },
     ],
   },
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Automed Dashboard | تابع أعمالك",
     description: brandDescription,
-    images: ["/opengraph-image"],
+    images: ["/og.jpg"],
   },
   robots: {
     index: false,
