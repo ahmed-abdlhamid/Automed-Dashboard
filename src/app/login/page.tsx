@@ -139,8 +139,8 @@ export default function LoginPage() {
       <section className="login-panel" dir={isArabic ? "rtl" : "ltr"}>
         <div className="login-card">
           <div className="login-heading">
-            <h2>{t({ ar: "مرحبًا بعودتك", en: "Welcome back" })}</h2>
-            <p>{t({ ar: "سجّل الدخول للمتابعة في لوحة التحكم", en: "Sign in to continue to your dashboard" })}</p>
+            <h2>{t({ ar: "مرحبًا بك في عائلتنا", en: "Welcome to our family" })}</h2>
+            <p>{t({ ar: "سجّل دخولك وكمّل رحلتك مع Automed", en: "Sign in and continue your journey with Automed" })}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="login-form">
