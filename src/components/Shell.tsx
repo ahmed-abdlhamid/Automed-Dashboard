@@ -444,7 +444,7 @@ export default function Shell({
           </div>
 
           {/*
-            Visual order RIGHT → LEFT (dir=rtl):
+            Visual order in reading direction (RTL and LTR):
             1. Project name
             2. User (letter only; full name on hover)
             3. Notifications
@@ -452,8 +452,8 @@ export default function Shell({
             5. Language
             6. Date
           */}
-          <div className="topbar-actions" dir="rtl">
-            {/* 1. Project (rightmost) */}
+          <div className="topbar-actions" dir={lang === "ar" ? "rtl" : "ltr"}>
+            {/* 1. Project (first) */}
             {isAdmin &&
               projects.length > 0 && (
                 <div
@@ -565,7 +565,7 @@ export default function Shell({
             {/* 4. Dark mode */}
             <button
               type="button"
-              className="topbar-control"
+              className="topbar-control theme-control"
               onClick={toggleTheme}
               aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
               title={t({ ar: "الوضع الداكن", en: "Dark mode" })}
@@ -584,7 +584,7 @@ export default function Shell({
               {lang === "ar" ? "EN" : "AR"}
             </button>
 
-            {/* 6. Date (leftmost) */}
+            {/* 6. Date (last) */}
             <span
               className="topbar-date-card"
               title={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
