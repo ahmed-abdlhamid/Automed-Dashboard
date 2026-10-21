@@ -898,14 +898,14 @@ body {
   align-items: center;
   gap: 10px;
 }
-/* Header order: project → user → notifications → theme → language → date.
-   Explicit order values keep the same sequence in RTL and LTR. */
-.topbar-actions .project-picker { order: 1; }
-.topbar-actions .profile-chip { order: 2; }
-.topbar-actions .notification-control { order: 3; }
-.topbar-actions .theme-control { order: 4; }
-.topbar-actions .lang-control { order: 5; }
-.topbar-actions .topbar-date-card { order: 6; }
+/* Keep the agreed sequence in the reading direction of both languages. */
+header.topbar .topbar-actions { flex-direction: row; }
+header.topbar .topbar-actions > .project-picker { order: 1; }
+header.topbar .topbar-actions > .profile-chip { order: 2; }
+header.topbar .topbar-actions > .notification-control { order: 3; }
+header.topbar .topbar-actions > .theme-control { order: 4; }
+header.topbar .topbar-actions > .lang-control { order: 5; }
+header.topbar .topbar-actions > .topbar-date-card { order: 6; }
 .profile-chip {
   min-height: 40px;
   align-self: center;
