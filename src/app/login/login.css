@@ -120,3 +120,60 @@
  .automed-login-footer { bottom: 20px; font-size: 9px; }
 }
 @media (prefers-reduced-motion: reduce) { .automed-login-page *, .automed-login-page *::before { transition: none; } }
+
+/* Fit the approved composition to the viewport without changing its elements. */
+.automed-login-page {
+  height: 100svh;
+  min-height: 0;
+  padding-block: clamp(26px, 4vh, 48px);
+}
+.automed-login-frame {
+  height: 100%;
+  min-height: 0;
+  max-height: 790px;
+}
+.automed-login-content {
+  height: 100%;
+  min-height: 0;
+  padding-block: clamp(76px, 11vh, 100px) clamp(46px, 8vh, 76px);
+}
+.automed-login-welcome { min-height: 0; }
+.automed-login-copy { flex: 0 0 auto; }
+.automed-login-art {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 420px;
+  margin-block: 0;
+}
+.automed-login-illustration { height: 100%; }
+@media (min-width: 701px) and (max-height: 740px) {
+  .automed-login-content { padding-block: 72px 42px; }
+  .automed-login-controls { top: 18px; }
+  .automed-login-heading { margin-bottom: 20px; }
+  .automed-login-form { gap: 15px; }
+  .automed-login-field { gap: 7px; }
+  .automed-login-field input, .automed-login-submit { height: 48px; }
+  .automed-login-eye { top: 4px; }
+  .automed-login-help { margin-top: 18px; }
+  .automed-login-footer { bottom: 16px; }
+}
+@media (max-width: 700px) {
+  .automed-login-page { padding: 26px 12px 12px; }
+  .automed-login-frame { max-height: none; }
+  .automed-login-controls { top: 14px; }
+  .automed-login-content { grid-template-rows: minmax(0, 1fr) auto; gap: 12px; padding: 72px 24px 40px; }
+  .automed-login-welcome { justify-content: flex-start; }
+  .automed-login-copy h1 { font-size: clamp(25px, 6.5vw, 32px); }
+  .automed-login-copy p { margin-top: 8px; font-size: 11px; line-height: 1.7; }
+  .automed-login-art { width: 100%; margin: 0 auto; }
+  .automed-login-heading { margin-bottom: 16px; }
+  .automed-login-heading h2 { font-size: 22px; }
+  .automed-login-heading p { margin-top: 6px; font-size: 11px; }
+  .automed-login-form { gap: 13px; }
+  .automed-login-field { gap: 6px; }
+  .automed-login-field input, .automed-login-submit { height: 46px; }
+  .automed-login-eye { top: 3px; }
+  .automed-login-help { margin-top: 16px; }
+  .automed-login-footer { bottom: 12px; }
+}
+.automed-login-welcome::before { top: 0; height: 100%; aspect-ratio: auto; }
