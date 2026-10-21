@@ -18,13 +18,12 @@ export const metadata: Metadata = {
   applicationName: "Automed",
   keywords: [
     "Automed",
-    "AI agents",
-    "AI automation",
-    "business automation",
-    "workflow automation",
     "لوحة تحكم Automed",
-    "أتمتة الأعمال",
-    "وكلاء الذكاء الاصطناعي",
+    "إدارة الطلبات",
+    "متابعة أنشطة العمل",
+    "تحليلات الأعمال",
+    "مؤشرات الأداء",
+    "متابعة الفريق",
   ],
   openGraph: {
     type: "website",
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Automed Dashboard | Track your business",
+    title: "Automed Dashboard | تابع أعمالك",
     description: brandDescription,
     images: ["/opengraph-image"],
   },
