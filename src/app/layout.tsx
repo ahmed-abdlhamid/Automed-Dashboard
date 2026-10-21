@@ -6,13 +6,13 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const brandDescription =
-  "Automed builds AI agents and automation systems for businesses. Organize requests, customer messages, and workflows while tracking business performance in one place.";
+  "تابع الطلبات والأنشطة ومؤشرات أداء عملك في لوحة تحكم واحدة، واعرف ما يحدث في عملك بسهولة ووضوح دون الحاجة إلى خبرة تقنية.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://automed-dashboard.vercel.app"),
   title: {
-    default: "Automed — Save Your Time",
-    template: "%s | Automed",
+    default: "Automed Dashboard | تابع أعمالك",
+    template: "%s | Automed Dashboard",
   },
   description: brandDescription,
   applicationName: "Automed",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Automed",
-    title: "Automed — وفّر وقتك | Save Your Time",
+    title: "Automed Dashboard | تابع أعمالك",
     description:
-      "نحوّل المهام المتكررة لأنظمة ذكية باستخدام الذكاء الاصطناعي، ونساعدك تنظّم شغلك وتتابع أداء أعمالك بوضوح.",
+      "تابع الطلبات والأنشطة ومؤشرات أداء عملك في لوحة تحكم واحدة، واعرف ما يحدث في عملك بسهولة ووضوح دون الحاجة إلى خبرة تقنية.",
     url: "https://automed-dashboard.vercel.app",
     locale: "ar_EG",
     alternateLocale: ["en_US"],
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Automed — وفّر وقتك | Save Your Time",
+        alt: "Automed Dashboard | Track your business",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Automed — Save Your Time",
+    title: "Automed Dashboard | Track your business",
     description: brandDescription,
     images: ["/opengraph-image"],
   },
