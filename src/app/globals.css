@@ -8103,3 +8103,44 @@ header.topbar .topbar-actions .project-trigger-card:hover svg {
     right: auto;
   }
 }
+
+
+/* Automed login final polish — keep scope limited to the login page */
+.login-panel {
+  background: var(--bg);
+}
+.login-heading {
+  margin-bottom: 31px;
+}
+.login-heading h2 {
+  line-height: 1.45;
+  text-wrap: balance;
+}
+.login-heading p {
+  max-width: 340px;
+  line-height: 1.9;
+}
+.showcase-controls {
+  top: 24px;
+  right: clamp(22px, 3vw, 42px);
+  left: auto;
+  inset-inline-start: auto;
+  inset-inline-end: auto;
+}
+@media (max-width: 820px) {
+  .showcase-controls {
+    top: 16px;
+    right: 16px;
+    left: auto;
+  }
+}
+@media (max-width: 520px) {
+  .showcase-controls {
+    top: 12px;
+    right: 12px;
+    left: auto;
+  }
+  .login-heading {
+    margin-bottom: 25px;
+  }
+}
