@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Automed — Save Your Time";
+export const alt = "Automed Dashboard — Track Your Business";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,16 +40,16 @@ export default async function OpenGraphImage() {
           ) : (
             <div style={{ display: "flex", color: "#f7fbfa", fontSize: 54, fontWeight: 800, marginBottom: 44 }}>AUTOMED</div>
           )}
-          <div style={{ display: "flex", color: "#fc9038", fontSize: 21, fontWeight: 700, letterSpacing: 5, marginBottom: 20 }}>INTELLIGENT AUTOMATION</div>
+          <div style={{ display: "flex", color: "#fc9038", fontSize: 21, fontWeight: 700, letterSpacing: 5, marginBottom: 20 }}>BUSINESS DASHBOARD</div>
           <div style={{ display: "flex", flexDirection: "column", fontSize: 55, fontWeight: 800, lineHeight: 1.18, letterSpacing: -1 }}>
-            <span>Save Your Time.</span>
-            <span style={{ color: "#fc9038", marginTop: 10 }}>Make Work Smarter.</span>
+            <span>Track Your Business.</span>
+            <span style={{ color: "#fc9038", marginTop: 10 }}>Keep Everything in View.</span>
           </div>
           <div style={{ display: "flex", color: "#d3e8e4", fontSize: 23, marginTop: 30, lineHeight: 1.5 }}>
-            AI Agents · Smart Automation · Business Insights
+            Orders · Team Activity · Business Insights
           </div>
           <div style={{ display: "flex", marginTop: 45, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,.2)", color: "#f7fbfa", fontSize: 19 }}>
-            automed.official@gmail.com　·　01021804181
+            Orders　·　Analytics　·　Team Activity
           </div>
         </div>
       </div>
