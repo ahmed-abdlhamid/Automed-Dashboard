@@ -62,18 +62,6 @@ export default function OverviewView({
           en: "Good evening",
         });
 
-  const today = new Intl.DateTimeFormat(
-    lang === "ar"
-      ? "ar-EG-u-nu-latn"
-      : "en-GB",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      timeZone: "Africa/Cairo",
-    }
-  ).format(new Date());
-
   const weeklyTotal = data.weekly.reduce(
     (sum, item) => sum + item.value,
     0
@@ -178,9 +166,26 @@ export default function OverviewView({
               <h1
                 className="overview-title"
                 suppressHydrationWarning
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "0 0.22em",
+                  lineHeight: 1.25,
+                }}
               >
-                {greeting}،{" "}
-                <bdi>{greetingName}</bdi>
+                <span
+                  className="overview-greeting-text"
+                  style={{ display: "inline-flex", alignItems: "center", lineHeight: 1.25 }}
+                >
+                  {greeting}،
+                </span>
+                <bdi
+                  className="overview-greeting-name"
+                  style={{ display: "inline-flex", alignItems: "center", lineHeight: 1.25 }}
+                >
+                  {greetingName}
+                </bdi>
                 {project && !isAdmin && (
                   <span className="overview-project-inline">
                     <span className="project-trigger-dot" />
@@ -204,49 +209,6 @@ export default function OverviewView({
           </div>
         </div>
 
-        <div className="overview-actions">
-          <span
-            className="date-chip"
-            suppressHydrationWarning
-          >
-            <Icon
-              name="calendar"
-              size={15}
-            />
-
-            {today}
-          </span>
-
-          <Link
-            href="/orders"
-            className="btn btn-pri"
-          >
-            <Icon
-              name="orders"
-              size={15}
-            />
-
-            {t({
-              ar: "كل الطلبات",
-              en: "All orders",
-            })}
-          </Link>
-
-          <Link
-            href="/analytics"
-            className="btn"
-          >
-            <Icon
-              name="pulse"
-              size={15}
-            />
-
-            {t({
-              ar: "التحليلات",
-              en: "Analytics",
-            })}
-          </Link>
-        </div>
       </section>
 
       <section className="overview-kpis">

@@ -18,6 +18,7 @@ const PATHS = {
   activity:
     "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3 2",
   menu: "M4 7h16M4 12h16M4 17h16",
+  bell: "M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4",
   logout: "M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9",
   chevronLeft: "m15 6-6 6 6 6",
   arrowUpRight: "M7 17 17 7M8 7h9v9",
