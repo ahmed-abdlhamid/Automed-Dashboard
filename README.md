@@ -82,7 +82,7 @@ Vercel Analytics and Speed Insights are included in the root layout. Their dashb
 
 ## Metadata and indexing
 
-The application provides Automed-branded page metadata and a custom SVG favicon. Since this is an operational dashboard, search-engine indexing is disabled by default. Public marketing pages should use their own indexable metadata. Vercel Analytics is not the same as Google Analytics; a Google Analytics property and measurement ID are required if Google Analytics tracking is needed.
+The application provides Automed-branded metadata, the current light and dark Automed logos, PNG browser and Apple icons, and a branded Open Graph preview. Since this is an operational dashboard, search-engine indexing is disabled by default. Public marketing pages should use their own indexable metadata. Vercel Analytics is not the same as Google Analytics; a Google Analytics property and measurement ID are required if Google Analytics tracking is needed.
 
 ## Security notes
 
