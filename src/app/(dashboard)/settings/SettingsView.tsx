@@ -1,5 +1,7 @@
 "use client";
 
+import ProjectDashboardProfile from "@/components/ProjectDashboardProfile";
+import "../overview-workspace.css";
 import { useI18n } from "@/components/Providers";
 import type { Project } from "@/lib/data";
 import {
@@ -289,6 +291,11 @@ export default function SettingsView({
           )}
         </Card>
       </div>
+
+      {project && <Card title={t({ ar: "عرض نشاط المشروع", en: "Project activity view" })}
+        subtitle={t({ ar: "اختيار الكروت المناسبة لنشاطك", en: "Choose the cards relevant to your business" })}>
+        <div style={{ padding: "24px", maxWidth: "560px" }}><ProjectDashboardProfile projectId={project.id} /></div>
+      </Card>}
 
       <div className="settings-footer-note">
         <div>

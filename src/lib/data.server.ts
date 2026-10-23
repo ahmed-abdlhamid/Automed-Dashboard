@@ -524,6 +524,9 @@ export async function getOverview(
     );
 
   return {
+    payments: { paid: paidOrders.length,
+      pending: orders.filter(order => order.status === "pending").length,
+      failed: orders.filter(order => order.status === "failed").length },
     stats: {
       orders:
         orders.length,

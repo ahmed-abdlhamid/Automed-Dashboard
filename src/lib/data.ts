@@ -86,6 +86,7 @@ export type Project = {
 };
 
 export type Overview = {
+  payments: { paid: number; pending: number; failed: number };
   stats: {
     orders: number;
     revenue: number;
@@ -288,6 +289,9 @@ export async function getOverview(
     );
 
   return {
+    payments: { paid: paid.length,
+      pending: orders.filter(order => order.status === "pending").length,
+      failed: orders.filter(order => order.status === "failed").length },
     stats: {
       orders:
         orders.length,

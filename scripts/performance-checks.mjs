@@ -46,6 +46,21 @@ async function main() {
   const overview = await api.getOverview('a');
   const paid = rows.filter(r => r.project_id === 'a' && ['paid','success','successful'].includes(r.payment_status.trim().toLowerCase()));
   assert.equal(overview.stats.orders, 1205);
+  assert.equal(overview.payments.paid, paid.length);
+  assert.equal(overview.payments.paid + overview.payments.pending + overview.payments.failed, 1205);
+  assert(overview.payments.pending > overview.recent.length);
+  const profiles = load('src/config/project-dashboard.ts', {});
+  assert.equal(new Set(profiles.dashboardCategories.map(item => item.id)).size, profiles.dashboardCategories.length);
+  for (const category of profiles.dashboardCategories) {
+    assert.equal(category.cards.length, 3);
+    for (const card of category.cards) {
+      assert(card.title.ar && card.title.en && card.source.ar && card.source.en);
+    }
+    assert.equal(profiles.resolveDashboardProfile(category.id + ':general').category.id, category.id);
+  }
+  assert.equal(profiles.resolveDashboardProfile('unknown:unknown').category.id, 'general');
+  assert.equal(profiles.resolveDashboardProfile('medical:physiotherapy').cards[1].title.en, "Today's sessions");
+  console.log('PASS: all-record payment counts; 14 category templates; bilingual source labels; invalid preference fallback; medical specialty cards.');
   assert.equal(overview.stats.customers, 9);
   assert.equal(overview.stats.revenue, paid.length * 10);
   assert.equal(overview.stats.paidRate, Math.round(paid.length / 1205 * 100));
