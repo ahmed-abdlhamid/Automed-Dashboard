@@ -530,7 +530,7 @@ body {
 }
 
 .topbar-page strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ---------- Page title: large and light ---------- */
@@ -541,7 +541,7 @@ body {
 }
 
 .overview-title bdi {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .kicker-chip,
@@ -663,7 +663,7 @@ body {
 
 .metric-unit {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .metric-card {
@@ -705,7 +705,7 @@ body {
 
 /* value labels: quiet by default… */
 .chart-wrap span.text-xs {
-  font-weight: 500;
+  font-weight: 700;
   color: var(--mut);
 }
 
@@ -722,7 +722,7 @@ body {
 /* ---------- Table ---------- */
 .xcard .tbl th {
   background: transparent;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .xcard .tbl tbody tr:hover {
@@ -968,7 +968,7 @@ header.topbar .topbar-actions > .topbar-date-card { order: 6; }
   background: var(--card-glass);
   color: var(--mut);
   font-size: .55em;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.4;
   vertical-align: middle;
 }
@@ -1046,7 +1046,7 @@ header.topbar .topbar-actions > .topbar-date-card { order: 6; }
   background: var(--card-glass);
   color: var(--mut);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0;
   vertical-align: middle;
 }
@@ -1508,8 +1508,7 @@ header.topbar .topbar-actions > .topbar-date-card { order: 6; }
 
 /* =========================================================
    BRANDING + MOBILE PASS
-   1. Typography: IBM Plex Sans Arabic (body) + Readex Pro (headings,
-      numbers, logo text, buttons) — one rule set, applied site-wide.
+   1. Typography: locally hosted Zain across Arabic and English content.
    2. Smaller sidebar / login logo.
    3. Top profile chip and the date chip share one column.
    4. Mobile layout: topbar, KPI cards, tables.
@@ -1517,8 +1516,8 @@ header.topbar .topbar-actions > .topbar-date-card { order: 6; }
 
 /* ---------- 1. Typography ---------- */
 :root {
-  --font-body: "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --font-head: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-body: var(--font-zain), Arial, sans-serif;
+  --font-head: var(--font-zain), Arial, sans-serif;
 }
 
 html,
@@ -1559,9 +1558,9 @@ button[type="submit"] {
   font-family: var(--font-head) !important;
 }
 
-/* Only weights that are actually loaded (Plex 400/500/600, Readex 400/600/700). */
+/* Zain uses its supplied Regular 400, Bold 700 and ExtraBold 800. */
 .chart-wrap div:has(> div > .bar-top) > span:first-child {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ---------- 2. Smaller logo (sidebar + login) ---------- */

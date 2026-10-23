@@ -198,7 +198,7 @@ export async function isCurrentUserAdmin(): Promise<boolean> {
   return role === "admin";
 }
 
-export async function getCurrentUserDisplayName(): Promise<string> {
+export const getCurrentUserDisplayName = cache(async function getCurrentUserDisplayName(): Promise<string> {
   const supabase =
     await createSupabaseServerClient();
 
@@ -245,4 +245,4 @@ export async function getCurrentUserDisplayName(): Promise<string> {
       (char: string) =>
         char.toUpperCase()
     );
-}
+});
