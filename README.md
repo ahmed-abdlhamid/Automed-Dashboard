@@ -1,96 +1,125 @@
 # Automed Dashboard
 
-لوحة تحكم Automed لمتابعة عمليات الأعمال والطلبات والأداء، وإدارة المشاريع وأنظمة الأتمتة من مكان واحد.
+<p align="center">
+  <strong>A bilingual workspace for monitoring business operations.</strong><br />
+  Track orders, activity, and project performance from one Automed dashboard.
+</p>
 
-**Production:** https://automed-dashboard.vercel.app  
-**Repository:** https://github.com/ahmed-abdlhamid/Automed-Dashboard
+<p align="center">
+  <a href="https://automed-dashboard.vercel.app/">Production app</a>
+  ·
+  <a href="https://github.com/ahmed-abdlhamid/Automed-Dashboard">Source code</a>
+</p>
 
-## What it includes
+<p align="center">
+  <img src="./public/og.jpg" alt="Automed Dashboard — تابع أعمالك" width="720" />
+</p>
 
-- **Overview:** ملخص سريع للأداء ومؤشرات الطلبات والإيرادات والعملاء.
-- **Orders:** عرض الطلبات وتفاصيلها وحالات الدفع.
-- **Analytics:** متابعة المؤشرات والتحليلات المتاحة للبيانات المسجلة.
-- **Automation:** أدوات إدارة الأتمتة المخصصة للمسؤول.
-- **Activity, Users, Settings:** صفحات النشاط وإدارة المستخدمين وإعدادات المشروع.
-- **Multi-project access:** فصل بيانات المشاريع حسب صلاحيات المستخدم والمشروع.
-- **Arabic and English:** واجهة ثنائية اللغة مع دعم اتجاه RTL/LTR.
-- **Light and dark themes:** مظهر فاتح وداكن.
-- **Responsive interface:** تصميم مناسب للشاشات الكبيرة والصغيرة.
-- **Performance monitoring:** تكامل Vercel Analytics وVercel Speed Insights.
+---
 
-## Tech stack
+## Overview
 
-- Next.js App Router
-- React and TypeScript
-- Tailwind CSS
-- Supabase authentication and database
-- Vercel Analytics and Speed Insights
-- Vercel deployment
+Automed Dashboard is a web application for viewing operational data connected to Automed projects. It provides a shared interface for orders, activity, analytics, project settings, and automation-related tools, with access scoped by user and project.
 
-## Requirements
+## Features
 
-- Node.js version compatible with the installed Next.js version
+- **Overview:** At-a-glance operational metrics and recent activity.
+- **Orders:** Order records, details, and payment status.
+- **Analytics:** Visual summaries of available project data.
+- **Activity:** A timeline of recorded events.
+- **Automation:** Admin tools for connected automation workflows.
+- **Project settings and users:** Project configuration and account management.
+- **Project-scoped access:** Keep the dashboard context tied to the selected project and user permissions.
+- **Arabic and English:** RTL/LTR interface with language selection.
+- **Light and dark themes:** Theme preference applied across the interface.
+- **Responsive UI:** Layouts for desktop and mobile.
+- **Observability:** Vercel Analytics and Speed Insights integrations.
+
+## Technology stack
+
+- [Next.js](https://nextjs.org/) 16 App Router
+- [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) 4
+- [Supabase](https://supabase.com/) Auth and Postgres
+- [Vercel Analytics](https://vercel.com/docs/analytics) and Speed Insights
+- [Vercel](https://vercel.com/) hosting
+
+## Getting started
+
+### Requirements
+
+- Node.js 20.9 or newer
 - npm
-- A Supabase project configured for this dashboard
+- A Supabase project
 
-## Local development
+### Install dependencies
 
-1. Clone the repository:
+```bash
+git clone https://github.com/ahmed-abdlhamid/Automed-Dashboard.git
+cd Automed-Dashboard
+npm ci
+```
 
-   ```bash
-   git clone https://github.com/ahmed-abdlhamid/Automed-Dashboard.git
-   cd Automed-Dashboard
-   ```
+### Configure environment variables
 
-2. Install dependencies:
+Create `.env.local` in the project root:
 
-   ```bash
-   npm install
-   ```
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY
+```
 
-3. Create a local environment file named `.env.local` and add the public Supabase project values:
+Use the values from your Supabase project. Never commit real credentials, access tokens, or service-role keys. Keep privileged keys on the server and out of `NEXT_PUBLIC_*` variables.
 
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY
-   ```
+### Start the development server
 
-   Replace the example values with the ones from your Supabase project. Never commit real credentials or secrets.
+```bash
+npm run dev
+```
 
-4. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000).
+Visit [http://localhost:3000](http://localhost:3000).
 
 ## Available scripts
 
-| Command | Purpose |
+| Command | Description |
 | --- | --- |
 | `npm run dev` | Start the local development server |
 | `npm run build` | Create a production build |
-| `npm run start` | Run the production build locally |
+| `npm run start` | Serve the production build locally |
 | `npm run lint` | Run ESLint |
+
+## Repository layout
+
+```text
+.
+├── public/                 # Logos, illustrations, and Open Graph image
+├── src/
+│   ├── app/                # App Router pages, layouts, and API routes
+│   ├── components/         # Shared interface components
+│   └── lib/                # Shared utilities and service clients
+├── supabase/               # Database migrations and SQL setup
+├── package.json
+└── README.md
+```
 
 ## Deployment
 
-The project is configured for deployment on Vercel. Connect the GitHub repository to the Vercel project, configure the required Supabase environment variables in the Vercel project settings, and deploy the selected branch.
+The application is configured for deployment on Vercel. Connect the repository to the Vercel project, set the required Supabase environment variables in the project's environment settings, and deploy the intended branch.
 
-Vercel Analytics and Speed Insights are included in the root layout. Their dashboards are available through the connected Vercel project after deployment.
+Vercel Analytics and Speed Insights are included in the root layout. Their reports become available in the connected Vercel project after deployment and collection of visitor data.
 
-## Metadata and indexing
+## Security
 
-The application provides Automed-branded metadata, the current light and dark Automed logos, PNG browser and Apple icons, and a branded Open Graph preview. Since this is an operational dashboard, search-engine indexing is disabled by default. Public marketing pages should use their own indexable metadata. Vercel Analytics is not the same as Google Analytics; a Google Analytics property and measurement ID are required if Google Analytics tracking is needed.
+- Do not commit `.env.local` or other secret-bearing files.
+- Never expose a Supabase service-role key to the browser.
+- Configure Supabase Row Level Security and policies for the application's data.
+- Validate role- and project-based access with the relevant account types when changing permissions.
 
-## Security notes
+## Indexing
 
-- Keep environment files and secrets out of Git.
-- Use Supabase policies and project-level access controls to protect data.
-- Do not expose service-role keys in client-side environment variables.
-- Verify access with both administrator and client accounts after changes.
+This application is an operational dashboard. Search-engine indexing is disabled in its metadata by default.
 
-## Brand
+---
 
-Automed builds AI agents and automation systems for businesses. This dashboard provides a central place to monitor and manage the related operational data and workflows.
+<p align="center"><sub>Automed — وفر وقتك</sub></p>
