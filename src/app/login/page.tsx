@@ -93,7 +93,7 @@ export default function LoginPage() {
               <p>{t({ ar: "شغلك ماشي بذكاء، وبياناتك قدامك بوضوح. تابع أداء أعمالك وتحكّم في أنظمتك من مكان واحد.", en: "Your business running smarter, your numbers clearer. Track performance and manage your automations in one place." })}</p>
             </div>
             <div className={styles.art} aria-hidden="true">
-              <Image src="/login-automation-3d.webp" alt="" width={1024} height={1024} priority sizes="(max-width: 700px) 90vw, 48vw" className={styles.illustration} />
+              <Image src="/login-automation-3d.webp" alt="" width={1024} height={1024} preload sizes="(max-width: 700px) 90vw, 48vw" className={styles.illustration} />
             </div>
           </section>
 

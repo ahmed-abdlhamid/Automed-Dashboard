@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useI18n } from "@/components/Providers";
 import { Card, Icon, PageHeader } from "@/components/ui";
 
@@ -56,29 +56,42 @@ export default function AutomationView({ projects, initialProjectId }: {
   const [error, setError] = useState<string | null>(null);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
+  const requestRef = useRef<AbortController | null>(null);
+
+  const projectRef = useRef(selectedProjectId);
+  const languageRef = useRef(lang);
+  useEffect(() => { languageRef.current = lang; }, [lang]);
+
   const loadData = useCallback(async (projectId: string, manual = false) => {
-    if (manual) setRefreshing(true); else setLoading(true);
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    if (manual) setRefreshing(true);
     setError(null); setSaveMessage(null);
     try {
       const response = await fetch("/api/automation/n8n?projectId=" + encodeURIComponent(projectId), {
-        method: "GET", cache: "no-store",
+        method: "GET", cache: "no-store", signal: controller.signal,
       });
       const result = await response.json();
       if (!response.ok) throw new Error(typeof result.error === "string" ? result.error : "Could not load n8n data.");
-      setData(result as N8nData);
+      if (!controller.signal.aborted) setData(result as N8nData);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : (lang === "ar" ? "تعذر الاتصال بـ n8n." : "Could not connect to n8n."));
+      if (controller.signal.aborted) return;
+      setError(loadError instanceof Error ? loadError.message : (languageRef.current === "ar" ? "تعذر الاتصال بـ n8n." : "Could not connect to n8n."));
       setData(null);
     } finally {
-      setLoading(false); setRefreshing(false);
+      if (!controller.signal.aborted) { setLoading(false); setRefreshing(false); }
     }
-  }, [lang]);
+  }, []);
 
-  useEffect(() => { void loadData(selectedProjectId); }, [loadData, selectedProjectId]);
+  useEffect(() => {
+    const timer = setTimeout(() => void loadData(selectedProjectId), 0);
+    return () => { clearTimeout(timer); requestRef.current?.abort(); };
+  }, [loadData, selectedProjectId]);
 
   const selectedProject = projects.find((project) => project.id === selectedProjectId);
   const workflows = data?.workflows ?? [];
-  const projectWorkflows = useMemo(() => workflows.filter((workflow) => workflow.projectId === selectedProjectId), [workflows, selectedProjectId]);
+  const projectWorkflows = workflows.filter((workflow) => workflow.projectId === selectedProjectId);
   const executions = data?.executions ?? [];
   const stats = data?.stats;
 
@@ -91,9 +104,12 @@ export default function AutomationView({ projects, initialProjectId }: {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(typeof result.error === "string" ? result.error : "Could not save assignment.");
+      if (projectRef.current !== selectedProjectId) return;
       await loadData(selectedProjectId, true);
+      if (projectRef.current !== selectedProjectId) return;
       setSaveMessage(lang === "ar" ? "تم حفظ ربط الـ Workflow بالمشروع." : "Workflow assignment saved.");
     } catch (saveError) {
+      if (projectRef.current !== selectedProjectId) return;
       setError(saveError instanceof Error ? saveError.message : (lang === "ar" ? "تعذر حفظ الربط." : "Could not save assignment."));
     } finally { setSavingWorkflowId(null); }
   };
@@ -122,7 +138,7 @@ export default function AutomationView({ projects, initialProjectId }: {
         </div>
       </div>
       <label className="automation-project-select-wrap"><span>{t({ ar: "المشروع", en: "Project" })}</span>
-        <select value={selectedProjectId} onChange={(event) => setSelectedProjectId(event.target.value)}>
+        <select value={selectedProjectId} onChange={(event) => (projectRef.current = event.target.value, requestRef.current?.abort(), setData(null), setLoading(true), setSelectedProjectId(event.target.value))}>
           {projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
         </select>
       </label>

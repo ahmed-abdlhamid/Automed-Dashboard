@@ -1,6 +1,5 @@
 import type { Bilingual } from "@/components/Providers";
 import { dashboardConfig } from "@/config/dashboard.config";
-import { supabase } from "./supabase";
 
 export type OrderStatus =
   | "paid"
@@ -207,6 +206,8 @@ function mapSupabaseOrder(
 export async function getProjects(): Promise<
   Project[]
 > {
+  const { supabase } = await import("./supabase");
+
   const {
     data,
     error,
@@ -238,6 +239,8 @@ export async function getOrders(
   projectId: string =
     dashboardConfig.project.id
 ): Promise<Order[]> {
+  const { supabase } = await import("./supabase");
+
   const {
     data,
     error,

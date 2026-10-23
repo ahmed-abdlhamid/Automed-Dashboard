@@ -1,3 +1,4 @@
+import { readAllRows } from "@/lib/supabase/pagination";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type AdminUser = {
@@ -39,27 +40,27 @@ export async function getAdminUsers(): Promise<AdminUser[]> {
     membershipsResult,
     projectsResult,
   ] = await Promise.all([
-    supabase
+    readAllRows(offset => supabase
       .from("profiles")
       .select(
-        "id, email, full_name, created_at"
+        "id, email, full_name, created_at", { count: "exact" }
       )
       .order("created_at", {
         ascending: true,
-      }),
+      }).order("id").range(offset, offset + 999)),
 
-    supabase
+    readAllRows(offset => supabase
       .from("project_members")
       .select(
-        "user_id, project_id, role"
-      ),
+        "user_id, project_id, role", { count: "exact" }
+      ).order("user_id").order("project_id").range(offset, offset + 999)),
 
-    supabase
+    readAllRows(offset => supabase
       .from("projects")
-      .select("id, name")
+      .select("id, name", { count: "exact" })
       .order("created_at", {
         ascending: true,
-      }),
+      }).order("id").range(offset, offset + 999)),
   ]);
 
   if (profilesResult.error) {
@@ -92,42 +93,16 @@ export async function getAdminUsers(): Promise<AdminUser[]> {
   const projects =
     projectsResult.data as ProjectRow[];
 
-  return profiles.map(
-    (profile) => ({
-      id: profile.id,
-
-      email: profile.email,
-
-      fullName:
-        profile.full_name,
-
-      createdAt:
-        profile.created_at,
-
-      memberships:
-        memberships
-          .filter(
-            (membership) =>
-              membership.user_id ===
-              profile.id
-          )
-          .map(
-            (membership) => ({
-              projectId:
-                membership.project_id,
-
-              projectName:
-                projects.find(
-                  (project) =>
-                    project.id ===
-                    membership.project_id
-                )?.name ||
-                membership.project_id,
-
-              role:
-                membership.role,
-            })
-          ),
-    })
-  );
+  const projectNames = new Map(projects.map(project => [project.id, project.name]));
+  const membershipsByUser = new Map<string, AdminUser["memberships"]>();
+  for (const membership of memberships) {
+    const entries = membershipsByUser.get(membership.user_id) ?? [];
+    entries.push({ projectId: membership.project_id,
+      projectName: projectNames.get(membership.project_id) ?? membership.project_id,
+      role: membership.role });
+    membershipsByUser.set(membership.user_id, entries);
+  }
+  return profiles.map(profile => ({ id: profile.id, email: profile.email,
+    fullName: profile.full_name, createdAt: profile.created_at,
+    memberships: membershipsByUser.get(profile.id) ?? [] }));
 }

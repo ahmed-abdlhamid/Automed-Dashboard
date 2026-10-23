@@ -27,24 +27,20 @@ export default function OverviewView({
   project,
   role,
   userName,
+  greetingHour,
 }: {
   data: Overview;
   project: Project | null;
   role: ProjectRole | null;
   userName?: string;
+  greetingHour: number;
 }) {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
   const { stats } = data;
 
   const isAdmin = role === "admin";
 
-  const hour = Number(
-    new Intl.DateTimeFormat("en-GB", {
-      hour: "numeric",
-      hourCycle: "h23",
-      timeZone: "Africa/Cairo",
-    }).format(new Date())
-  );
+  const hour = greetingHour;
 
   const greeting =
     hour >= 5 && hour < 12

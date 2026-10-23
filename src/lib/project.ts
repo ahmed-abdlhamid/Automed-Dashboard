@@ -1,9 +1,10 @@
+import { readAllRows } from "@/lib/supabase/pagination";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { dashboardConfig } from "@/config/dashboard.config";
 import type { Project } from "./data";
 import { getProjects as getServerProjects } from "./data.server";
-import { createSupabaseServerClient } from "./supabase/server";
+import { createSupabaseServerClient, getAuthenticatedUser } from "./supabase/server";
 
 export type ProjectRole = "admin" | "client";
 
@@ -18,9 +19,7 @@ const getCurrentUserMemberships = cache(async function getCurrentUserMemberships
   const supabase =
     await createSupabaseServerClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthenticatedUser();
 
   if (!user) {
     return [];
@@ -29,10 +28,10 @@ const getCurrentUserMemberships = cache(async function getCurrentUserMemberships
   const {
     data,
     error,
-  } = await supabase
+  } = await readAllRows(offset => supabase
     .from("project_members")
-    .select("project_id, role")
-    .eq("user_id", user.id);
+    .select("project_id, role", { count: "exact" })
+    .eq("user_id", user.id).order("project_id").range(offset, offset + 999));
 
   if (error) {
     console.error(
@@ -84,11 +83,7 @@ export async function getAccessibleProjects(): Promise<
 }
 
 export async function getCurrentProjectId(): Promise<string> {
-  const memberships =
-    await getCurrentUserMemberships();
-
-  const projects =
-    await getCachedServerProjects();
+  const [memberships, projects] = await Promise.all([getCurrentUserMemberships(), getCachedServerProjects()]);
 
   if (
     memberships.length === 0 ||
@@ -207,9 +202,7 @@ export async function getCurrentUserDisplayName(): Promise<string> {
   const supabase =
     await createSupabaseServerClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthenticatedUser();
 
   if (!user) {
     return "User";

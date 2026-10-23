@@ -22,6 +22,7 @@ export default async function DashboardLayout({
 
   return (
     <Shell
+      renderedAt={new Date().toISOString()}
       projects={projects}
       currentProjectId={currentProjectId}
       isAdmin={isAdmin}

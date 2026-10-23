@@ -13,18 +13,24 @@ import { useI18n } from "@/components/Providers";
 import { adminIdentity } from "@/config/identity";
 import { Icon } from "@/components/ui";
 import type { Project } from "@/lib/data";
-import { supabase } from "@/lib/supabase";
+import Image from "next/image";
+
+function saveProjectPreference(projectId: string) {
+  document.cookie = `automed_project_id=${encodeURIComponent(projectId)}; path=/; max-age=31536000; samesite=lax`;
+}
 
 export default function Shell({
   children,
   projects = [],
   currentProjectId,
   isAdmin = false,
+  renderedAt,
 }: {
   children: ReactNode;
   projects?: Project[];
   currentProjectId?: string;
   isAdmin?: boolean;
+  renderedAt: string;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -79,11 +85,8 @@ export default function Shell({
   const handleProjectChange = (projectId: string) => {
     setProjectMenuOpen(false);
 
-    document.cookie =
-      `automed_project_id=${projectId}; ` +
-      "path=/; " +
-      "max-age=31536000; " +
-      "samesite=lax";
+    if (projectId === currentProjectId) return;
+    saveProjectPreference(projectId);
 
     window.location.reload();
   };
@@ -93,6 +96,7 @@ export default function Shell({
 
     setLoggingOut(true);
 
+    const { supabase } = await import("@/lib/supabase");
     const { error } = await supabase.auth.signOut();
 
     if (error) {
@@ -254,13 +258,13 @@ export default function Shell({
               className="brand-mark"
               aria-hidden="true"
             >
-              <img
+              <Image width={192} height={192} unoptimized
                 src="/logo-icon.png"
                 alt=""
                 className="logo-light"
               />
 
-              <img
+              <Image width={192} height={192} unoptimized
                 src="/logo-icon-on-dark.png"
                 alt=""
                 className="logo-dark"
@@ -268,13 +272,13 @@ export default function Shell({
             </span>
 
             <span className="brand-full">
-              <img
+              <Image width={1480} height={325} unoptimized
                 src={cfg.brand.logo.light}
                 alt={cfg.brand.name}
                 className="logo-light"
               />
 
-              <img
+              <Image width={1480} height={325} unoptimized
                 src={cfg.brand.logo.dark}
                 alt={cfg.brand.name}
                 className="logo-dark"
@@ -593,20 +597,20 @@ export default function Shell({
                 month: "long",
                 year: "numeric",
                 timeZone: "Africa/Cairo",
-              }).format(new Date())}
+              }).format(new Date(renderedAt))}
               aria-label={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
                 timeZone: "Africa/Cairo",
-              }).format(new Date())}
+              }).format(new Date(renderedAt))}
             >
               <Icon name="calendar" size={16} />
               <span>{new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
                 day: "2-digit",
                 month: "short",
                 timeZone: "Africa/Cairo",
-              }).format(new Date())}</span>
+              }).format(new Date(renderedAt))}</span>
             </span>
           </div>
         </header>
