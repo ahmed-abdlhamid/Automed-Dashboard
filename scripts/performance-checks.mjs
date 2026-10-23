@@ -60,6 +60,66 @@ async function main() {
   }
   assert.equal(profiles.resolveDashboardProfile('unknown:unknown').category.id, 'general');
   assert.equal(profiles.resolveDashboardProfile('medical:physiotherapy').cards[1].title.en, "Today's sessions");
+  assert(profiles.isValidDashboardSettings({ category: 'restaurant', specialty: null }));
+  assert(profiles.isValidDashboardSettings({ category: 'medical', specialty: 'pediatrics' }));
+  for (const invalid of [null, {}, { category: 'unknown', specialty: null }, { category: 'medical', specialty: null }, { category: 'medical', specialty: 'unknown' }, { category: 'restaurant', specialty: 'pediatrics' }]) {
+    assert.equal(profiles.isValidDashboardSettings(invalid), false);
+  }
+  let currentUser = { id: 'admin-user' }, memberRole = 'admin', membershipError = null, saveError = null;
+  let savedProfile = null, queries = [], invalidations = 0;
+  const projectId = '11111111-1111-4111-8111-111111111111';
+  const profileClient = { from(table) {
+    let filters = [];
+    const q = {
+      select() { return q; },
+      eq(key, value) { filters.push([key, value]); return q; },
+      maybeSingle: async () => { queries.push({ table, filters }); return { data: { role: memberRole }, error: membershipError }; },
+      upsert(value) { savedProfile = value; return q; },
+      single: async () => ({ data: saveError ? null : { project_id: projectId }, error: saveError })
+    };
+    return q;
+  }};
+  const actions = load('src/app/(dashboard)/settings/actions.ts', {
+    'next/cache': { revalidatePath: () => invalidations++ },
+    '@/config/project-dashboard': profiles,
+    '@/lib/supabase/server': { getAuthenticatedUser: async () => currentUser, createSupabaseServerClient: async () => profileClient }
+  });
+  const valid = { category: 'medical', specialty: 'pediatrics' };
+  assert.equal((await actions.saveProjectDashboardSettings(projectId, valid)).ok, true);
+  assert.deepEqual(savedProfile, { project_id: projectId, ...valid });
+  assert(queries.some(q => q.filters.some(([key, value]) => key === 'project_id' && value === projectId)
+    && q.filters.some(([key, value]) => key === 'user_id' && value === currentUser.id)));
+  assert.equal(invalidations, 1);
+  for (const denied of ['client', null]) {
+    memberRole = denied; savedProfile = null;
+    assert.equal((await actions.saveProjectDashboardSettings(projectId, valid)).ok, false);
+    assert.equal(savedProfile, null);
+  }
+  memberRole = 'admin'; membershipError = { message: 'offline' };
+  assert.equal((await actions.saveProjectDashboardSettings(projectId, valid)).ok, false);
+  membershipError = null; currentUser = null;
+  assert.equal((await actions.saveProjectDashboardSettings(projectId, valid)).ok, false);
+  currentUser = { id: 'admin-user' };
+  assert.equal((await actions.saveProjectDashboardSettings('not-an-id', valid)).ok, false);
+  assert.equal((await actions.saveProjectDashboardSettings(projectId, { category: 'medical', specialty: null })).ok, false);
+  saveError = { message: 'RLS denied' };
+  assert.equal((await actions.saveProjectDashboardSettings(projectId, valid)).ok, false);
+  assert.equal(invalidations, 1);
+  let readData = valid, readError = null, selectedProject;
+  const reader = load('src/lib/project-dashboard.server.ts', {
+    'server-only': {}, react: { cache: fn => fn }, '@/config/project-dashboard': profiles,
+    '@/lib/supabase/server': { createSupabaseServerClient: async () => ({ from: () => {
+      const q = { select: () => q, eq: (_, value) => { selectedProject = value; return q; },
+        maybeSingle: async () => ({ data: readData, error: readError }) }; return q;
+    } }) }
+  });
+  assert.deepEqual((await reader.getProjectDashboardSettings(projectId)).settings, valid);
+  assert.equal(selectedProject, projectId);
+  readData = null;
+  assert.deepEqual(await reader.getProjectDashboardSettings(projectId), { settings: null, available: true });
+  readError = { message: 'connection failed' };
+  assert.deepEqual(await reader.getProjectDashboardSettings(projectId), { settings: null, available: false });
+  console.log('PASS: shared profile validation; project-specific admin authorization; client/non-member/anonymous denial; failed save; tenant-filtered read and unavailable storage.');
   console.log('PASS: all-record payment counts; 14 category templates; bilingual source labels; invalid preference fallback; medical specialty cards.');
   assert.equal(overview.stats.customers, 9);
   assert.equal(overview.stats.revenue, paid.length * 10);

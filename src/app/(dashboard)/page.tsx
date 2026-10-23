@@ -1,3 +1,4 @@
+import { getProjectDashboardSettings } from "@/lib/project-dashboard.server";
 import { getOverview } from "@/lib/data.server";
 import {
   getCurrentProject,
@@ -19,12 +20,13 @@ export default async function OverviewPage() {
     getCurrentUserDisplayName(),
   ]);
 
-  const data = await dataPromise;
+  const [data, dashboard] = await Promise.all([dataPromise, getProjectDashboardSettings(project?.id ?? "")]);
 
   return (
     <OverviewView
       greetingHour={Number(new Intl.DateTimeFormat("en-GB", { hour: "numeric", hourCycle: "h23", timeZone: "Africa/Cairo" }).format(new Date()))}
       data={data}
+      dashboard={dashboard}
       project={project}
       role={role}
       userName={userName}

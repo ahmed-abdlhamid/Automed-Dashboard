@@ -1,44 +1,46 @@
 "use client";
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { useId, useState, useTransition } from "react";
 import { useI18n } from "@/components/Providers";
-import { dashboardCategories, medicalSpecialties, projectDashboardProfiles, resolveDashboardProfile } from "@/config/project-dashboard";
+import { dashboardCategories, medicalSpecialties, type ProjectDashboardSettings } from "@/config/project-dashboard";
+import { saveProjectDashboardSettings } from "@/app/(dashboard)/settings/actions";
 
-const eventName = "automed-dashboard-profile";
-function subscribe(notify: () => void) {
-  window.addEventListener(eventName, notify);
-  window.addEventListener("storage", notify);
-  return () => { window.removeEventListener(eventName, notify); window.removeEventListener("storage", notify); };
-}
-export function useProjectDashboardProfile(projectId: string) {
-  const initial = projectDashboardProfiles[projectId];
-  const fallback = `${initial?.category ?? "general"}:${initial?.specialty ?? "general"}`;
-  const key = `automed-dashboard-profile:${projectId}`;
-  const read = useCallback(() => { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } }, [key, fallback]);
-  const value = useSyncExternalStore(subscribe, read, () => fallback);
-  const setProfile = (category: string, specialty: string) => {
-    try { localStorage.setItem(key, `${category}:${specialty}`); } catch { return false; }
-    window.dispatchEvent(new Event(eventName));
-    return true;
-  };
-  return { ...resolveDashboardProfile(value), setProfile };
-}
-export default function ProjectDashboardProfile({ projectId }: { projectId: string }) {
+export default function ProjectDashboardProfile({ projectId, initial, available }: {
+  projectId: string; initial: ProjectDashboardSettings | null; available: boolean;
+}) {
   const { t } = useI18n();
-  const { category, specialty, setProfile } = useProjectDashboardProfile(projectId);
-  const [saveFailed, setSaveFailed] = useState(false);
-  const save = (categoryId: string, specialtyId: string) => setSaveFailed(!setProfile(categoryId, specialtyId));
-  return <div className="project-profile-controls">
-    <label><span>{t({ ar: "نوع النشاط", en: "Business activity" })}</span>
-      <select aria-label={t({ ar: "نوع النشاط", en: "Business activity" })} value={category.id} onChange={event => save(event.target.value, specialty.id)}>
+  const categoryId = useId();
+  const specialtyId = useId();
+  const [category, setCategory] = useState(initial?.category ?? "");
+  const [specialty, setSpecialty] = useState(initial?.specialty ?? "general");
+  const [message, setMessage] = useState<"saved" | "error" | null>(null);
+  const [pending, startTransition] = useTransition();
+  return <form className="project-profile-controls" onSubmit={event => {
+    event.preventDefault();
+    setMessage(null);
+    startTransition(async () => {
+      try {
+        const result = await saveProjectDashboardSettings(projectId, { category, specialty: category === "medical" ? specialty : null });
+        setMessage(result.ok ? "saved" : "error");
+      } catch { setMessage("error"); }
+    });
+  }}>
+    <label htmlFor={categoryId}><span>{t({ ar: "نوع المشروع", en: "Project category" })}</span>
+      <select id={categoryId} aria-label={t({ ar: "نوع المشروع", en: "Project category" })} required disabled={pending || !available} value={category} onChange={event => { setCategory(event.target.value); setMessage(null); }}>
+        <option value="" disabled>{t({ ar: "اختَر نوع المشروع", en: "Choose a category" })}</option>
         {dashboardCategories.map(item => <option key={item.id} value={item.id}>{t(item.label)}</option>)}
       </select>
     </label>
-    {category.id === "medical" && <label><span>{t({ ar: "التخصص", en: "Specialty" })}</span>
-      <select aria-label={t({ ar: "التخصص", en: "Specialty" })} value={specialty.id} onChange={event => save(category.id, event.target.value)}>
+    {category === "medical" && <label htmlFor={specialtyId}><span>{t({ ar: "التخصص", en: "Specialty" })}</span>
+      <select id={specialtyId} aria-label={t({ ar: "التخصص", en: "Specialty" })} disabled={pending || !available} value={specialty} onChange={event => { setSpecialty(event.target.value); setMessage(null); }}>
         {medicalSpecialties.map(item => <option key={item.id} value={item.id}>{t(item.label)}</option>)}
       </select>
     </label>}
-    {saveFailed && <p role="alert">{t({ ar: "تعذّر حفظ الاختيار. اسمح بالتخزين المحلي في المتصفح ثم حاول مرة أخرى.", en: "Could not save this choice. Allow browser storage and try again." })}</p>}
-    <p>{t({ ar: "يُحفظ اختيار العرض لهذا المشروع على هذا الجهاز فقط. لا يغيّر بيانات المشروع أو صلاحياته.", en: "This project's view is saved on this device only. Project data and permissions stay unchanged." })}</p>
-  </div>;
+    <p>{t({ ar: "اختَر النشاط مرة واحدة عند تجهيز المشروع. يدخل العميل ليجد إعداداته جاهزة، ويمكنك تعديلها هنا لاحقًا.", en: "Choose the activity when setting up the project. Clients receive a ready workspace; you can update its settings here later." })}</p>
+    {!available && <p role="alert">{t({ ar: "تعذّر تحميل إعدادات المشروع. أعد تحميل الصفحة أو تواصل مع مسؤول النظام.", en: "Project settings could not be loaded. Reload the page or contact your system administrator." })}</p>}
+    <button type="submit" className="project-profile-save" disabled={!category || pending || !available}>
+      {pending ? t({ ar: "جارٍ الحفظ…", en: "Saving…" }) : t({ ar: "حفظ إعدادات المشروع", en: "Save project settings" })}
+    </button>
+    {message === "error" && <p role="alert">{t({ ar: "لم تُحفظ الإعدادات. تحقق من اتصالك وصلاحية الأدمن ثم حاول مجددًا.", en: "Settings were not saved. Check your connection and admin access, then retry." })}</p>}
+    {message === "saved" && <p role="status">{t({ ar: "تم حفظ إعدادات المشروع لجميع مستخدميه.", en: "Project settings saved for all its users." })}</p>}
+  </form>;
 }

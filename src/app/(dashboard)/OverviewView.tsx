@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useI18n } from "@/components/Providers";
-import ProjectDashboardProfile, { useProjectDashboardProfile } from "@/components/ProjectDashboardProfile";
+import { resolveDashboardProfile, type ProjectDashboardSettings } from "@/config/project-dashboard";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import type { Order, Overview, Project } from "@/lib/data";
 import { Badge, BarChart, Icon } from "@/components/ui";
@@ -12,12 +12,13 @@ import "./overview-workspace.css";
 const numberFormatter = new Intl.NumberFormat("en-US");
 const fmt = (value: number) => numberFormatter.format(value);
 
-export default function OverviewView({ data, project, role, userName, greetingHour }: {
+export default function OverviewView({ data, project, role, userName, greetingHour, dashboard }: {
   data: Overview; project: Project | null; role: ProjectRole | null;
   userName?: string; greetingHour: number;
+  dashboard: { settings: ProjectDashboardSettings | null; available: boolean };
 }) {
   const { t } = useI18n();
-  const { category, specialty, cards } = useProjectDashboardProfile(project?.id ?? "none");
+  const { category, specialty } = resolveDashboardProfile(`${dashboard.settings?.category ?? "general"}:${dashboard.settings?.specialty ?? "general"}`);
   const { stats, payments } = data;
   const weeklyTotal = data.weekly.reduce((sum, day) => sum + day.value, 0);
   const greeting = greetingHour >= 5 && greetingHour < 12
@@ -40,12 +41,13 @@ export default function OverviewView({ data, project, role, userName, greetingHo
       <div className="workbench-context">
         <span className="workbench-project"><span aria-hidden="true" /> <bdi>{project?.name ?? "Automed"}</bdi></span>
         <span>{t(category.label)}{category.id === "medical" ? ` / ${t(specialty.label)}` : ""}</span>
-        {project && <details className="workbench-customize">
-          <summary><Icon name="settings" size={15} />{t({ ar: "تخصيص العرض", en: "Customize view" })}</summary>
-          <ProjectDashboardProfile projectId={project.id} />
-        </details>}
       </div>
     </header>
+
+    {role === "admin" && !dashboard.settings && <aside className="workbench-setup">
+      <p>{t({ ar: "جهّز المشروع: اختَر نوع النشاط من إعدادات المشروع ليُحفظ لجميع مستخدميه.", en: "Set up this project: choose its activity in project settings for all its users." })}</p>
+      <Link className="workbench-link" href="/settings#project-setup">{t({ ar: "إعداد المشروع", en: "Set up project" })}<Icon name="chevronLeft" size={15} /></Link>
+    </aside>}
 
     <section className="workbench-priority" aria-labelledby="priority-title">
       <div className="workbench-priority-intro">
@@ -85,21 +87,6 @@ export default function OverviewView({ data, project, role, userName, greetingHo
         <div><strong>{item.value}</strong>{item.unit && <small>{item.unit}</small>}</div>
         <small>{t({ ar: "كل السجل", en: "All records" })}</small>
       </div>)}
-    </section>
-
-    <section className="workbench-activity" aria-labelledby="activity-title">
-      <div className="workbench-section-heading">
-        <div><h2 id="activity-title">{t({ ar: "متابعة نشاطك", en: "Your operations" })}</h2><p>{t(category.label)}{category.id === "medical" ? ` / ${t(specialty.label)}` : ""}</p></div>
-        <span className="workbench-source-note"><Icon name="settings" size={14} />{t({ ar: "مصادر تشغيلية غير مربوطة", en: "Operational sources not connected" })}</span>
-      </div>
-      <div className="workbench-capabilities">
-        {cards.map(card => <article className="workbench-capability" key={card.title.en}>
-          <h3>{t(card.title)}</h3>
-          <div className="workbench-unavailable"><span aria-hidden="true">—</span><span>{t({ ar: "غير متاح", en: "Unavailable" })}</span></div>
-          <p>{t({ ar: "المصدر المطلوب: ", en: "Required source: " })}{t(card.source)}</p>
-        </article>)}
-      </div>
-      <p className="workbench-connection-note">{t({ ar: "الكروت دي جاهزة لنوع نشاطك. هتظهر أرقام فعلية بعد ربط مصادرها؛ عدم الربط لا يعني إن العدد صفر.", en: "These cards are tailored to your activity. Real values appear once their sources are connected; an unconnected source does not mean zero." })}</p>
     </section>
 
     <div className="workbench-analysis-grid">

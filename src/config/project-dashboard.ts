@@ -108,8 +108,15 @@ const specialtyCards: Record<string, ActivityCard[]> = {
   nutrition: [card("جلسات المتابعة", "Follow-up sessions", "حجوزات المتابعة", "Follow-up bookings"), card("حجوزات تحتاج إعادة جدولة", "Bookings to reschedule", "طلبات إعادة الجدولة", "Rescheduling requests")],
 };
 
-// Explicit project defaults can be added here without inferring activity from names.
-export const projectDashboardProfiles: Record<string, { category: string; specialty?: string }> = {};
+export type ProjectDashboardSettings = { category: string; specialty: string | null };
+export function isValidDashboardSettings(value: unknown): value is ProjectDashboardSettings {
+  if (!value || typeof value !== "object") return false;
+  const { category, specialty } = value as ProjectDashboardSettings;
+  return dashboardCategories.some(item => item.id === category)
+    && (category === "medical"
+      ? medicalSpecialties.some(item => item.id === specialty)
+      : specialty === null);
+}
 export function resolveDashboardProfile(value: string) {
   const [categoryId, specialtyId] = value.split(":");
   const category = dashboardCategories.find(item => item.id === categoryId) ?? dashboardCategories[0];
