@@ -316,41 +316,40 @@ export default function Shell({
               />
             </span>
           </Link>
+          <button
+            type="button"
+            className="sidebar-toggle"
+            onClick={handleSidebarToggle}
+            aria-pressed={sidebarPinned}
+            aria-label={
+              sidebarPinned
+                ? t({
+                    ar: "إلغاء تثبيت القائمة وطيها",
+                    en: "Unpin and collapse sidebar",
+                  })
+                : t({
+                    ar: "تثبيت القائمة مفتوحة",
+                    en: "Pin sidebar open",
+                  })
+            }
+            title={
+              sidebarPinned
+                ? t({
+                    ar: "إلغاء التثبيت",
+                    en: "Unpin sidebar",
+                  })
+                : t({
+                    ar: "تثبيت القائمة",
+                    en: "Pin sidebar",
+                  })
+            }
+          >
+            <Icon
+              name="chevronLeft"
+              size={16}
+            />
+          </button>
         </div>
-
-        <button
-          type="button"
-          className="sidebar-toggle"
-          onClick={handleSidebarToggle}
-          aria-pressed={sidebarPinned}
-          aria-label={
-            sidebarPinned
-              ? t({
-                  ar: "إلغاء تثبيت القائمة وطيها",
-                  en: "Unpin and collapse sidebar",
-                })
-              : t({
-                  ar: "تثبيت القائمة مفتوحة",
-                  en: "Pin sidebar open",
-                })
-          }
-          title={
-            sidebarPinned
-              ? t({
-                  ar: "إلغاء التثبيت",
-                  en: "Unpin sidebar",
-                })
-              : t({
-                  ar: "تثبيت القائمة",
-                  en: "Pin sidebar",
-                })
-          }
-        >
-          <Icon
-            name="chevronLeft"
-            size={16}
-          />
-        </button>
 
         <nav
           className="sidebar-nav"
