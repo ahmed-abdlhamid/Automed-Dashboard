@@ -3,6 +3,7 @@ import {
   getAccessibleProjects,
   getCurrentProjectId,
   isCurrentUserAdmin,
+  getCurrentUserDisplayName,
 } from "@/lib/project";
 
 export default async function DashboardLayout({
@@ -14,14 +15,17 @@ export default async function DashboardLayout({
     projects,
     currentProjectId,
     isAdmin,
+    userName,
   ] = await Promise.all([
     getAccessibleProjects(),
     getCurrentProjectId(),
     isCurrentUserAdmin(),
+    getCurrentUserDisplayName(),
   ]);
 
   return (
     <Shell
+      userName={userName}
       projects={projects}
       currentProjectId={currentProjectId}
       isAdmin={isAdmin}

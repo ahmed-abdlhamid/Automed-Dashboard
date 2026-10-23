@@ -1,3 +1,5 @@
+import { readAllRows } from "@/lib/supabase/pagination";
+import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Bilingual } from "@/components/Providers";
 import type {
@@ -26,15 +28,6 @@ type SupabaseOrder = {
   payment_status: string;
 };
 
-function getEgyptDateTime(
-  dateTime: string
-): {
-  date: string;
-  time: string;
-} {
-  const value =
-    new Date(dateTime);
-
   const dateFormatter =
     new Intl.DateTimeFormat(
       "en-CA",
@@ -58,6 +51,17 @@ function getEgyptDateTime(
         hour12: false,
       }
     );
+
+
+function getEgyptDateTime(
+  dateTime: string
+): {
+  date: string;
+  time: string;
+} {
+  const value =
+    new Date(dateTime);
+
 
   return {
     date:
@@ -156,17 +160,17 @@ export async function getProjects(): Promise<
   const {
     data,
     error,
-  } = await supabase
+  } = await readAllRows(offset => supabase
     .from("projects")
     .select(
-      "id, name, slug, description, status, created_at"
+      "id, name, slug, description, status, created_at", { count: "exact" }
     )
     .order(
       "created_at",
       {
         ascending: true,
       }
-    );
+    ).order("id").range(offset, offset + 999));
 
   if (error) {
     console.error(
@@ -249,7 +253,8 @@ export async function getOrders(
       {
         ascending: false,
       }
-    );
+    )
+    .order("id", { ascending: false });
 
   if (normalizedOptions.from) {
     query = query.gte(
@@ -292,6 +297,31 @@ export async function getOrders(
   return (
     data as SupabaseOrder[]
   ).map(mapSupabaseOrder);
+}
+
+type SummaryOrder = Pick<Order, "customer" | "amount" | "status" | "date">;
+
+async function getSummaryOrders(projectId: string): Promise<SummaryOrder[]> {
+  const supabase = await createSupabaseServerClient();
+  const rows: SummaryOrder[] = [];
+  let offset = 0;
+  while (true) {
+    const { data, error, count } = await supabase.from("orders")
+      .select("id, customer_name, total_price, payment_status, date_time", { count: "exact" })
+      .eq("project_id", projectId).order("id", { ascending: true }).range(offset, offset + 999);
+    if (error) throw new Error("Failed to load order summary: " + error.message);
+    const page = data ?? [];
+    for (const order of page) rows.push({ customer: order.customer_name,
+      amount: Number(order.total_price), status: mapPaymentStatus(order.payment_status),
+      date: getEgyptDateTime(order.date_time).date });
+    offset += page.length;
+    if (count !== null && offset >= count) break;
+    if (!page.length) {
+      if (count !== null && offset < count) throw new Error("Incomplete order summary response");
+      break;
+    }
+  }
+  return rows;
 }
 
 function getLastSevenDays(): {
@@ -433,7 +463,7 @@ function getLastSevenDays(): {
 }
 
 function buildWeeklyRevenue(
-  orders: Order[]
+  orders: SummaryOrder[]
 ): {
   label: Bilingual;
   value: number;
@@ -476,10 +506,7 @@ function buildWeeklyRevenue(
 export async function getOverview(
   projectId: string
 ): Promise<Overview> {
-  const orders =
-    await getOrders(
-      projectId
-    );
+  const [orders, recent] = await Promise.all([getSummaryOrders(projectId), getOrders(projectId, 5)]);
 
   const paidOrders =
     orders.filter(
@@ -497,6 +524,9 @@ export async function getOverview(
     );
 
   return {
+    payments: { paid: paidOrders.length,
+      pending: orders.filter(order => order.status === "pending").length,
+      failed: orders.filter(order => order.status === "failed").length },
     stats: {
       orders:
         orders.length,
@@ -531,7 +561,7 @@ export async function getOverview(
       ),
 
     recent:
-      orders.slice(0, 5),
+      recent,
 
   };
 }
@@ -539,10 +569,7 @@ export async function getOverview(
 export async function getAnalytics(
   projectId: string
 ): Promise<Analytics> {
-  const orders =
-    await getOrders(
-      projectId
-    );
+  const orders = await getSummaryOrders(projectId);
 
   const paidOrders =
     orders.filter(

@@ -1,10 +1,11 @@
+import { readAllRows } from "@/lib/supabase/pagination";
 import { redirect } from "next/navigation";
 import {
   getAccessibleProjects,
   getCurrentProject,
   getCurrentProjectRole,
 } from "@/lib/project";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient, getAuthenticatedUser } from "@/lib/supabase/server";
 import AutomationView from "./AutomationView";
 
 export const dynamic = "force-dynamic";
@@ -17,17 +18,17 @@ export default async function AutomationPage() {
   }
 
   const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthenticatedUser();
 
   if (!user) {
     redirect("/");
   }
 
-  const { data: adminMemberships, error } = await supabase
+  const { data: adminMemberships, error } = await readAllRows(offset => supabase
     .from("project_members")
-    .select("project_id")
+    .select("project_id", { count: "exact" })
     .eq("user_id", user.id)
-    .eq("role", "admin");
+    .eq("role", "admin").order("project_id").range(offset, offset + 999));
 
   if (error) {
     throw new Error("Failed to load admin project memberships: " + error.message);

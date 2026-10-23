@@ -1,3 +1,4 @@
+import { readAllRows } from "@/lib/supabase/pagination";
 import { NextRequest, NextResponse } from "next/server";
 import { getAccessibleProjects, getCurrentProjectRole } from "@/lib/project";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -33,11 +34,25 @@ async function n8nGet<T>(baseUrl: string, apiKey: string, path: string): Promise
   });
 
   if (!response.ok) {
-    const details = await response.text().catch(() => "");
-    throw new Error("n8n API returned " + response.status + (details ? ": " + details.slice(0, 180) : ""));
+    throw new Error("n8n API returned " + response.status);
   }
 
   return response.json() as Promise<T>;
+}
+
+async function getWorkflows(baseUrl: string, apiKey: string) {
+  const workflows: N8nWorkflow[] = [];
+  const seen = new Set<string>();
+  let cursor: string | undefined;
+  do {
+    const page = await n8nGet<{ data?: N8nWorkflow[]; nextCursor?: string | null }>(baseUrl, apiKey,
+      "/api/v1/workflows?limit=100" + (cursor ? "&cursor=" + encodeURIComponent(cursor) : ""));
+    workflows.push(...(page.data ?? []));
+    cursor = page.nextCursor || undefined;
+    if (cursor && seen.has(cursor)) throw new Error("n8n returned a repeated workflow cursor");
+    if (cursor) seen.add(cursor);
+  } while (cursor);
+  return { data: workflows };
 }
 
 async function isAdminForProject(projectId: string) {
@@ -106,8 +121,10 @@ export async function GET(request: NextRequest) {
 
     const supabase = await createSupabaseServerClient();
     const [workflowResponse, mappingResponse] = await Promise.all([
-      n8nGet<{ data?: N8nWorkflow[] }>(context.baseUrl, context.apiKey, "/api/v1/workflows?limit=100"),
-      supabase.from("project_workflows").select("workflow_id, project_id, workflow_name, updated_at"),
+      getWorkflows(context.baseUrl, context.apiKey),
+      readAllRows(offset => supabase.from("project_workflows")
+        .select("workflow_id, project_id, workflow_name, updated_at", { count: "exact" })
+        .order("workflow_id").range(offset, offset + 999)),
     ]);
 
     if (mappingResponse.error) {
@@ -138,24 +155,33 @@ export async function GET(request: NextRequest) {
       .filter((workflow) => workflow.projectId === projectId)
       .map((workflow) => workflow.id);
 
-    const executionResponses = await Promise.all(
-      selectedWorkflowIds.slice(0, 25).map(async (workflowId) => {
-        try {
-          const result = await n8nGet<{ data?: N8nExecution[] }>(
-            context.baseUrl,
-            context.apiKey,
-            "/api/v1/executions?workflowId=" + encodeURIComponent(workflowId) + "&limit=50&includeData=false"
-          );
-          return result.data ?? [];
-        } catch (error) {
-          console.error("Automed n8n execution lookup failed for workflow:", workflowId, error);
-          return [];
-        }
-      })
-    );
+    // A global metadata page often contains the project's latest 50 executions.
+    // Filter on the server; never serialize another project's executions.
+    const selectedIds = new Set(selectedWorkflowIds);
+    let selectedExecutions: N8nExecution[] = [];
+    if (selectedIds.size) {
+      const latest = await n8nGet<{ data?: N8nExecution[]; nextCursor?: string | null }>(
+        context.baseUrl, context.apiKey, "/api/v1/executions?limit=100&includeData=false"
+      );
+      selectedExecutions = (latest.data ?? []).filter(item => selectedIds.has(item.workflowId ?? ""));
+      if (latest.nextCursor && selectedExecutions.length < 50) {
+        // Sparse projects need per-workflow history. Bound upstream concurrency,
+        // include every assigned workflow, and fail rather than report false zeroes.
+        selectedExecutions = [];
+        let next = 0;
+        await Promise.all(Array.from({ length: Math.min(4, selectedWorkflowIds.length) }, async () => {
+          while (next < selectedWorkflowIds.length) {
+            const workflowId = selectedWorkflowIds[next++];
+            const result = await n8nGet<{ data?: N8nExecution[] }>(context.baseUrl, context.apiKey,
+              "/api/v1/executions?workflowId=" + encodeURIComponent(workflowId) + "&limit=50&includeData=false");
+            selectedExecutions.push(...(result.data ?? []).filter(item => item.workflowId === workflowId));
+          }
+        }));
+      }
+    }
 
     const workflowNames = new Map(workflows.map((workflow) => [workflow.id, workflow.name]));
-    const executions = executionResponses.flat().map((execution) => ({
+    const executions = selectedExecutions.map((execution) => ({
       id: execution.id,
       workflowId: execution.workflowId ?? "",
       workflowName: workflowNames.get(execution.workflowId ?? "") ?? "Workflow",
@@ -254,7 +280,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "n8n is not configured." }, { status: 503 });
     }
 
-    const workflowResponse = await n8nGet<{ data?: N8nWorkflow[] }>(baseUrl, apiKey, "/api/v1/workflows?limit=100");
+    const workflowResponse = await getWorkflows(baseUrl, apiKey);
     if (!(workflowResponse.data ?? []).some((workflow) => workflow.id === workflowId)) {
       return NextResponse.json({ error: "That workflow was not found in the connected n8n instance." }, { status: 404 });
     }

@@ -1,5 +1,8 @@
 "use client";
 
+import type { ProjectDashboardSettings } from "@/config/project-dashboard";
+import ProjectDashboardProfile from "@/components/ProjectDashboardProfile";
+import "../overview-workspace.css";
 import { useI18n } from "@/components/Providers";
 import type { Project } from "@/lib/data";
 import {
@@ -10,8 +13,10 @@ import {
 
 export default function SettingsView({
   project,
+  dashboard,
 }: {
   project: Project | null;
+  dashboard: { settings: ProjectDashboardSettings | null; available: boolean } | null;
 }) {
   const {
     t,
@@ -289,6 +294,11 @@ export default function SettingsView({
           )}
         </Card>
       </div>
+
+      {project && dashboard && <section id="project-setup"><Card title={t({ ar: "إعداد المشروع", en: "Project setup" })}
+        subtitle={t({ ar: "للأدمن فقط · نوع النشاط محفوظ لكل مستخدمي المشروع", en: "Admin only · Activity is shared by all project users" })}>
+        <div style={{ padding: "24px", maxWidth: "560px" }}><ProjectDashboardProfile key={project.id} projectId={project.id} initial={dashboard.settings} available={dashboard.available} /></div>
+      </Card></section>}
 
       <div className="settings-footer-note">
         <div>

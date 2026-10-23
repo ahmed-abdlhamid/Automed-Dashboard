@@ -10,31 +10,67 @@ import {
 } from "react";
 import { dashboardConfig as cfg } from "@/config/dashboard.config";
 import { useI18n } from "@/components/Providers";
-import { adminIdentity } from "@/config/identity";
 import { Icon } from "@/components/ui";
 import type { Project } from "@/lib/data";
-import { supabase } from "@/lib/supabase";
+import Image from "next/image";
+import "./workspace-shell.css";
+
+function saveProjectPreference(projectId: string) {
+  document.cookie = `automed_project_id=${encodeURIComponent(projectId)}; path=/; max-age=31536000; samesite=lax`;
+}
 
 export default function Shell({
   children,
   projects = [],
   currentProjectId,
   isAdmin = false,
+  userName,
 }: {
   children: ReactNode;
   projects?: Project[];
   currentProjectId?: string;
   isAdmin?: boolean;
+  userName: string;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [sidebarPinned, setSidebarPinned] = useState(false);
+  const [expanded, setExpanded] = useState(true);
+  const [sidebarPinned, setSidebarPinned] = useState(true);
   const [projectMenuOpen, setProjectMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
   const pickerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLButtonElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const menuButton = menuRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    sidebarRef.current?.querySelector<HTMLButtonElement>(".workspace-sidebar-close")?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+      if (event.key !== "Tab") return;
+      const elements = Array.from(sidebarRef.current?.querySelectorAll<HTMLElement>("a[href], button:not(:disabled)") ?? [])
+        .filter(element => element.getClientRects().length > 0);
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const onBreakpoint = () => { if (desktop.matches) setMobileOpen(false); };
+    desktop.addEventListener("change", onBreakpoint);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      desktop.removeEventListener("change", onBreakpoint);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKey);
+      menuButton?.focus();
+    };
+  }, [mobileOpen]);
 
   useEffect(() => {
     if (!projectMenuOpen) return;
@@ -48,10 +84,18 @@ export default function Shell({
       }
     };
 
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setProjectMenuOpen(false);
+        pickerRef.current?.querySelector<HTMLButtonElement>(".workspace-project-trigger")?.focus();
+      }
+    };
     document.addEventListener("mousedown", onDown);
-
-    return () =>
+    document.addEventListener("keydown", onKey);
+    return () => {
       document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
   }, [projectMenuOpen]);
 
   const {
@@ -79,11 +123,8 @@ export default function Shell({
   const handleProjectChange = (projectId: string) => {
     setProjectMenuOpen(false);
 
-    document.cookie =
-      `automed_project_id=${projectId}; ` +
-      "path=/; " +
-      "max-age=31536000; " +
-      "samesite=lax";
+    if (projectId === currentProjectId) return;
+    saveProjectPreference(projectId);
 
     window.location.reload();
   };
@@ -93,6 +134,7 @@ export default function Shell({
 
     setLoggingOut(true);
 
+    const { supabase } = await import("@/lib/supabase");
     const { error } = await supabase.auth.signOut();
 
     if (error) {
@@ -103,18 +145,6 @@ export default function Shell({
 
     router.replace("/login");
     router.refresh();
-  };
-
-  const handleSidebarMouseEnter = () => {
-    if (!sidebarPinned) {
-      setExpanded(true);
-    }
-  };
-
-  const handleSidebarMouseLeave = () => {
-    if (!sidebarPinned) {
-      setExpanded(false);
-    }
   };
 
   const handleSidebarToggle = () => {
@@ -225,7 +255,7 @@ export default function Shell({
   );
 
   return (
-    <div className="dashboard-shell">
+    <div className="dashboard-shell workspace-shell">
       <div
         onClick={() => setMobileOpen(false)}
         className={`mobile-backdrop ${
@@ -236,13 +266,18 @@ export default function Shell({
       />
 
       <aside
+        ref={sidebarRef}
+        id="workspace-navigation"
+        role={mobileOpen ? "dialog" : undefined}
+        aria-modal={mobileOpen ? true : undefined}
+        aria-label={t({ ar: "قائمة التنقل", en: "Navigation" })}
         data-expanded={expanded}
         data-pinned={sidebarPinned}
         data-mobile-open={mobileOpen}
         className="sidebar"
-        onMouseEnter={handleSidebarMouseEnter}
-        onMouseLeave={handleSidebarMouseLeave}
       >
+        <button type="button" className="workspace-sidebar-close" onClick={() => setMobileOpen(false)}
+          aria-label={t({ ar: "إغلاق القائمة", en: "Close navigation" })}><Icon name="close" size={18} /></button>
         <div className="sidebar-top">
           <Link
             href="/"
@@ -254,13 +289,13 @@ export default function Shell({
               className="brand-mark"
               aria-hidden="true"
             >
-              <img
+              <Image width={192} height={192} unoptimized
                 src="/logo-icon.png"
                 alt=""
                 className="logo-light"
               />
 
-              <img
+              <Image width={192} height={192} unoptimized
                 src="/logo-icon-on-dark.png"
                 alt=""
                 className="logo-dark"
@@ -268,54 +303,53 @@ export default function Shell({
             </span>
 
             <span className="brand-full">
-              <img
+              <Image width={1480} height={325} unoptimized
                 src={cfg.brand.logo.light}
                 alt={cfg.brand.name}
                 className="logo-light"
               />
 
-              <img
+              <Image width={1480} height={325} unoptimized
                 src={cfg.brand.logo.dark}
                 alt={cfg.brand.name}
                 className="logo-dark"
               />
             </span>
           </Link>
+          <button
+            type="button"
+            className="sidebar-toggle"
+            onClick={handleSidebarToggle}
+            aria-pressed={sidebarPinned}
+            aria-label={
+              sidebarPinned
+                ? t({
+                    ar: "إلغاء تثبيت القائمة وطيها",
+                    en: "Unpin and collapse sidebar",
+                  })
+                : t({
+                    ar: "تثبيت القائمة مفتوحة",
+                    en: "Pin sidebar open",
+                  })
+            }
+            title={
+              sidebarPinned
+                ? t({
+                    ar: "إلغاء التثبيت",
+                    en: "Unpin sidebar",
+                  })
+                : t({
+                    ar: "تثبيت القائمة",
+                    en: "Pin sidebar",
+                  })
+            }
+          >
+            <Icon
+              name="chevronLeft"
+              size={16}
+            />
+          </button>
         </div>
-
-        <button
-          type="button"
-          className="sidebar-toggle"
-          onClick={handleSidebarToggle}
-          aria-pressed={sidebarPinned}
-          aria-label={
-            sidebarPinned
-              ? t({
-                  ar: "إلغاء تثبيت القائمة وطيها",
-                  en: "Unpin and collapse sidebar",
-                })
-              : t({
-                  ar: "تثبيت القائمة مفتوحة",
-                  en: "Pin sidebar open",
-                })
-          }
-          title={
-            sidebarPinned
-              ? t({
-                  ar: "إلغاء التثبيت",
-                  en: "Unpin sidebar",
-                })
-              : t({
-                  ar: "تثبيت القائمة",
-                  en: "Pin sidebar",
-                })
-          }
-        >
-          <Icon
-            name="chevronLeft"
-            size={16}
-          />
-        </button>
 
         <nav
           className="sidebar-nav"
@@ -329,7 +363,7 @@ export default function Shell({
               key={group.label.en}
               className="nav-group"
             >
-              {expanded && (
+              {(expanded || mobileOpen) && (
                 <p className="nav-group-label">
                   {t(group.label)}
                 </p>
@@ -372,23 +406,6 @@ export default function Shell({
         </nav>
 
         <div className="sidebar-bottom">
-          <div className="sidebar-status">
-            <span className="status-dot" />
-
-            <div className="sidebar-status-copy">
-              <span>
-                {t({
-                  ar: "النظام متصل",
-                  en: "System online",
-                })}
-              </span>
-
-              <strong>
-                {selectedProject?.name ||
-                  "Automed"}
-              </strong>
-            </div>
-          </div>
 
           <button
             type="button"
@@ -425,189 +442,48 @@ export default function Shell({
       </aside>
 
       <div className="dashboard-main">
-        <header className="topbar">
-          <div className="topbar-start">
-            <button
-              type="button"
-              className="mobile-menu-button"
-              onClick={() => setMobileOpen(true)}
-              aria-label={t({
-                ar: "فتح القائمة",
-                en: "Open menu",
-              })}
-            >
-              <Icon
-                name="menu"
-                size={18}
-              />
+        <header className="workspace-header">
+          <div className="workspace-header-start">
+            <button type="button" className="workspace-menu-button" ref={menuRef}
+              aria-label={t({ ar: "فتح القائمة", en: "Open navigation" })}
+              aria-expanded={mobileOpen} aria-controls="workspace-navigation" onClick={() => setMobileOpen(true)}>
+              <Icon name="menu" size={20} />
             </button>
+            <div className="workspace-project-picker" ref={pickerRef}>
+              <span className="workspace-project-caption">{t({ ar: "المشروع الحالي", en: "Current project" })}</span>
+              {isAdmin && projects.length > 1 ? <>
+                <button type="button" className="workspace-project-trigger"
+                  onClick={() => setProjectMenuOpen(value => !value)} aria-expanded={projectMenuOpen}
+                  aria-haspopup="listbox" aria-controls="workspace-project-options">
+                  <bdi>{selectedProject?.name ?? t({ ar: "اختر المشروع", en: "Select project" })}</bdi>
+                  <Icon name="chevron" size={15} />
+                </button>
+                {projectMenuOpen && <div className="workspace-project-options" id="workspace-project-options" role="listbox"
+                  aria-label={t({ ar: "المشاريع المتاحة", en: "Available projects" })}>
+                  {projects.map(project => <button key={project.id} type="button" role="option"
+                    aria-selected={project.id === selectedProject?.id} onClick={() => handleProjectChange(project.id)}>
+                    <bdi>{project.name}</bdi>{project.id === selectedProject?.id && <Icon name="check" size={15} />}
+                  </button>)}
+                </div>}
+              </> : <strong className="workspace-project-name" title={selectedProject?.name}><bdi>{selectedProject?.name ?? "Automed"}</bdi></strong>}
+            </div>
           </div>
-
-          {/*
-            Visual order in reading direction (RTL and LTR):
-            1. Project name
-            2. User (letter only; full name on hover)
-            3. Notifications
-            4. Dark mode
-            5. Language
-            6. Date
-          */}
-          <div className="topbar-actions" dir={lang === "ar" ? "rtl" : "ltr"}>
-            {/* 1. Project (first) */}
-            {isAdmin &&
-              projects.length > 0 && (
-                <div
-                  className="project-picker"
-                  ref={pickerRef}
-                >
-                  <button
-                    type="button"
-                    className="project-trigger project-trigger-card"
-                    onClick={() =>
-                      setProjectMenuOpen(
-                        (value) => !value
-                      )
-                    }
-                    aria-expanded={
-                      projectMenuOpen
-                    }
-                    aria-haspopup="listbox"
-                  >
-                    <span className="project-trigger-dot" />
-
-                    <span className="project-trigger-name">
-                      {selectedProject?.name ||
-                        t({
-                          ar: "اختر المشروع",
-                          en: "Select project",
-                        })}
-                    </span>
-
-                    <Icon
-                      name="chevron"
-                      size={15}
-                    />
-                  </button>
-
-                  {projectMenuOpen && (
-                    <div
-                      className="project-menu"
-                      role="listbox"
-                    >
-                      {projects.map(
-                        (project) => {
-                          const selected =
-                            project.id ===
-                            selectedProject?.id;
-
-                          return (
-                            <button
-                              key={project.id}
-                              type="button"
-                              role="option"
-                              aria-selected={
-                                selected
-                              }
-                              className={`project-option ${
-                                selected
-                                  ? "project-option-active"
-                                  : ""
-                              }`}
-                              onClick={() =>
-                                handleProjectChange(
-                                  project.id
-                                )
-                              }
-                            >
-                              <span>
-                                {project.name}
-                              </span>
-
-                              {selected && (
-                                <span className="project-check">
-                                  ✓
-                                </span>
-                              )}
-                            </button>
-                          );
-                        }
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-
-            {/* 2. User — letter only */}
-            <button
-              type="button"
-              className="profile-chip profile-chip-compact"
-              title={t(adminIdentity.name)}
-              aria-label={t(adminIdentity.name)}
-            >
-              <span className="profile-avatar" aria-hidden="true">
-                {isAdmin
-                  ? Array.from(t(adminIdentity.name))[0]?.toUpperCase()
-                  : <Icon name="users" size={17} />}
+          <div className="workspace-header-end">
+            <div className="workspace-tools">
+              <button type="button" onClick={toggleTheme}
+                aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })} title={t({ ar: "تغيير المظهر", en: "Toggle theme" })}>
+                <Icon name={theme === "dark" ? "sun" : "moon"} size={18} />
+              </button>
+              <button type="button" onClick={toggleLang} aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
+                title={t({ ar: "تغيير اللغة", en: "Toggle language" })}>{lang === "ar" ? "EN" : "AR"}</button>
+            </div>
+            <Link href="/settings" className="workspace-user" title={userName}
+              aria-label={t({ ar: `الإعدادات — ${userName}`, en: `Settings — ${userName}` })}>
+              <span className="workspace-user-avatar" aria-hidden="true">{Array.from(userName.trim())[0]?.toUpperCase() ?? "?"}</span>
+              <span className="workspace-user-copy"><strong><bdi>{userName}</bdi></strong>
+                <span>{isAdmin ? t({ ar: "مدير المشروع", en: "Project admin" }) : t({ ar: "عميل", en: "Client" })}</span>
               </span>
-            </button>
-
-            {/* 3. Notifications */}
-            <button
-              type="button"
-              className="topbar-control notification-control"
-              onClick={() => router.push("/orders")}
-              aria-label={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
-              title={t({ ar: "الإشعارات والطلبات الجديدة", en: "Notifications and new orders" })}
-            >
-              <Icon name="bell" size={18} />
-            </button>
-
-            {/* 4. Dark mode */}
-            <button
-              type="button"
-              className="topbar-control theme-control"
-              onClick={toggleTheme}
-              aria-label={t({ ar: "تغيير المظهر", en: "Toggle theme" })}
-              title={t({ ar: "الوضع الداكن", en: "Dark mode" })}
-            >
-              <Icon name={theme === "dark" ? "sun" : "moon"} size={17} />
-            </button>
-
-            {/* 5. Language */}
-            <button
-              type="button"
-              className="topbar-control lang-control"
-              onClick={toggleLang}
-              aria-label={t({ ar: "تغيير اللغة", en: "Toggle language" })}
-              title={t({ ar: "تغيير اللغة", en: "Toggle language" })}
-            >
-              {lang === "ar" ? "EN" : "AR"}
-            </button>
-
-            {/* 6. Date (last) */}
-            <span
-              className="topbar-date-card"
-              title={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                timeZone: "Africa/Cairo",
-              }).format(new Date())}
-              aria-label={new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                timeZone: "Africa/Cairo",
-              }).format(new Date())}
-            >
-              <Icon name="calendar" size={16} />
-              <span>{new Intl.DateTimeFormat(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", {
-                day: "2-digit",
-                month: "short",
-                timeZone: "Africa/Cairo",
-              }).format(new Date())}</span>
-            </span>
+            </Link>
           </div>
         </header>
 

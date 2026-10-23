@@ -100,7 +100,13 @@
   --color-ok: var(--ok);
   --color-warn: var(--warn);
   --color-danger: var(--danger);
-  --font-head: "Readex Pro", "IBM Plex Sans Arabic", sans-serif;
+  --font-head: var(--font-zain), Arial, sans-serif;
+  --font-sans: var(--font-zain), Arial, sans-serif;
+  --font-weight-medium: 700;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 800;
 }
 
 @layer base {
@@ -124,10 +130,9 @@
       ),
       var(--bg);
     color: var(--ink);
-    font-family:
-      "IBM Plex Sans Arabic",
-      system-ui,
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
     line-height: 1.7;
     overflow-x: hidden;
     transition:
@@ -139,10 +144,7 @@
   h2,
   h3,
   h4 {
-    font-family:
-      "Readex Pro",
-      "IBM Plex Sans Arabic",
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
   }
 
   button {
@@ -502,7 +504,7 @@
     white-space: nowrap;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .sidebar:not([data-expanded="true"]) .nav-label,
@@ -606,7 +608,7 @@
     color: rgba(183, 206, 202, 0.62);
 
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 
     transition:
       background 0.2s,
@@ -698,10 +700,7 @@
   .topbar-page strong {
     margin-top: 2px;
 
-    font-family:
-      "Readex Pro",
-      "IBM Plex Sans Arabic",
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
 
     font-size: 15px;
     font-weight: 700;
@@ -907,7 +906,7 @@
     text-align: start;
 
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 
     transition:
       background 0.18s,
@@ -963,7 +962,7 @@
 
     color: #fff;
 
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 10px;
     font-weight: 700;
 
@@ -1160,7 +1159,7 @@
     color: var(--mut);
 
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .metric-label {
@@ -1183,10 +1182,7 @@
     min-width: 0;
     max-width: 100%;
 
-    font-family:
-      "Readex Pro",
-      "IBM Plex Sans Arabic",
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
 
     font-size: clamp(1.35rem, 2vw, 1.875rem);
     font-weight: 700;
@@ -1325,7 +1321,7 @@
     color: var(--ink);
 
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
 
     box-shadow:
       0 4px 15px rgba(0, 0, 0, 0.025);
@@ -1628,7 +1624,7 @@
     color: rgba(255, 255, 255, 0.82);
 
     font-size: 9px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .hero-title {
@@ -1807,7 +1803,7 @@
     gap: 9px;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .system-dot {
@@ -2228,10 +2224,7 @@
 
     color: var(--ink);
 
-    font-family:
-      "Readex Pro",
-      "IBM Plex Sans Arabic",
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
 
     font-size: clamp(
       1.55rem,
@@ -2320,10 +2313,7 @@
   .overview-chart-total {
     color: var(--ink);
 
-    font-family:
-      "Readex Pro",
-      "IBM Plex Sans Arabic",
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
 
     font-size: 21px;
     font-weight: 700;
@@ -2335,14 +2325,14 @@
     color: var(--mut);
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .overview-chart-period {
     color: var(--mut);
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .overview-chart {
@@ -2369,7 +2359,7 @@
     color: var(--mut);
 
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   @keyframes overview-in {
@@ -2519,16 +2509,13 @@
   .orders-summary-main span {
     color: var(--mut);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .orders-summary-main strong {
     color: var(--ink);
 
-    font-family:
-      "Readex Pro",
-      "IBM Plex Sans Arabic",
-      sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
 
     font-size: 21px;
     line-height: 1.2;
@@ -2557,7 +2544,7 @@
     color: var(--mut);
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 
@@ -2701,7 +2688,7 @@
     color: var(--mut);
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 
@@ -2779,7 +2766,7 @@
     color: var(--mut);
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .orders-results-bar button {
@@ -2866,7 +2853,7 @@
     color: var(--ink);
 
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .orders-date-cell span {
@@ -2918,7 +2905,7 @@
     color: var(--mut);
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 }
 
@@ -3051,12 +3038,12 @@
   .analytics-summary-label {
     color: var(--mut);
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .analytics-summary-value {
     margin-top: 2px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 25px;
     font-weight: 700;
     letter-spacing: -.03em;
@@ -3068,7 +3055,7 @@
     gap: 7px;
     color: var(--mut);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .analytics-summary-note svg {
@@ -3102,7 +3089,7 @@
   }
 
   .analytics-donut-stat strong {
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
   }
@@ -3206,7 +3193,7 @@
 
   .analytics-status-percentage {
     color: var(--mut);
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 12px;
     font-weight: 700;
   }
@@ -3218,13 +3205,13 @@
   .analytics-status-card-body p {
     color: var(--mut);
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .analytics-status-card-body strong {
     display: block;
     margin-top: 2px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 27px;
     line-height: 1.2;
   }
@@ -3269,7 +3256,7 @@
   }
 
   .analytics-section-heading h2 {
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 16px;
     font-weight: 700;
   }
@@ -3329,12 +3316,12 @@
   .analytics-insight-card > div:nth-child(2) span {
     color: var(--mut);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .analytics-insight-card > div:nth-child(2) strong {
     margin-top: 2px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 19px;
     line-height: 1.2;
   }
@@ -3568,7 +3555,7 @@
     margin-top: 5px;
     color: var(--mut);
     font-size: 10px;
-    font-weight: 500;
+    font-weight: 700;
   }
 
   .activity-meta-separator {
@@ -3602,7 +3589,7 @@
   .activity-detail-label {
     color: var(--mut);
     font-size: 9px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .activity-detail strong {
@@ -3684,12 +3671,12 @@
   .activity-summary-item span {
     color: var(--mut);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .activity-summary-item strong {
     margin-top: 1px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 18px;
     line-height: 1.2;
   }
@@ -3898,13 +3885,13 @@
   .users-summary-card > div:last-child > span {
     color: var(--mut);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .users-summary-card strong {
     display: block;
     margin-top: 2px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 25px;
     line-height: 1.2;
   }
@@ -4063,7 +4050,7 @@
     border-radius: 11px;
     background: var(--surface-soft);
     color: var(--teal);
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 12px;
     font-weight: 700;
   }
@@ -4109,7 +4096,7 @@
     background: var(--surface-soft);
     color: var(--ink);
     font-size: 9px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .users-muted,
@@ -4330,7 +4317,7 @@
       transparent
     );
     color: var(--teal);
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 14px;
     font-weight: 700;
   }
@@ -4417,7 +4404,7 @@
     display: block;
     color: var(--mut);
     font-size: 8px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .settings-project-meta strong {
@@ -4579,7 +4566,7 @@
 
   .automation-hero h2 {
     margin-top: 5px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 20px;
     font-weight: 700;
     letter-spacing: -.02em;
@@ -4607,7 +4594,7 @@
 
   .automation-hero-badge span {
     color: var(--teal);
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 14px;
     font-weight: 800;
   }
@@ -4682,7 +4669,7 @@
 
   .automation-module-card h3 {
     margin: 18px 20px 0;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;
   }
@@ -4704,7 +4691,7 @@
     border-top: 1px solid var(--line);
     color: var(--mut);
     font-size: 9px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .automation-module-footer svg {
@@ -4740,7 +4727,7 @@
 
   .automation-control-header h2 {
     margin-top: 7px;
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 17px;
     font-weight: 700;
   }
@@ -4833,7 +4820,7 @@
     border-radius: 9px;
     background: var(--surface-soft);
     color: var(--mut);
-    font-family: "Readex Pro", sans-serif;
+    font-family: var(--font-zain), Arial, sans-serif;
     font-size: 8px;
     font-weight: 700;
   }
@@ -5537,7 +5524,7 @@
 .orders-date-cell p {
   margin: 0;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .orders-date-cell span {
@@ -5578,7 +5565,7 @@
   color: inherit;
   font: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
 }
@@ -5626,9 +5613,9 @@
 .automation-live-row:last-child { border-bottom: 0; }
 .automation-live-row-icon { width: 34px; height: 34px; border-radius: 11px; }
 .automation-live-row-main { display: flex; flex: 1; flex-direction: column; gap: 5px; min-width: 0; }
-.automation-live-row-main strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600; }
+.automation-live-row-main strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 700; }
 .automation-live-row-main small { color: var(--muted, #858585); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
-.automation-live-status { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 5px 8px; border-radius: 999px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.automation-live-status { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 5px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 .automation-live-status-ok { color: #44835d; background: rgba(75, 157, 103, .12); }
 .automation-live-status-error { color: #c45449; background: rgba(211, 78, 65, .12); }
 .automation-live-status-running { color: #b77a2e; background: rgba(220, 145, 50, .13); }
@@ -5659,7 +5646,7 @@
 .automation-project-picker-copy strong{display:block;font-size:14px}
 .automation-project-picker-copy p{margin:5px 0 0;color:var(--muted,#8a8a8a);font-size:12px;line-height:1.6}
 .automation-project-select-wrap,.automation-assignment-select{display:flex;flex-direction:column;gap:7px;min-width:190px}
-.automation-project-select-wrap>span,.automation-assignment-select>span{color:var(--muted,#888);font-size:11px;font-weight:600}
+.automation-project-select-wrap>span,.automation-assignment-select>span{color:var(--muted,#888);font-size:11px;font-weight:700}
 .automation-project-select-wrap select,.automation-assignment-select select{width:100%;min-height:42px;padding:0 12px;border:1px solid var(--border,rgba(128,128,128,.25));border-radius:11px;outline:none;color:var(--foreground,inherit);background:var(--background,transparent);font:inherit;font-size:13px}
 .automation-project-select-wrap select:focus,.automation-assignment-select select:focus{border-color:rgba(217,139,66,.7);box-shadow:0 0 0 3px rgba(217,139,66,.1)}
 .automation-project-select-wrap option,.automation-assignment-select option{color:#202020;background:#fff}
@@ -5699,7 +5686,7 @@
   width: fit-content;
   max-width: 100%;
   margin-top: 14px;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: var(--font-zain), Arial, sans-serif !important;
   font-size: 30px;
   font-weight: 700 !important;
   font-variant-numeric: tabular-nums;
@@ -5793,7 +5780,7 @@
   display: inline-block;
   direction: ltr;
   unicode-bidi: isolate;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: var(--font-zain), Arial, sans-serif !important;
   font-size: 1em;
   font-weight: 700;
   font-variant-numeric: lining-nums tabular-nums;
@@ -5895,7 +5882,7 @@
   display: inline-block;
   direction: ltr;
   unicode-bidi: isolate;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: var(--font-zain), Arial, sans-serif !important;
   font-size: 30px;
   font-weight: 700 !important;
   font-variant-numeric: lining-nums tabular-nums;
@@ -6012,7 +5999,7 @@
   display: inline-block;
   direction: ltr;
   unicode-bidi: isolate;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: var(--font-zain), Arial, sans-serif !important;
   font-size: 30px;
   font-weight: 700 !important;
   font-variant-numeric: lining-nums tabular-nums;
@@ -6235,7 +6222,7 @@ textarea:focus-visible {
   background: transparent;
   color: var(--teal);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   text-underline-offset: 4px;
 }
@@ -6724,7 +6711,7 @@ textarea:focus {
   box-shadow: var(--shadow-sm);
   color: var(--mut);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -8307,7 +8294,7 @@ header.topbar .topbar-actions .project-trigger-card:hover svg {
 }
 .visual-core-symbol {
   color: #ffc18e;
-  font-family: "Readex Pro", sans-serif;
+  font-family: var(--font-zain), Arial, sans-serif;
 }
 .visual-dashboard {
   max-width: 370px;

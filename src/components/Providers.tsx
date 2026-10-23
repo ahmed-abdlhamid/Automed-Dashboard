@@ -4,9 +4,8 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useSyncExternalStore,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
 
@@ -30,34 +29,34 @@ type Ctx = {
 
 const PrefsContext = createContext<Ctx | null>(null);
 
-export default function Providers({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("ar");
-  const [theme, setThemeState] = useState<Theme>("light");
+const subscribe = (notify: () => void) => {
+  window.addEventListener("automed-preferences", notify);
+  return () => window.removeEventListener("automed-preferences", notify);
+};
+const notifyPreferences = () => window.dispatchEvent(new Event("automed-preferences"));
 
-  // The inline script in layout.tsx already applied the saved values to <html>
-  // before first paint. Here we only sync React state with it.
-  useEffect(() => {
-    const d = document.documentElement;
-    setThemeState(d.dataset.theme === "dark" ? "dark" : "light");
-    setLangState(d.lang === "en" ? "en" : "ar");
-  }, []);
+export default function Providers({ children }: { children: ReactNode }) {
+  const lang = useSyncExternalStore<Lang>(subscribe,
+    () => document.documentElement.lang === "en" ? "en" : "ar", () => "ar");
+  const theme = useSyncExternalStore<Theme>(subscribe,
+    () => document.documentElement.dataset.theme === "dark" ? "dark" : "light", () => "light");
 
   const setLang = useCallback((l: Lang) => {
-    setLangState(l);
     const d = document.documentElement;
     d.lang = l;
     d.dir = l === "ar" ? "rtl" : "ltr";
     try {
       localStorage.setItem(LANG_KEY, l);
     } catch {}
+    notifyPreferences();
   }, []);
 
   const setTheme = useCallback((th: Theme) => {
-    setThemeState(th);
     document.documentElement.dataset.theme = th;
     try {
       localStorage.setItem(THEME_KEY, th);
     } catch {}
+    notifyPreferences();
   }, []);
 
   const value = useMemo<Ctx>(

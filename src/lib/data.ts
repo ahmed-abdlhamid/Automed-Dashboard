@@ -1,6 +1,5 @@
 import type { Bilingual } from "@/components/Providers";
 import { dashboardConfig } from "@/config/dashboard.config";
-import { supabase } from "./supabase";
 
 export type OrderStatus =
   | "paid"
@@ -87,6 +86,7 @@ export type Project = {
 };
 
 export type Overview = {
+  payments: { paid: number; pending: number; failed: number };
   stats: {
     orders: number;
     revenue: number;
@@ -207,6 +207,8 @@ function mapSupabaseOrder(
 export async function getProjects(): Promise<
   Project[]
 > {
+  const { supabase } = await import("./supabase");
+
   const {
     data,
     error,
@@ -238,6 +240,8 @@ export async function getOrders(
   projectId: string =
     dashboardConfig.project.id
 ): Promise<Order[]> {
+  const { supabase } = await import("./supabase");
+
   const {
     data,
     error,
@@ -285,6 +289,9 @@ export async function getOverview(
     );
 
   return {
+    payments: { paid: paid.length,
+      pending: orders.filter(order => order.status === "pending").length,
+      failed: orders.filter(order => order.status === "failed").length },
     stats: {
       orders:
         orders.length,
